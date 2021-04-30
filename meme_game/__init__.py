@@ -17,7 +17,7 @@ Your app description
 class Constants(BaseConstants):
     name_in_url = 'meme_game'
     players_per_group = None
-    num_rounds = 1
+    num_rounds = 1 #here you define the number of trials
 
 
 class Subsession(BaseSubsession):
@@ -30,7 +30,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     iDec               = models.BooleanField(blank=True)
-    dRT                = models.FloatField(blank=True)   #double
+    dRT                = models.FloatField(blank=True)   #d because double
     iImg               = models.IntegerField(blank=True)
     sTreat             = models.StringField(blank=True)
 
@@ -48,13 +48,13 @@ def creating_session(subsession):
 
 # PAGES
 class MyPage(Page):
-    form_model = 'player' #de quien saco la informacion
+    form_model = 'player' #from who are you extracting the info
     form_fields = [
         'iDec', 
         'dRT',
     ] #todas las variables q quieres salvar de una pagina
     @staticmethod
-    def vars_for_template(player): #this is for the html
+    def vars_for_template(player): #otree function for the html
         return {
             'Image'    :  "".join(['meme_game/meme', str(player.iImg) , '.jpg']) ,
         }
