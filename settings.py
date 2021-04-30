@@ -15,6 +15,12 @@ SESSION_CONFIGS = [
     ),
     dict(
         name='survey', app_sequence=['survey', 'payment_info'], num_demo_participants=1
+     ),
+    dict(
+        name='memessssss',
+        display_name="meme life",
+        num_demo_participants=1,
+        app_sequence=['meme_game'],
     ),
 ]
 

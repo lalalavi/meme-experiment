@@ -1,0 +1,55 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Color Game
+{% endblock %}
+
+<link href="{% static 'global/VisualTraceStyles.css' %}" rel="stylesheet">
+<script src="{% static 'global/VisualTraceFunctions.js' %}"></script>
+
+<script>
+
+
+    // Add event listener to buttons
+    document.addEventListener("DOMContentLoaded", function(debug=true) {
+    let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
+    OtreeBody.appendChild(sButtonClick);
+    OtreeBody.appendChild(sTimeClick);
+    OtreeBody.appendChild(dRT);
+
+    // Find all buttons
+    let vButtons = document.getElementsByClassName('game-button');
+    let vColors  = js_vars.vColors;
+    for(let i = 0; i<vButtons.length; i++) {
+    let btn = vButtons[i];
+    let DisplayClass = btn.id;
+    btn.classList.add(DisplayClass);
+    btn.classList.add(vColors[i]);
+    AddVisualTracer(btn,'mouseover',DisplayClass);
+    } 
+    
+    });
+</script>
+
+{% block content %}
+<p>Please select the option with the <b> {{ treatment }} </b> 'blue' </p>
+    <table>
+        <tr>
+            <td >
+                <button id="b0" name="iDec2" class="game-button button-outcome hidden" value="0"> {{ Color0 }} </button>
+            </td>
+            <td >
+                <button id="b1" name="iDec2" class="game-button button-outcome hidden" value="1"> {{ Color1 }} </button>
+            </td>
+            <td >
+                <button id="b2" name="iDec2" class="game-button button-outcome hidden" value="2"> {{ Color2 }} </button>
+            </td>
+            <td >
+                <button id="b3" name="iDec2" class="game-button button-outcome hidden" value="3"> {{ Color3 }} </button>
+            </td>
+        </tr>
+    </table>
+{% endblock %}
+
+
