@@ -30,10 +30,12 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     iDec               = models.BooleanField(blank=True)
-    dRT                = models.FloatField(blank=True)   #d because double
+    dRT1               = models.FloatField(blank=True)   #d because double
+    dRT2               = models.FloatField(blank=True)
+    dRT3               = models.FloatField(blank=True)
     iImg               = models.IntegerField(blank=True)
     sTreat             = models.StringField(blank=True)
-
+#define here ALL variables i will save
 
 # FUNCTIONS
 
@@ -47,11 +49,23 @@ def creating_session(subsession):
         print('set player.iImg to', player.iImg)
 
 # PAGES
-class MyPage(Page):
+
+class ToMemeOrNotToMeme(Page):
     form_model = 'player' #from who are you extracting the info
     form_fields = [
         'iDec', 
-        'dRT',
+        'dRT1',
+    ]
+    @staticmethod
+    def vars_for_template(player): #otree function for the html
+        return {
+            'Image'    :  "".join(['meme_game/meme', str(player.iImg) , '.jpg']) ,
+        }
+
+class MyPage(Page):
+    form_model = 'player' #from who are you extracting the info
+    form_fields = [
+        'dRT2',
     ] #todas las variables q quieres salvar de una pagina
     @staticmethod
     def vars_for_template(player): #otree function for the html
@@ -73,4 +87,4 @@ class Results(Page):
     pass
 
 
-page_sequence = [MyPage, ResultsWaitPage, Results]
+page_sequence = [ToMemeOrNotToMeme, MyPage, ResultsWaitPage, Results]
