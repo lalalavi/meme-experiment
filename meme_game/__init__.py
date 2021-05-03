@@ -18,6 +18,7 @@ class Constants(BaseConstants):
     name_in_url = 'meme_game'
     players_per_group = None
     num_rounds = 1 #here you define the number of trials
+    choices = ['Post', 'See'] 
 
 
 class Subsession(BaseSubsession):
@@ -29,6 +30,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    iTrialDec          = models.StringField(choices=Constants.choices)
     iDec               = models.BooleanField(blank=True)
     dRT1               = models.FloatField(blank=True)   #d because double
     dRT2               = models.FloatField(blank=True)
@@ -50,18 +52,32 @@ def creating_session(subsession):
 
 # PAGES
 
+#  class ToMemeOrNotToMeme(Page):
+#     form_model = 'player' #from who are you extracting the info
+#     form_fields = [
+#         'iDec', 
+#         'dRT1',
+#     ]
+#     @staticmethod
+#     def vars_for_template(player): #otree function for the html
+#         return {
+#             'Image'    :  "".join(['meme_game/meme', str(player.iImg) , '.jpg']) ,
+#         }
+
 class ToMemeOrNotToMeme(Page):
-    form_model = 'player' #from who are you extracting the info
+    form_model = 'player'
     form_fields = [
-        'iDec', 
+        'iTrialDec',
         'dRT1',
     ]
-    @staticmethod
-    def vars_for_template(player): #otree function for the html
-        return {
-            'Image'    :  "".join(['meme_game/meme', str(player.iImg) , '.jpg']) ,
-        }
 
+    @staticmethod
+    def vars_for_template(player: Player):
+        return dict(past_players=player.in_previous_rounds())
+
+
+#mypage is really the feed 
+#have to add timer
 class MyPage(Page):
     form_model = 'player' #from who are you extracting the info
     form_fields = [
@@ -79,6 +95,23 @@ class MyPage(Page):
             'sTreat'    :  player.sTreat,
         }
 
+class addTags(Page):
+    form_model = 'player' 
+    form_fields = [
+        'dRT2',
+    ] 
+    @staticmethod
+    def vars_for_template(player): #otree function for the html
+        participant     = player.participant
+        iRound          = player.round_number
+        return {
+            # 'Color0'    : values[0],
+            # 'Color1'    : values[1],
+            # 'Color2'    : values[2],
+            # 'Color3'    : values[3],
+            # 'treatment' : player.sTreat2,
+        }
+
 class ResultsWaitPage(WaitPage):
     pass
 
@@ -86,5 +119,6 @@ class ResultsWaitPage(WaitPage):
 class Results(Page):
     pass
 
+#PAGES TO BE CODED ToMemeOrNotToMeme, Posting, Tags, Feedbackpage, EmotionalStatus
 
-page_sequence = [ToMemeOrNotToMeme, MyPage, ResultsWaitPage, Results]
+page_sequence = [ToMemeOrNotToMeme, MyPage, addTags, ResultsWaitPage, Results]

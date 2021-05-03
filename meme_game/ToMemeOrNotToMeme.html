@@ -7,108 +7,54 @@
 
 {% block content %}
 
-<style>
-    .meme-body{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    } 
+<!-- 
+   Round {{ subsession.round_number }}, Shoot!
+-->
 
-    .img-wrapper {
-        width: 50vw;
-        height: 50vh;
-        justify-content: center;
-    }
+    {{ for choice in Constants.choices }}
+        <button name="iTrialDec" value="{{choice}}">{{choice}}</button>
+    {{ endfor }}
 
-    #meme-pic{
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }
-
-    .meme-text {
-        width: 50vw;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-    }
-
-    #dislike {
-        padding-left: 1em;
-    }
-</style>
-
-<script>
-    // Load Treatment
-    sTreat = js_vars.sTreat
-    
-    // Hidden Next Button
-    let EndButton               = document.createElement('button');
-    EndButton.style.visibility  = 'hidden';
-    EndButton.className         = 'next_button btn btn-primary btn-large';
-
-    // Create hidden input (Decision)
-    let iDec        = document.createElement("input");
-    iDec.type       = 'hidden';
-    iDec.name       = 'iDec';
-    iDec.id         = 'iDec';
-    iDec.value      = '';
-
-    document.addEventListener("DOMContentLoaded", function(debug=true) {
-        console.log('Loading info');
-
-        let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
-        OtreeBody.appendChild(iDec);
-        OtreeBody.appendChild(EndButton);
-        // Add event listener for pressing L
-        document.addEventListener("keyup", function(event) {
-        if (event.keyCode === 76) {
-            // change input value
-            iDec.value = 'L';
-            console.log('L was pressed');
-            // press next button
-            EndButton.click();
-        }
-        });
-
-        // Check for treatment
-        console.log(sTreat);
-        if (sTreat=='Like') {
-            // Hide dislike option
-            let x = document.getElementById('dislike');
-            x.style.visibility = 'hidden';
-        } else if (sTreat=='Dislike') {
-            // Add EventListener for Dislike with K
-            document.addEventListener("keyup", function(event) {
-            if (event.keyCode === 75) {
-                // change input value
-                iDec.value = 'K';
-                console.log('K was pressed');
-                // press next button
-                EndButton.click();
-            }
-        });
-        }
-    });
-</script>
-
-<div class="meme-body"> 
-    <div class="img-wrapper">
-        <img id='meme-pic' src= {{ static Image }} />
-    </div>
-    <div class="meme-text">
-        <p>
-            Press 'L' to like 
-        </p>
-        <p id="dislike">
-            or 'K' to dislike
-        </p>
-    </div>
-
-</div>
-
-
+    {{ if subsession.round_number > 1}}
+        {{ include Constants.history_template }}
+    {{ endif }}
 
 {% endblock %}
+
+
+<!--  could work but does not (taken from chris examples, quiz)
+<div>
+    <button type="button" onclick="sendClick(this)" value="Post" id="Post">
+    </button>
+    <button type="button" onclick="sendClick(this)" value="See" id="See">
+    </button>
+</div>
+
+<script>
+
+    let trialId = null;
+
+    function liveRecv(data) {
+        if (data.status === 'finished') {
+            document.getElementById('form').submit();
+        } else {
+            let stimulus = data.stimulus;
+            trialId = stimulus.id;
+
+            for (let item of ['question', 'optionA', 'optionB']) {
+                document.getElementById(item).innerText = stimulus[item];
+            }
+        }
+    }
+
+    function sendClick(btn) {
+        liveSend({'choice': btn.value, 'trialId': trialId});
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        // send empty message to load initial question, or in case page is refreshed.
+        liveSend({});
+    });
+</script> -->
 
 
