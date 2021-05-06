@@ -7,9 +7,9 @@
 
 {% block content %}
 
-
-<div class="row"> 
-    <!-- Create a row with three colums inside  -->
+<!-- How to create a row of images with three colums inside  -->
+<!-- <div class="row"> 
+    
     <div class="column">
       <img src="img_snow.jpg" alt="Snow" style="width:100%">
     </div>
@@ -20,19 +20,47 @@
       <img src="img_mountains.jpg" alt="Mountains" style="width:100%">
     </div>
   </div>
+</div> -->
 
-  <div class="row">
-    <!-- Same -->
+<!-- NEED TO FIND A WAY TO ALTER PHOTOS :D -->
+
+<div class="row">
     <div class="column">
-      <img src="img_snow.jpg" alt="Snow" style="width:100%">
+      <img id='meme-pic1' src= {{ static Image }} alt="Snow" style="width:100%">
     </div>
     <div class="column">
-      <img src="img_forest.jpg" alt="Forest" style="width:100%">
+      <img id='meme-pic2' src= {{ static Image }} alt="Forest" style="width:100%">
     </div>
     <div class="column">
-      <img src="img_mountains.jpg" alt="Mountains" style="width:100%">
+      <img id='meme-pic3' src= {{ static Image }} alt="Mountains" style="width:100%">
     </div>
-  </div>
+</div>
+
+<div class="row">
+    <div class="column">
+      <img id='meme-pic4' src= {{ static Image }}  alt="Snow" style="width:100%">
+    </div>
+    <div class="column">
+      <img id='meme-pic5' src= {{ static Image }}  alt="Forest" style="width:100%">
+    </div>
+    <div class="column">
+      <img id='meme-pic6' src= {{ static Image }}  alt="Mountains" style="width:100%">
+    </div>
+</div>
+
+<!-- <div class="meme-body"> 
+    <div class="img-wrapper">
+        <img id='meme-pic' src= {{ static Image }} />
+    </div>
+    <div class="meme-text">
+        <p>
+            Press 'L' to like 
+        </p>
+        <p id="dislike">
+            or 'K' to dislike
+        </p>
+    </div>
+</div> -->
 
  <style>
   /* Three image containers (use 25% for four, and 50% for two, etc) */

@@ -37,8 +37,13 @@ class Player(BasePlayer):
     dRT3               = models.FloatField(blank=True)
     iImg               = models.IntegerField(blank=True)
     sTreat             = models.StringField(blank=True)
-#define here ALL variables i will save
+    EmotionalStatus    = models.IntegerField(choices=[1,2,3,4,5])
 
+#define here ALL variables i will save
+# EmotionalStatus    = models.IntegerField(widget=widgets.RadioSelect, choices=[ [1, 'Quitebadyooo'], [2], [3], [4], [5], [6], [7, 'excellent'] ])
+# EmotionalStatus   = models.IntegerField(widget=widgets.RadioSelect, choices=[ [1, 'Strongly negative'], [2, 'Negative'], [3, 'Somewhat negative'], [4, 'Neutral'], [5, 'Somewhat positive'], [6, 'Positive'], [7, 'Strongly positive'] ])
+# 
+# 
 # FUNCTIONS
 
 def creating_session(subsession):
@@ -112,6 +117,24 @@ class addTags(Page):
             # 'treatment' : player.sTreat2,
         }
 
+class Posting(Page):
+    form_model = 'player' 
+    form_fields = [
+        'iImg',
+    ] 
+
+    @staticmethod
+    def vars_for_template(player): #otree function for the html
+        return {
+            'Image'    :  "".join(['HR/meme', str(player.iImg) , '.jpg']) ,
+        }
+
+class HowDoYaFeel(Page):
+    form_model = 'player' 
+    form_fields = [
+        'EmotionalStatus',
+    ] 
+
 class ResultsWaitPage(WaitPage):
     pass
 
@@ -119,6 +142,7 @@ class ResultsWaitPage(WaitPage):
 class Results(Page):
     pass
 
-#PAGES TO BE CODED ToMemeOrNotToMeme, Posting, Tags, Feedbackpage, EmotionalStatus
+#PAGES TO BE CODED ToMemeOrNotToMeme, 
+#Posting, Tags, Feedbackpage, EmotionalStatus
 
-page_sequence = [ToMemeOrNotToMeme, MyPage, addTags, ResultsWaitPage, Results]
+page_sequence = [ToMemeOrNotToMeme, HowDoYaFeel, MyPage, addTags,  Posting,  ResultsWaitPage, Results]
