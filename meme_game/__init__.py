@@ -29,17 +29,18 @@ class Group(BaseGroup):
     pass
 
 
-class Player(BasePlayer):
-    iTrialDec          = models.StringField(choices=Constants.choices)
+class Player(BasePlayer): #define here ALL variables i will save at player level
+
+    iTrialDec          = models.StringField(choices=Constants.choices) #first decision where u can choose between seeing and posting
     iDec               = models.BooleanField(blank=True)
     dRT1               = models.FloatField(blank=True)   #d because double
     dRT2               = models.FloatField(blank=True)
     dRT3               = models.FloatField(blank=True)
-    iImg               = models.IntegerField(blank=True)
+    iImgFeed           = models.IntegerField(blank=True)
+    iImgPost           = models.IntegerField(blank=True)
     sTreat             = models.StringField(blank=True)
     EmotionalStatus    = models.IntegerField(choices=[1,2,3,4,5])
 
-#define here ALL variables i will save
 # EmotionalStatus    = models.IntegerField(widget=widgets.RadioSelect, choices=[ [1, 'Quitebadyooo'], [2], [3], [4], [5], [6], [7, 'excellent'] ])
 # EmotionalStatus   = models.IntegerField(widget=widgets.RadioSelect, choices=[ [1, 'Strongly negative'], [2, 'Negative'], [3, 'Somewhat negative'], [4, 'Neutral'], [5, 'Somewhat positive'], [6, 'Positive'], [7, 'Strongly positive'] ])
 # 
@@ -52,8 +53,11 @@ def creating_session(subsession):
         # Setup a treatment condition (changes each round)
         player.sTreat          = random.choice(['Like', 'Dislike'])
         print('set player.sTreat3 to', player.sTreat)
-        player.iImg             = random.randint(low=1,high=3) 
-        print('set player.iImg to', player.iImg)
+        player.iImgFeed         = random.randint(low=1,high=3)  #!!!!!!!!!!!!
+        player.iImgPost         = random.randint(low=1,high=10) 
+        print('set player.iImgFeed to', player.iImgFeed)
+        print('set player.iImgPost to', player.iImgPost)
+
 
 # PAGES
 
@@ -91,7 +95,7 @@ class MyPage(Page):
     @staticmethod
     def vars_for_template(player): #otree function for the html
         return {
-            'Image'    :  "".join(['meme_game/meme', str(player.iImg) , '.jpg']) ,
+            'Image'    :  "".join(['meme_game/meme', str(player.iImgFeed) , '.jpg']) ,
         }
 
     @staticmethod
@@ -120,14 +124,27 @@ class addTags(Page):
 class Posting(Page):
     form_model = 'player' 
     form_fields = [
-        'iImg',
+        'iImgPost',
     ] 
 
     @staticmethod
     def vars_for_template(player): #otree function for the html
+        # i=1
+	    # j=int(i)+1
+	    # k=int(i)+2
+	    # l=int(i)+3
+	    # m=int(i)+4
+	    # n=int(i)+5
         return {
-            'Image'    :  "".join(['HR/meme', str(player.iImg) , '.jpg']) ,
+            'Image'    :  "".join(['HR/meme', str(player.iImgPost) , '.jpg']) ,
+            'Image2'    :  "".join(['HR/meme', str(player.iImgPost)+str(1) , '.jpg']) ,
+            'Image3'    :  "".join(['HR/meme', str(player.iImgPost)+str(2) , '.jpg']) ,
+            'Image4'    :  "".join(['HR/meme', str(player.iImgPost)+str(4) , '.jpg']) ,
+            'Image5'    :  "".join(['HR/meme', str(player.iImgPost)+str(6) , '.jpg']) ,
+            'Image6'    :  "".join(['HR/meme', str(player.iImgPost)+str(3) , '.jpg']) ,
         }
+        #this might not work bc im concatating the string and not actually summing numbers
+        # if i do it like this i need to get 110 memes in both HR and LR 
 
 class HowDoYaFeel(Page):
     form_model = 'player' 
@@ -145,4 +162,4 @@ class Results(Page):
 #PAGES TO BE CODED ToMemeOrNotToMeme, 
 #Posting, Tags, Feedbackpage, EmotionalStatus
 
-page_sequence = [ToMemeOrNotToMeme, HowDoYaFeel, MyPage, addTags,  Posting,  ResultsWaitPage, Results]
+page_sequence = [ToMemeOrNotToMeme, MyPage, HowDoYaFeel,  Posting, addTags,  ResultsWaitPage, Results]
