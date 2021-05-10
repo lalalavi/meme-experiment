@@ -11,14 +11,14 @@ import os #allows you to look at system directories aka access file system
 c = Currency
 
 doc = """
-Your app description
+Meme experiment by Vi (◕ᴗ◕✿)  
 """
 
 
 class Constants(BaseConstants):
     name_in_url = 'meme_game'
     players_per_group = None
-    num_rounds = 1 #here you define the number of trials
+    num_rounds = 3 #here you define the number of trials
     choices = ['Post', 'See'] 
 
 
@@ -35,22 +35,14 @@ class Player(BasePlayer): #define here ALL variables i will save at player level
     iTrialDec          = models.StringField(choices=Constants.choices) #first decision where u can choose between seeing and posting
     iDec               = models.BooleanField(blank=True) #why is this a boolean
     iDec2              = models.IntegerField(blank=True) #the meme they choose during posting
-    dRT1               = models.FloatField(blank=True)   #d because double
-    dRT2               = models.FloatField(blank=True)
-    dRT3               = models.FloatField(blank=True)
+    dRT2               = models.FloatField(blank=True)  #d because double, reaction time
     iImgFeed           = models.IntegerField(blank=True)
-    iImgPost1           = models.IntegerField(blank=True)
-    iImgPost2           = models.IntegerField(blank=True)
-    iImgPost3           = models.IntegerField(blank=True)
-    iImgPost4           = models.IntegerField(blank=True)
+    iImgPost1          = models.IntegerField(blank=True)
+    iImgPost2          = models.IntegerField(blank=True)
+    iImgPost3          = models.IntegerField(blank=True)
+    iImgPost4          = models.IntegerField(blank=True)
     iImgPost5          = models.IntegerField(blank=True)
-    iImgPost6           = models.IntegerField(blank=True)
-    Image             = models.IntegerField(blank=True)
-    Image2             = models.IntegerField(blank=True)
-    Image3             = models.IntegerField(blank=True)
-    Image4             = models.IntegerField(blank=True)
-    Image5             = models.IntegerField(blank=True)
-    Image6             = models.IntegerField(blank=True)
+    iImgPost6          = models.IntegerField(blank=True)
     iFeedback          = models.IntegerField(blank=True)
     sTreat             = models.StringField(blank=True)
     EmotionalStatus    = models.IntegerField(choices=[1,2,3,4,5])
@@ -68,7 +60,7 @@ def creating_session(subsession):
         player.sTreat          = random.choice(['Like', 'Dislike'])
         print('set player.sTreat3 to', player.sTreat)
         player.iImgFeed         = random.randint(low=1,high=3)  #!!!!!!!!!!!!
-        player.iImgPost1         = random.randint(low=1,high=len(os.listdir('_static/HR')))
+        player.iImgPost1        = random.randint(low=1,high=len(os.listdir('_static/HR')))
         player.iImgPost2        = random.randint(low=1,high=len(os.listdir('_static/HR')))
         player.iImgPost3        = random.randint(low=1,high=len(os.listdir('_static/HR')))
         player.iImgPost4        = random.randint(low=1,high=len(os.listdir('_static/HR')))
@@ -81,37 +73,20 @@ def creating_session(subsession):
 
 # PAGES
 
-#  class ToMemeOrNotToMeme(Page):
-    # form_model = 'player' #from who are you extracting the info
-    # form_fields = [
-    #     'iDec', 
-    #     'dRT1',
-#     ]
-#     @staticmethod
-#     def vars_for_template(player): #otree function for the html
-#         return {
-#             'Image'    :  "".join(['meme_game/meme', str(player.iImg) , '.jpg']) ,
-#         }
-
 class ToMemeOrNotToMeme(Page):
     form_model = 'player'
     form_fields = [
         'iTrialDec',
-        'dRT1',
     ]
-
-    @staticmethod
-    def vars_for_template(player: Player):
-        return dict(past_players=player.in_previous_rounds())
 
 
 #mypage is really the feed 
 #have to add timer
+
 class MyPage(Page):
     form_model = 'player' #from who are you extracting the info
     form_fields = [
         'iDec',
-        'dRT2',
     ] #todas las variables q quieres salvar de una pagina
     @staticmethod
     def vars_for_template(player): #otree function for the html
@@ -130,27 +105,16 @@ class addTags(Page):
     form_fields = [
         'dRT2',
     ] 
-    # @staticmethod
-    # def vars_for_template(player): #otree function for the html
-    #     participant     = player.participant
-    #     iRound          = player.round_number
-    #     return {
-    #         # 'Color0'    : values[0],
-    #         # 'Color1'    : values[1],
-    #         # 'Color2'    : values[2],
-    #         # 'Color3'    : values[3],
-    #         # 'treatment' : player.sTreat2,
-    #     }
 
 class Posting(Page):
     form_model = 'player' 
     form_fields = [
-        'Image',
-        'Image2',
-        'Image3',
-        'Image4',
-        'Image5',
-        'Image6',
+        'iImgPost1',
+        'iImgPost2',
+        'iImgPost3',
+        'iImgPost4',
+        'iImgPost5',
+        'iImgPost6',
         'iDec2',
     ] 
 
@@ -189,11 +153,12 @@ class Results(Page):
 
 #! THINGS TO  BE CODED 
 # ToMemeOrNotToMeme: better layout
-# Posting: different displays
+# Posting: bigger label name
 # Tags: 
 # Feedbackpage (!!!!)
-# EmotionalStatus: sol
+# EmotionalStatus: solve the ()
 # History display
 # QUESTIONNAIRE APP with social media and demographics question
+# ,  ResultsWaitPage, Results
 
-page_sequence = [ToMemeOrNotToMeme, Posting, MyPage, HowDoYaFeel, addTags,  ResultsWaitPage, Results]
+page_sequence = [ToMemeOrNotToMeme, Posting, MyPage, HowDoYaFeel, addTags]

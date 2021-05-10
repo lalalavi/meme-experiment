@@ -8,9 +8,9 @@ SESSION_CONFIGS = [
         num_demo_participants=3,
     ),
     dict(
-        name='guess_two_thirds',
-        display_name="Guess 2/3 of the Average",
-        app_sequence=['guess_two_thirds', 'payment_info'],
+        name='meme_Treatm',
+        display_name="meme treatment",
+        app_sequence=['survey', 'meme_game'],
         num_demo_participants=3,
     ),
     dict(
@@ -19,7 +19,7 @@ SESSION_CONFIGS = [
     dict(
         name='memessssss',
         display_name="meme life",
-        num_demo_participants=4,
+        num_demo_participants=1,
         app_sequence=['meme_game'],
     ),
 ]
