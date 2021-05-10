@@ -6,6 +6,7 @@ from random import choices
 import pandas as pd
 import csv
 import copy
+import os #allows you to look at system directories aka access file system
 
 c = Currency
 
@@ -38,11 +39,18 @@ class Player(BasePlayer): #define here ALL variables i will save at player level
     dRT2               = models.FloatField(blank=True)
     dRT3               = models.FloatField(blank=True)
     iImgFeed           = models.IntegerField(blank=True)
-    iImgPost           = models.IntegerField(blank=True)
+    iImgPost1           = models.IntegerField(blank=True)
+    iImgPost2           = models.IntegerField(blank=True)
+    iImgPost3           = models.IntegerField(blank=True)
+    iImgPost4           = models.IntegerField(blank=True)
+    iImgPost5          = models.IntegerField(blank=True)
+    iImgPost6           = models.IntegerField(blank=True)
+    Image             = models.IntegerField(blank=True)
     Image2             = models.IntegerField(blank=True)
     Image3             = models.IntegerField(blank=True)
     Image4             = models.IntegerField(blank=True)
     Image5             = models.IntegerField(blank=True)
+    Image6             = models.IntegerField(blank=True)
     iFeedback          = models.IntegerField(blank=True)
     sTreat             = models.StringField(blank=True)
     EmotionalStatus    = models.IntegerField(choices=[1,2,3,4,5])
@@ -60,18 +68,24 @@ def creating_session(subsession):
         player.sTreat          = random.choice(['Like', 'Dislike'])
         print('set player.sTreat3 to', player.sTreat)
         player.iImgFeed         = random.randint(low=1,high=3)  #!!!!!!!!!!!!
-        player.iImgPost         = random.randint(low=1,high=10) 
+        player.iImgPost1         = random.randint(low=1,high=len(os.listdir('_static/HR')))
+        player.iImgPost2        = random.randint(low=1,high=len(os.listdir('_static/HR')))
+        player.iImgPost3        = random.randint(low=1,high=len(os.listdir('_static/HR')))
+        player.iImgPost4        = random.randint(low=1,high=len(os.listdir('_static/HR')))
+        player.iImgPost5        = random.randint(low=1,high=len(os.listdir('_static/HR')))
+        player.iImgPost6        = random.randint(low=1,high=len(os.listdir('_static/HR')))
+        # create 
         print('set player.iImgFeed to', player.iImgFeed)
-        print('set player.iImgPost to', player.iImgPost)
+        print('set player.iImgPost1 to', player.iImgPost1)
 
 
 # PAGES
 
 #  class ToMemeOrNotToMeme(Page):
-#     form_model = 'player' #from who are you extracting the info
-#     form_fields = [
-#         'iDec', 
-#         'dRT1',
+    # form_model = 'player' #from who are you extracting the info
+    # form_fields = [
+    #     'iDec', 
+    #     'dRT1',
 #     ]
 #     @staticmethod
 #     def vars_for_template(player): #otree function for the html
@@ -131,11 +145,12 @@ class addTags(Page):
 class Posting(Page):
     form_model = 'player' 
     form_fields = [
-        'iImgPost',
+        'Image',
         'Image2',
         'Image3',
         'Image4',
         'Image5',
+        'Image6',
         'iDec2',
     ] 
 
@@ -148,15 +163,16 @@ class Posting(Page):
 	    # m=int(i)+4
 	    # n=int(i)+5
         return {
-            'Image'    :  "".join(['HR/meme', str(player.iImgPost) , '.jpg']) ,
-            'Image2'    :  "".join(['HR/meme', str(player.iImgPost)+str(1) , '.jpg']) ,
-            'Image3'    :  "".join(['HR/meme', str(player.iImgPost)+str(2) , '.jpg']) ,
-            'Image4'    :  "".join(['HR/meme', str(player.iImgPost)+str(4) , '.jpg']) ,
-            'Image5'    :  "".join(['HR/meme', str(player.iImgPost)+str(6) , '.jpg']) ,
-            'Image6'    :  "".join(['HR/meme', str(player.iImgPost)+str(3) , '.jpg']) ,
+            'Image'    :  "".join(['HR/meme', str(player.iImgPost1) , '.jpg']) ,
+            'Image2'    :  "".join(['HR/meme', str(player.iImgPost2) , '.jpg']) ,
+            'Image3'    :  "".join(['HR/meme', str(player.iImgPost3), '.jpg']) ,
+            'Image4'    :  "".join(['HR/meme', str(player.iImgPost4), '.jpg']) ,
+            'Image5'    :  "".join(['HR/meme', str(player.iImgPost5) , '.jpg']) ,
+            'Image6'    :  "".join(['HR/meme', str(player.iImgPost6) , '.jpg']) ,
         }
         #this might not work bc im concatating the string and not actually summing numbers
         # if i do it like this i need to get 110 memes in both HR and LR 
+        # str(player.iImgPost)+str(3)  <- previous approach
 
 class HowDoYaFeel(Page):
     form_model = 'player' 
@@ -180,4 +196,4 @@ class Results(Page):
 # History display
 # QUESTIONNAIRE APP with social media and demographics question
 
-page_sequence = [ToMemeOrNotToMeme, MyPage, HowDoYaFeel,  Posting, addTags,  ResultsWaitPage, Results]
+page_sequence = [ToMemeOrNotToMeme, Posting, MyPage, HowDoYaFeel, addTags,  ResultsWaitPage, Results]

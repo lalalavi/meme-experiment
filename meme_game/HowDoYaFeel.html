@@ -46,7 +46,7 @@ with raw HTML code that looked ugly, and then with a combination of CSS and HTML
     </form> 
 </div>
 
-{{ form.EmotionalStatus.errors }} 
+
 
 <script>
     document.getElementById('EmotionalStatus').value // = 42; what is this value thing??
@@ -124,7 +124,8 @@ form .buttons .submit:hover {background-color: #14892c;}
  </style>
 
 
-
+{{ form.EmotionalStatus.errors }}  
+<!-- can i delete this -->
 
 <!-- TRIAL 2. 
     RAW HTML + JAVASCRIPT TO GET THE VALUE BY ID
