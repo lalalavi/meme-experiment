@@ -90,18 +90,25 @@ Now i need to associate this images to a number and let the player choose (â”›à²
   flex: 33.33%;
   padding: 5px;
 }
+
+/* to make the numbers big and aligned in the middle :D */
+label {
+  display: block;
+  text-align: center;
+  font-size: 2em;
+}
 </style>
 
 <button class="btn btn-primary">Continue yooooo</button>
 
 <!-- keycode seems to change for the top of the keyboard and the numbers in numeric keyboard 
-  (one is e.keycode and the other is keycode )-->
+  (one is e.keycode and the other is keycode )
 
-<!-- if ((e.key >= 48 && e.key <= 57) || (e.key >= 96 && e.key <= 105)) { // 0-9 only } -->
-<!-- 48=0, 49=1, 50=2, 51=3, 52=4, 54=5, 55=6 -->
+if ((e.key >= 48 && e.key <= 57) || (e.key >= 96 && e.key <= 105)) { // 0-9 only }
+ 48=0, 49=1, 50=2, 51=3, 52=4, 54=5, 55=6 -->
+
 <!-- Important note: These keycode values are only valid during in keydown and keyup events. 
-  On Mac, keypress events give you an completely different set of codes.
- -->
+  On Mac, keypress events give you an completely different set of codes, yay-->
 
 <script> 
     // Hidden Next Button
@@ -116,12 +123,22 @@ Now i need to associate this images to a number and let the player choose (â”›à²
     iDec2.id         = 'iDec2';
     iDec2.value      = '';
 
+    let dRT          = document.createElement("input");
+    dRT.type         = 'hidden';
+    dRT.name         = 'dRTPost';
+    dRT.id           = 'dRTPost';
+    dRT.value        = '';
+    var TStart       = new Date().getTime();
+    var TEnd         = new Date().getTime();
+
     document.addEventListener("DOMContentLoaded", function(debug=true) {
         console.log('Loading info');
 
         let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
         OtreeBody.appendChild(iDec2);
+        OtreeBody.appendChild(dRT);
         OtreeBody.appendChild(EndButton);
+        
 
         // Add event listener for pressing numbers
         document.addEventListener("keyup", function(event) {
@@ -130,33 +147,43 @@ Now i need to associate this images to a number and let the player choose (â”›à²
             // change input value
             iDec2.value = '1';
             console.log('1 was pressed');
+            TEnd      = new Date().getTime();
+            dRT.value = +TEnd -TStart;
             // press next button
             EndButton.click();
         }
         if (event.key === '2') {
             iDec2.value = '2';
             console.log('2 was pressed');
+            TEnd      = new Date().getTime();
+            dRT.value = +TEnd -TStart;
             EndButton.click();
         } 
         if (event.key === '3') {
-            // change input value
             iDec2.value = '3';
             console.log('3 was pressed');
-            // press next button
+            TEnd      = new Date().getTime();
+            dRT.value = +TEnd -TStart;
             EndButton.click();
         }
         if (event.key === '4') {
             iDec2.value = '4';
             console.log('4 was pressed');
+            TEnd      = new Date().getTime();
+            dRT.value = +TEnd -TStart;
             EndButton.click();
         }
         if (event.key === '5') {
             iDec2.value = '5';
             console.log('5 was pressed');
+            TEnd      = new Date().getTime();
+            dRT.value = +TEnd -TStart;
             EndButton.click();
         }
         if (event.key === '6') {
             iDec2.value = '6';
+            TEnd      = new Date().getTime();
+            dRT.value = +TEnd -TStart;
             console.log('6 was pressed');
             EndButton.click();
         }});

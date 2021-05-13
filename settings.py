@@ -2,11 +2,11 @@ from os import environ
 
 
 SESSION_CONFIGS = [
-    dict(
-        name='public_goods',
-        app_sequence=['public_goods', 'payment_info'],
-        num_demo_participants=3,
-    ),
+    # dict(
+    #     name='public_goods',
+    #     app_sequence=['public_goods', 'payment_info'],
+    #     num_demo_participants=3,
+    # ),
     dict(
         name='meme_Treatm',
         display_name="meme treatment",
@@ -14,7 +14,7 @@ SESSION_CONFIGS = [
         num_demo_participants=3,
     ),
     dict(
-        name='survey', app_sequence=['survey', 'payment_info'], num_demo_participants=1
+        name='survey', app_sequence=['survey'], num_demo_participants=1
      ),
     dict(
         name='memessssss',

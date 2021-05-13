@@ -12,6 +12,15 @@ with raw HTML code that looked ugly, and then with a combination of CSS and HTML
 ...use JavaScript, you write script;
 ...use HTML, you use div -->
 
+<script>
+  let dRT          = document.createElement("input");
+      dRT.type         = 'hidden';
+      dRT.name         = 'dRTEmotionalStatus';
+      dRT.id           = 'dRTEmotionalStatus';
+      dRT.value        = '';
+      var TStart       = new Date().getTime();
+      var TEnd         = new Date().getTime();
+  </script>
 
 <div class="wrap">
     <!-- <h1 class="likert-header">This is a Likert Scale survey</h1> -->
@@ -124,7 +133,7 @@ form .buttons .submit:hover {background-color: #14892c;}
  </style>
 
 
-{{ form.EmotionalStatus.errors }}  
+<!-- {{ form.EmotionalStatus.errors }}   -->
 <!-- can i delete this -->
 
 <!-- TRIAL 2. 

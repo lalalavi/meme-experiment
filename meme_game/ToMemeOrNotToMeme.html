@@ -7,15 +7,60 @@
 
 {% block content %}
 
+<script>
+    let dRT          = document.createElement("input");
+        dRT.type         = 'hidden';
+        dRT.name         = 'dRTDec1';
+        dRT.id           = 'dRTDec1';
+        dRT.value        = '';
+        var TStart       = new Date().getTime();
+        var TEnd         = new Date().getTime();
+    </script>
+    
 <!-- 
    Round {{ subsession.round_number }}, Shoot! example taken from rock paper scissors
 -->
 
     {{ for choice in Constants.choices }}
         <button name="iTrialDec" value="{{choice}}">{{choice}}</button>
+
+        <!-- first we form the buttons from the init file -->
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function(debug=true) {
+            console.log('Loading info');
+
+            let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
+            OtreeBody.appendChild(dRT);
+            // OtreeBody.appendChild(EndButton);
+
+            function addtoev() {
+            var bns = document.getElementsByTagName("button");
+            for (i = 0; i < bns.length; i++) {
+                bns[i].addEventListener("click", function() {
+                TEnd      = new Date().getTime();
+                dRT.value = +TEnd -TStart;     });
+            }
+            }
+
+            window.addEventListener("load",function() {
+            addtoev();
+            });
+
+            // document.addEventListener("button", function(event) {
+            // console.log(event.button);
+            // In this case we want to check if the person is clicking the button
+            // if (event.button === "click")   { 
+            //   TEnd      = new Date().getTime();
+            //   dRT.value = +TEnd -TStart;
+            // }})
+        });
+        </script>
+
+
     {{ endfor }}
 
-      <!-- {{ if subsession.round_number > 1}}
+      <!-- {{ if subsession.round_number > 5}}
         {{ include Constants.history_template }}
     {{ endif }}
     this is for when i code the feedback on last post  -->
