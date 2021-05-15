@@ -48,18 +48,13 @@ with raw HTML code that looked ugly, and then with a combination of CSS and HTML
           <label>Strongly positive</label>
         </li>
       </ul>
-      <!--<div class="buttons">
-        <button class="clear">Clear</button>
-         <button class="submit">Submit</button> 
-      </div> -->
+      <div class="buttons">
+        <!-- <button class="clear">Clear</button> -->
+         <button class="btn btn-primary">Submit</button> 
+      </div>
     </form> 
 </div>
 
-
-
-<script>
-    document.getElementById('EmotionalStatus').value // = 42; what is this value thing??
-</script>
 
 <!-- css code to make it pretty -->
 
@@ -124,14 +119,40 @@ form .buttons button {
   border: 0;
   border-radius: 3px;
 }
-/*form .buttons .clear {background-color: #e9e9e9;}
-form .buttons .submit {background-color: #67ab49;} 
-form .buttons .clear:hover {background-color: #ccc;}
-form .buttons .submit:hover {background-color: #14892c;}    
+/* form .buttons .clear {background-color: #e9e9e9;} */
+form .buttons .btn-primary {background-color: #67ab49;} 
+/* form .buttons .clear:hover {background-color: #ccc;} */
+form .buttons .btn-primary:hover {background-color: #14892c;}    
  
- don't need this because i erased the buttons of submitting and clearing */
+ /* don't need this because i erased the buttons of submitting and clearing */
  </style>
 
+<script>
+  document.getElementById('EmotionalStatus').value // = 42; what is this value thing??
+
+  document.addEventListener("DOMContentLoaded", function(debug=true) {
+          console.log('Loading info');
+
+          let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
+          OtreeBody.appendChild(dRT);
+          // OtreeBody.appendChild(EndButton);
+
+          function addtoev() {
+          var bns = document.getElementsByTagName("button");
+          for (i = 0; i < bns.length; i++) {
+              bns[i].addEventListener("click", function() {
+              TEnd      = new Date().getTime();
+              dRT.value = +TEnd -TStart;   // end the timer and rewrite the RT value
+            });
+          }} // what this function is doing is the same as we do when we check
+          // if somebody pressed a key, but instead of checking keys, 
+          // we check whether they press any buttons :D
+          
+          window.addEventListener("load",function() {
+          addtoev();
+          });
+      });
+</script>
 
 <!-- {{ form.EmotionalStatus.errors }}   -->
 <!-- can i delete this -->
@@ -149,14 +170,8 @@ form .buttons .submit:hover {background-color: #14892c;}
     <span class="input-group-text">Strongly positive</span>
 </div> -->
 
-<!--  
-<script>
-document.getElementById('EmotionalStatus').value = 42; // what is this value thing??
-</script> -->
-
 <!--  TRIAL 3. 
     OTREE
-    
     this is how you could do it with oTree but it looks soooo ugly D: 
 <tr>
     <td>{{ form.EmotionalStatus.label }}</td>
@@ -168,7 +183,7 @@ document.getElementById('EmotionalStatus').value = 42; // what is this value thi
 
 
 
-    {{ next_button }}
+    <!-- {{ next_button }} -->
 {{ endblock }}
 
 

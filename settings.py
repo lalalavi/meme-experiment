@@ -3,19 +3,14 @@ from os import environ
 
 SESSION_CONFIGS = [
     # dict(
-    #     name='public_goods',
-    #     app_sequence=['public_goods', 'payment_info'],
+    #     name='meme_Treatm',
+    #     display_name="meme treatment",
+    #     app_sequence=['survey', 'meme_game'],
     #     num_demo_participants=3,
-    # ),
-    dict(
-        name='meme_Treatm',
-        display_name="meme treatment",
-        app_sequence=['survey', 'meme_game'],
-        num_demo_participants=3,
-    ),
-    dict(
-        name='survey', app_sequence=['survey'], num_demo_participants=1
-     ),
+    # # ),
+    # dict(
+    #     name='survey', app_sequence=['survey'], num_demo_participants=1
+    #  ),
     dict(
         name='memessssss',
         display_name="meme life",

@@ -54,12 +54,23 @@
     iDec.id         = 'iDec';
     iDec.value      = '';
 
+    // Create hidden input (Time spent in the page)
+    let dRT          = document.createElement("input");
+    dRT.type         = 'hidden';
+    dRT.name         = 'dRTFeed';
+    dRT.id           = 'dRTFeed';
+    dRT.value        = '';
+    var TStart       = new Date().getTime();
+    var TEnd         = new Date().getTime();
+
     document.addEventListener("DOMContentLoaded", function(debug=true) {
         console.log('Loading info');
 
         let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
         OtreeBody.appendChild(iDec);
+        OtreeBody.appendChild(dRT);
         OtreeBody.appendChild(EndButton);
+
         // Add event listener for pressing L
         document.addEventListener("keyup", function(event) {
         if (event.keyCode === 76) {
@@ -67,6 +78,8 @@
             iDec.value = 'L';
             console.log('L was pressed');
             // press next button
+            TEnd      = new Date().getTime();
+            dRT.value = +TEnd -TStart;
             EndButton.click();
         }
         });
@@ -84,6 +97,8 @@
                 // change input value
                 iDec.value = 'K';
                 console.log('K was pressed');
+                TEnd      = new Date().getTime();
+                dRT.value = +TEnd -TStart;
                 // press next button
                 EndButton.click();
             }

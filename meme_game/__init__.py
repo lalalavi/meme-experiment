@@ -7,6 +7,8 @@ import pandas as pd
 import csv
 import copy
 import os #allows you to look at system directories aka access file system
+from openpyxl import load_workbook
+import json
 
 c = Currency
 
@@ -18,10 +20,17 @@ Meme experiment by Vi (◕ᴗ◕✿)
 class Constants(BaseConstants):
     name_in_url = 'meme_game'
     players_per_group = None
-    num_rounds = 3 #here you define the number of trials
+    num_rounds = 10 #here you define the number of trials
     choices = ['Post', 'See'] 
-    
+    df = pd.read_excel("_static/global/HR.xlsx") #does it matter that it is csv or xsls
 
+# learning how to read CSV FILES :D
+x = {
+    "n1"  : Constants.df["Likes"].values.tolist(),
+    "n2"  : Constants.df["Dislikes"].values.tolist(),
+}
+
+sorted_string = json.dumps(x)
 
 class Subsession(BaseSubsession):
     pass
@@ -33,13 +42,11 @@ class Group(BaseGroup):
 
 class Player(BasePlayer): #define here ALL variables i will save at player level
 
+    sReward            = models.StringField(blank=True)
     iTrialDec          = models.StringField(choices=Constants.choices) #first decision where u can choose between seeing and posting
     iDec               = models.BooleanField(blank=True) #why is this a boolean
     iDec2              = models.IntegerField(blank=True) #the meme they choose during posting
-    dRTDec1            = models.FloatField(blank=True)
-    dRTPost            = models.FloatField(blank=True) #d because double, reaction time
-    dRTTags            = models.FloatField(blank=True)
-    dRTEmotionalStatus = models.FloatField(blank=True) 
+    EmotionalStatus    = models.IntegerField(choices=[1,2,3,4,5])
     iImgFeed           = models.IntegerField(blank=True)
     iImgPost1          = models.IntegerField(blank=True)
     iImgPost2          = models.IntegerField(blank=True)
@@ -47,13 +54,22 @@ class Player(BasePlayer): #define here ALL variables i will save at player level
     iImgPost4          = models.IntegerField(blank=True)
     iImgPost5          = models.IntegerField(blank=True)
     iImgPost6          = models.IntegerField(blank=True)
-    iFeedback          = models.IntegerField(blank=True)
+    sTag1              = models.StringField(blank=True)
+    sTag2              = models.StringField(blank=True)
+    sTag3              = models.StringField(blank=True)
+    iFeedbackLike      = models.IntegerField(blank=True)
+    iFeedbackDislike   = models.IntegerField(blank=True)
+    dRTDec1            = models.FloatField(blank=True)
+    dRTFeed            = models.FloatField(blank=True) 
+    dRTPost            = models.FloatField(blank=True) #d because double, reaction time
+    dRTTags            = models.FloatField(blank=True)
+    dRTFeedback        = models.FloatField(blank=True)
+    dRTEmotionalStatus = models.FloatField(blank=True) 
     sTreat             = models.StringField(blank=True)
-    sReward            = models.StringField(blank=True)
-    EmotionalStatus    = models.IntegerField(choices=[1,2,3,4,5])
 
 
-# 
+
+
 # FUNCTIONS
 
 # 1. numero de rondas
@@ -89,12 +105,18 @@ def creating_session(subsession):
         player.sTreat          = random.choice(['Like', 'Dislike'])
         print('set player.sTreat to', player.sTreat)
 
-
-        player.iImgFeed         = random.randint(low=1,high=95)  #!!!!!!! subsamples
+        player.iImgFeed         = random.randint(low=1,high=len(os.listdir('_static/feed_memes')))  
+        #!!!!!!! subsamples
         
         # create 
         print('set player.iImgFeed to', player.iImgFeed)
         print('set player.iImgPost1 to', player.iImgPost1)
+
+    # # decide what type of feedback player will see depending on treatment
+    # for participant in participant.treatment:
+    #     if partcipant.treatment == '1' #in emotional treatment
+    #         # print('lalala') display feedback with likes and dislikes
+    
 
 
 # PAGES
@@ -106,14 +128,13 @@ class ToMemeOrNotToMeme(Page):
         'dRTDec1'
     ]
 
-#mypage is really the feed 
-#have to add timer
-
-class MyPage(Page):
+class Feed(Page):
     form_model = 'player' #from who are you extracting the info
     form_fields = [
         'iDec',
+        'dRTFeed',
     ] #todas las variables q quieres salvar de una pagina
+
     @staticmethod
     def vars_for_template(player): #otree function for the html
         return {
@@ -125,12 +146,24 @@ class MyPage(Page):
         return {
             'sTreat'    :  player.sTreat,
         }
+    
+    @staticmethod
+    def is_displayed(player):
+        return player.iTrialDec == 'See'
+        # is_displayed allows you to decide in what moment do you want to show the page
 
 class addTags(Page):
     form_model = 'player' 
     form_fields = [
+        'sTag1',
+        'sTag2',
+        'sTag3',
         'dRTTags',
     ] 
+    
+    @staticmethod
+    def is_displayed(player):
+        return player.iTrialDec == 'Post'
 
 class Posting(Page):
     form_model = 'player' 
@@ -155,34 +188,55 @@ class Posting(Page):
             'Image5'    :  "".join([player.sReward,'/meme', str(player.iImgPost5) , '.jpg']) ,
             'Image6'    :  "".join([player.sReward,'/meme', str(player.iImgPost6) , '.jpg']) ,
         }
-        #this might not work bc im concatating the string and not actually summing numbers
+        # this might not work bc im concatating the string and not actually summing numbers
         # if i do it like this i need to get 110 memes in both HR and LR 
         # str(player.iImgPost)+str(3)  <- previous approach
+
+    @staticmethod
+    def is_displayed(player):
+        return player.iTrialDec == 'Post'
 
 class HowDoYaFeel(Page):
     form_model = 'player' 
     form_fields = [
         'EmotionalStatus',
-        'dRTEmotionalStatus'
+        'dRTEmotionalStatus',
     ] 
 
+    @staticmethod
+    def is_displayed(player):
+        return player.iTrialDec == 'Post'
+
 class ResultsWaitPage(WaitPage):
-    pass
+
+    @staticmethod
+    def is_displayed(player):
+        return player.iTrialDec == 'Post'
 
 
 class Feedback(Page):
     form_model = 'player'
+    form_fields = [
+        'iFeedbackLike',
+        'iFeedbackDislike',
+        'dRTFeedback'
+    ] 
 
-    pass
+    @staticmethod
+    def js_vars(player: Player):
+     return {
+        'sorted_string' : sorted_string,
+    }
+    @staticmethod
+    def is_displayed(player):
+        return player.iTrialDec == 'Post'
 
+        
 #! THINGS TO  BE CODED 
+# Feedbackpage (!!!!) major problem
 # ToMemeOrNotToMeme: better layout
-# IS DISPLAYED STUFF
-# Tags: do i want to save them, or do i want to save if they did them
-# Feedbackpage (!!!!)
-# EmotionalStatus: solve the ()
 # History display
 # QUESTIONNAIRE APP with social media and demographics question
-# ,  ResultsWaitPage, Results
+# ResultsWaitPage
 
-page_sequence = [ToMemeOrNotToMeme, Posting, MyPage, HowDoYaFeel, addTags, Feedback]
+page_sequence = [ToMemeOrNotToMeme, Feed, Posting, HowDoYaFeel, addTags, Feedback]

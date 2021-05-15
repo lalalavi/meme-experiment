@@ -9,6 +9,15 @@
 
 <script type="text/javascript">
   keydownfun = function() {}; // Should unbind keys.
+
+  let dRT          = document.createElement("input");
+    dRT.type         = 'hidden';
+    dRT.name         = 'dRTTags';
+    dRT.id           = 'dRTTags';
+    dRT.value        = '';
+    var TStart       = new Date().getTime();
+    var TEnd         = new Date().getTime();
+
 </script>
 
 
@@ -25,36 +34,43 @@
         <form id="postquiz" action="debrief" method="post">
 
        Please add 3 tags to your meme here if you want.<br/> 
-        <textarea rows="1" cols="30" maxlength="20" name="tag1" id="tag1" required></textarea>
+        <textarea rows="1" cols="30" maxlength="20" name="sTag1" id="sTag1" ></textarea>
         <br>
-<textarea rows="1" cols="30"  maxlength="20" name="tag2" id="tag2" required></textarea>
+<textarea rows="1" cols="30"  maxlength="20" name="sTag2" id="sTag2" ></textarea>
  <br>
-<textarea rows="1" cols="30"  maxlength="20" name="tag3" id="tag3" required></textarea>
+<textarea rows="1" cols="30"  maxlength="20" name="sTag3" id="sTag3" ></textarea>
+
+<!-- If you want to make it obligatory for the people to fill in a value before
+  submitting a form then you need to add REQUIRED ᶘ ᵒᴥᵒᶅ at the end, like this:
+  <textarea rows="1" cols="30"  maxlength="20" name="tag3" id="tag3" required></textarea> 
+-->
+
 
     <hr>
 
-    <!-- <div class="instructionsnav">
-        <div class="row">
-            <div class="col-xs-2">
-            </div>
-            <div class="col-xs-7">
-            </div>
-            <div class="col-xs-3">
-                <button type="button" id="next" value="next" class="btn btn-primary btn-lg continue">
-                    Continue <span class="glyphicon glyphicon-arrow-right"></span>
-                </button>
-            </div>
-        </div>
-    </div> 
-
-    <p>When you are ready to start, press the button below.</p> -->
+   
   <button class="btn btn-primary">Continue</button>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function(debug=true) {
+            console.log('Loading info');
 
-<!-- </div>
-<script> my button for continuing does not work, send help to soldier ryan :__D
-let EndButton                   = document.createElement('button');
-    EndButton.className         = 'next_button btn btn-primary btn-large';
-</script>  -->
+            let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
+            OtreeBody.appendChild(dRT);
+
+            function addtoev() {
+            var bns = document.getElementsByTagName("button");
+            for (i = 0; i < bns.length; i++) {
+                bns[i].addEventListener("click", function() {
+                TEnd      = new Date().getTime();
+                dRT.value = +TEnd -TStart;   // end the timer and rewrite the RT value
+              });
+            }} 
+
+            window.addEventListener("load",function() {
+            addtoev();
+            });
+        });
+</script>
 
 {% endblock %}

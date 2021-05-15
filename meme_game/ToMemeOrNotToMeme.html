@@ -15,7 +15,8 @@
         dRT.value        = '';
         var TStart       = new Date().getTime();
         var TEnd         = new Date().getTime();
-    </script>
+    // we create hidden input to measure the time spent in the page
+</script>
     
 <!-- 
    Round {{ subsession.round_number }}, Shoot! example taken from rock paper scissors
@@ -24,7 +25,7 @@
     {{ for choice in Constants.choices }}
         <button name="iTrialDec" value="{{choice}}">{{choice}}</button>
 
-        <!-- first we form the buttons from the init file -->
+        <!-- line 24 & 25 form the buttons from the init file -->
 
         <script>
         document.addEventListener("DOMContentLoaded", function(debug=true) {
@@ -39,21 +40,16 @@
             for (i = 0; i < bns.length; i++) {
                 bns[i].addEventListener("click", function() {
                 TEnd      = new Date().getTime();
-                dRT.value = +TEnd -TStart;     });
-            }
-            }
+                dRT.value = +TEnd -TStart;   // end the timer and rewrite the RT value
+              });
+            }} // what this function is doing is the same as we do when we check
+            // if somebody pressed a key, but instead of checking keys, 
+            // we check whether they press any buttons :D
+            
 
             window.addEventListener("load",function() {
             addtoev();
             });
-
-            // document.addEventListener("button", function(event) {
-            // console.log(event.button);
-            // In this case we want to check if the person is clicking the button
-            // if (event.button === "click")   { 
-            //   TEnd      = new Date().getTime();
-            //   dRT.value = +TEnd -TStart;
-            // }})
         });
         </script>
 
@@ -67,40 +63,18 @@
 
 {% endblock %}
 
-
-<!--  could work but does not (taken from chris examples, quiz)
-<div>
-    <button type="button" onclick="sendClick(this)" value="Post" id="Post">
-    </button>
-    <button type="button" onclick="sendClick(this)" value="See" id="See">
-    </button>
-</div>
-
 <script>
 
-    let trialId = null;
+// document.addEventListener("button", function(event) {
+    // console.log(event.button);
+    // In this case we want to check if the person is clicking the button
+    // if (event.button === "click")   { 
+    //   TEnd      = new Date().getTime();
+    //   dRT.value = +TEnd -TStart;
+    // }})
 
-    function liveRecv(data) {
-        if (data.status === 'finished') {
-            document.getElementById('form').submit();
-        } else {
-            let stimulus = data.stimulus;
-            trialId = stimulus.id;
+    </script>
 
-            for (let item of ['question', 'optionA', 'optionB']) {
-                document.getElementById(item).innerText = stimulus[item];
-            }
-        }
-    }
 
-    function sendClick(btn) {
-        liveSend({'choice': btn.value, 'trialId': trialId});
-    }
-
-    document.addEventListener("DOMContentLoaded", function (event) {
-        // send empty message to load initial question, or in case page is refreshed.
-        liveSend({});
-    });
-</script> -->
 
 
