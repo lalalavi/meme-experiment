@@ -22,15 +22,7 @@ class Constants(BaseConstants):
     players_per_group = None
     num_rounds = 10 #here you define the number of trials
     choices = ['Post', 'See'] 
-    df = pd.read_excel("_static/global/HR.xlsx") #does it matter that it is csv or xsls
-
-# learning how to read CSV FILES :D
-x = {
-    "n1"  : Constants.df["Likes"].values.tolist(),
-    "n2"  : Constants.df["Dislikes"].values.tolist(),
-}
-
-sorted_string = json.dumps(x)
+    df = pd.read_excel("_static/global/HR.xlsx",index_col="Numbers") #does it matter that it is csv or xsls
 
 class Subsession(BaseSubsession):
     pass
@@ -186,11 +178,22 @@ class Posting(Page):
             'Image3'    :  "".join([player.sReward,'/meme', str(player.iImgPost3), '.jpg']) ,
             'Image4'    :  "".join([player.sReward,'/meme', str(player.iImgPost4), '.jpg']) ,
             'Image5'    :  "".join([player.sReward,'/meme', str(player.iImgPost5) , '.jpg']) ,
-            'Image6'    :  "".join([player.sReward,'/meme', str(player.iImgPost6) , '.jpg']) ,
+            'Image6'    :  "".join([player.sReward,'/meme', str(player.iImgPost6) , '.jpg'])    
         }
         # this might not work bc im concatating the string and not actually summing numbers
         # if i do it like this i need to get 110 memes in both HR and LR 
         # str(player.iImgPost)+str(3)  <- previous approach
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return {
+            'ImageID'    :  player.iImgPost1 ,
+            'Image2ID'    :  player.iImgPost2 ,
+            'Image3ID'    :  player.iImgPost3 ,
+            'Image4ID'    :  player.iImgPost4 ,
+            'Image5ID'    :  player.iImgPost5 ,
+            'Image6ID'    :  player.iImgPost6 ,
+    }
 
     @staticmethod
     def is_displayed(player):
@@ -223,10 +226,13 @@ class Feedback(Page):
     ] 
 
     @staticmethod
-    def js_vars(player: Player):
-     return {
-        'sorted_string' : sorted_string,
-    }
+    def vars_for_template(player): 
+        return {
+            'img'               : player.iDec2,
+            'likes'             : Constants.df.loc[player.iDec2,"Likes"],
+            'dislikes'          : Constants.df.loc[player.iDec2,"Dislikes"]
+        }
+
     @staticmethod
     def is_displayed(player):
         return player.iTrialDec == 'Post'

@@ -138,14 +138,22 @@ if ((e.key >= 48 && e.key <= 57) || (e.key >= 96 && e.key <= 105)) { // 0-9 only
         OtreeBody.appendChild(iDec2);
         OtreeBody.appendChild(dRT);
         OtreeBody.appendChild(EndButton);
-        
+
+        // take variables from python into javascript
+
+        let ImageID = js_vars.ImageID;
+        let Image2ID = js_vars.Image2ID;
+        let Image3ID = js_vars.Image3ID;
+        let Image4ID = js_vars.Image4ID;
+        let Image5ID = js_vars.Image5ID;
+        let Image6ID = js_vars.Image6ID;
 
         // Add event listener for pressing numbers
         document.addEventListener("keyup", function(event) {
           console.log(event.key);
         if (event.key === '1')   {
             // change input value
-            iDec2.value = '1';
+            iDec2.value = ImageID ;
             console.log('1 was pressed');
             TEnd      = new Date().getTime();
             dRT.value = +TEnd -TStart;
@@ -153,35 +161,35 @@ if ((e.key >= 48 && e.key <= 57) || (e.key >= 96 && e.key <= 105)) { // 0-9 only
             EndButton.click();
         }
         if (event.key === '2') {
-            iDec2.value = '2';
+            iDec2.value = Image2ID;
             console.log('2 was pressed');
             TEnd      = new Date().getTime();
             dRT.value = +TEnd -TStart;
             EndButton.click();
         } 
         if (event.key === '3') {
-            iDec2.value = '3';
+            iDec2.value = Image3ID;
             console.log('3 was pressed');
             TEnd      = new Date().getTime();
             dRT.value = +TEnd -TStart;
             EndButton.click();
         }
         if (event.key === '4') {
-            iDec2.value = '4';
+            iDec2.value = Image4ID;
             console.log('4 was pressed');
             TEnd      = new Date().getTime();
             dRT.value = +TEnd -TStart;
             EndButton.click();
         }
         if (event.key === '5') {
-            iDec2.value = '5';
+            iDec2.value = Image5ID;
             console.log('5 was pressed');
             TEnd      = new Date().getTime();
             dRT.value = +TEnd -TStart;
             EndButton.click();
         }
         if (event.key === '6') {
-            iDec2.value = '6';
+            iDec2.value = Image6ID;
             TEnd      = new Date().getTime();
             dRT.value = +TEnd -TStart;
             console.log('6 was pressed');

@@ -16,8 +16,15 @@
 # EmotionalStatus   = models.IntegerField(widget=widgets.RadioSelect, choices=[ [1, 'Strongly negative'], [2, 'Negative'], [3, 'Somewhat negative'], [4, 'Neutral'], [5, 'Somewhat positive'], [6, 'Positive'], [7, 'Strongly positive'] ])
 # Should emotional status be 5 or 7
 
+# # learning how to read CSV FILES :D
+# x = {
+#     "n1"  : Constants.df["Likes"].values.tolist(),
+#     "n2"  : Constants.df["Dislikes"].values.tolist(),
+# }
 
-# 
+# sorted_string = json.dumps(x)
+
+
 # SOME STUFF FROM PAGE 1. TO MEME OR NOT TO MEME
 # 
 

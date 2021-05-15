@@ -4,6 +4,8 @@
 
 {{ block content }}
 
+	your post received {{ likes }} likes and {{ dislikes }} dislikes
+
 <!-- iDec2 is the number they choose during post, and it's associated with imgPost -->
 
 <script> 
@@ -26,6 +28,8 @@
 // </script>
 
 <script>
+let x = js_vars.iDec2
+console.log(x)
 //set vectors
 let numbers = js_vars.sorted_string;
 let vButtons = document.getElementsByClassName('lol').getAttribute("src");  
@@ -46,35 +50,35 @@ document.addEventListener("DOMContentLoaded", function(debug=true) {
         console.log(n1);
         n2 = numbers.split("[")[2].split(",") // i think the first one [ means what?
 
-		if (player.iDec2.value === '1')  {
-			document.getElementById("memeshown1").textContent = n1;
-			document.getElementById("memeshown1").value = n1;
-		}
+		// if (player.iDec2.value === '1')  {
+		// 	document.getElementById("memeshown1").textContent = n1;
+		// 	document.getElementById("memeshown1").value = n1;
+		// }
 
-		if (player.iDec2.value === '2')  {
-			document.getElementById("memeshown2").textContent = n1;
-			document.getElementById("memeshown2").value = n1;
-		}
+		// if (player.iDec2.value === '2')  {
+		// 	document.getElementById("memeshown2").textContent = n1;
+		// 	document.getElementById("memeshown2").value = n1;
+		// }
 
-		if (player.iDec2.value === '3')  {
-			document.getElementById("memeshown3").textContent = n1;
-			document.getElementById("memeshown3").value = n1;
-		}
+		// if (player.iDec2.value === '3')  {
+		// 	document.getElementById("memeshown3").textContent = n1;
+		// 	document.getElementById("memeshown3").value = n1;
+		// }
 
-		if (player.iDec2.value === '4')  {
-			document.getElementById("memeshown4").textContent = n1;
-			document.getElementById("memeshown4").value = n1;
-		}
+		// if (player.iDec2.value === '4')  {
+		// 	document.getElementById("memeshown4").textContent = n1;
+		// 	document.getElementById("memeshown4").value = n1;
+		// }
 
-		if (player.iDec2.value === '5')  {
-			document.getElementById("memeshown5").textContent = n1;
-			document.getElementById("memeshown5").value = n1;
-		}
+		// if (player.iDec2.value === '5')  {
+		// 	document.getElementById("memeshown5").textContent = n1;
+		// 	document.getElementById("memeshown5").value = n1;
+		// }
 
-		if (player.iDec2.value === '6')  {
-			document.getElementById("memeshown6").textContent = n1;
-			document.getElementById("memeshown6").value = n1;
-		}
+		// if (player.iDec2.value === '6')  {
+		// 	document.getElementById("memeshown6").textContent = n1;
+		// 	document.getElementById("memeshown6").value = n1;
+		// }
         // n3 = numbers.split("[")[3].split(",")[round]
         // n4 = numbers.split("[")[4].split(",")[round]
         // n5 = numbers.split("[")[5].split(",")[round]
@@ -111,10 +115,7 @@ document.addEventListener("DOMContentLoaded", function(debug=true) {
 	</tr>
 </table></html>
 
-    {{ for player.iDec2.value }}
-			Your post received n1 likes and n2 dislikes.
-    {{ endfor }}
-
+ 
 
 
 	<div id="container"></div> 
