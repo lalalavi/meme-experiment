@@ -21,19 +21,15 @@
 <!-- 
    Round {{ subsession.round_number }}, Shoot! example taken from rock paper scissors
 -->
-
     {{ for choice in Constants.choices }}
         <button name="iTrialDec" value="{{choice}}">{{choice}}</button>
-
         <!-- line 24 & 25 form the buttons from the init file -->
 
         <script>
         document.addEventListener("DOMContentLoaded", function(debug=true) {
             console.log('Loading info');
-
             let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
             OtreeBody.appendChild(dRT);
-            // OtreeBody.appendChild(EndButton);
 
             function addtoev() {
             var bns = document.getElementsByTagName("button");
@@ -55,26 +51,14 @@
 
 
     {{ endfor }}
-
-      <!-- {{ if subsession.round_number > 5}}
-        {{ include Constants.history_template }}
+<!-- access the last round feedback only if it's past round 1 and last trial they decided to post 
+&& last == 'Post'-->
+    {{ if subsession.round_number > 1 }} 
+        {{ if prev_player.iTrialDec == 'Post' }} 
+            {{ include Constants.history_template }}
+        {{ endif }}
     {{ endif }}
-    this is for when i code the feedback on last post  -->
+    <!-- this is for when i code the feedback on last post 
+     -->
 
 {% endblock %}
-
-<script>
-
-// document.addEventListener("button", function(event) {
-    // console.log(event.button);
-    // In this case we want to check if the person is clicking the button
-    // if (event.button === "click")   { 
-    //   TEnd      = new Date().getTime();
-    //   dRT.value = +TEnd -TStart;
-    // }})
-
-    </script>
-
-
-
-
