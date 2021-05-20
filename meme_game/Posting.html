@@ -12,19 +12,25 @@
  src="{{ static Image2 }}"-->
 
 
+ 
 <div class="row">
     <div class="column">
-      <label>1</label>
-      <img id='memeshown1' src= {{ static Image }} value="1" style="width:100%">
+      <div class="box box2">
+        <div class="evenboxinner"> 1</div>
+        <img id='memeshown1' src= {{ static Image }} value="1" style="width:100%">
+      </div>
     </div>
     <div class="column">
-      <label>2</label>
-      <img id='memeshown2' src={{ static Image2 }} value="2" style="width:100%">
-      
+      <div class="box box2">
+        <div class="evenboxinner"> 2</div>
+        <img id='memeshown2' src= {{ static Image2 }} value="2" style="width:100%">
+      </div>
     </div>
     <div class="column">
-      <label>3</label>
-      <img id='memeshown3' src= {{ static Image3 }} value="3" style="width:100%">
+      <div class="box box2">
+        <div class="evenboxinner"> 2</div>
+        <img id='memeshown3' src= {{ static Image3 }} value="3" style="width:100%">
+      </div>
     </div>
 </div>
 
@@ -42,6 +48,41 @@
       <img id='memeshown6' src= {{ static Image6 }}  value="6" style="width:100%">
     </div>
 </div>
+
+
+
+<!-- <div class="row">
+  <div class="column">
+    <div class="box box2">
+      <div class="evenboxinner"> 1</div>
+      <img id='memeshown1' src= {{ static Image }} value="1" style="width:100%">
+    </div>
+  </div>
+  <div class="column">
+    <label>2</label>
+    <img id='memeshown2' src={{ static Image2 }} value="2" style="width:100%">
+    
+  </div>
+  <div class="column">
+    <label>3</label>
+    <img id='memeshown3' src= {{ static Image3 }} value="3" style="width:100%">
+  </div>
+</div>
+
+<div class="row">
+  <div class="column">
+    <label>4</label>
+    <img id='memeshown4' src= {{ static Image4 }}  value="4" style="width:100%">
+  </div>
+  <div class="column">
+    <label>5</label>
+    <img id='memeshown5' src= {{ static Image5 }}  value="5" style="width:100%">
+  </div>
+  <div class="column">
+    <label>6</label>
+    <img id='memeshown6' src= {{ static Image6 }}  value="6" style="width:100%">
+  </div>
+</div> -->
 
 
  <!-- what does ALT do ._. -->
@@ -95,6 +136,31 @@ label {
   display: block;
   text-align: center;
   font-size: 2em;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Bangers);
+
+body{
+  background:#fff;
+  font-family: 'Bangers', cursive;
+  font-size: 25px;
+}
+
+.box2{
+  width:350px;
+  border-width: 3px 3px 5px 5px;
+  border-radius:4% 95% 6% 95%/95% 4% 92% 5%;
+  transform: rotate(-2deg);
+}
+
+.evenboxinner{
+  transform: rotate(2deg);
+  margin:15px;
+  padding:0 5px;
+  float:right;
+  background:#ddd;
+  border:1px solid #222;
+  box-shadow:3px 3px 0 #222;
 }
 </style>
 

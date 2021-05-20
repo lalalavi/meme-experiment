@@ -8,6 +8,7 @@ import pandas as pd
 import csv
 import copy
 import os #allows you to look at system directories aka access file system
+import re #for the raw interpretation of regular expressions i think?
 from openpyxl import load_workbook
 import json
 
@@ -21,7 +22,7 @@ Meme experiment by Vi (◕ᴗ◕✿)
 class Constants(BaseConstants):
     name_in_url = 'meme_game'
     players_per_group = None
-    num_rounds = 10 #here you define the number of trials
+    num_rounds = 4 #here you define the number of trials
     choices = ['Post', 'See'] 
     history_template = 'meme_game/history.html'
     df = pd.read_excel("_static/global/HR.xlsx",index_col="Numbers") #does it matter that it is csv or xsls
@@ -63,7 +64,7 @@ class Player(BasePlayer): #define here ALL variables i will save at player level
     dRTFeedback        = models.FloatField(blank=True)
     dRTEmotionalStatus = models.FloatField(blank=True) 
     sTreat             = models.StringField(blank=True)
-    last               = models.IntegerField(blank=True)
+    image_path         = models.StringField(blank=True)
 
 
 
@@ -84,12 +85,23 @@ def creating_session(subsession):
         if player.round_number > 1:
             prev_player = player.in_round(player.round_number - 1)
 
-         # 1. check round number (# Check variable names)
         if player.round_number > Constants.num_rounds/2:
             player.sReward = 'LR'
-            # dRange                  = range(101, len(os.listdir('_static/LR')))
-            # vImages                 = random.sample(range(dRange), 6)
-            vImages                 = random.sample(range(1,len(os.listdir('_static/HR'))), 6) #need to make this actually work
+            # print(os.getcwd())
+            memelist = os.listdir('_static/LR')[1:-1] 
+            # ! if you do not put the [1:-1] it crashes because there is a 
+            # ! HIDDEN file inside of the mac folder called 'DS store' that breaks it :D
+            # print(memelist)
+            pattern = r"meme(?P<number>\d{3})\.jpg"
+            # you are telling the pattern of the files inside of the folder, in my case a string...
+            # ...that says meme, then a THREE DIGIT number + .jpg, and then you group it by the number
+            # m = re.match(pattern, "meme200.jpg")
+            # print(m)
+            # int(m.group("number"))
+            numbers = [int(re.match(pattern, x).group("number")) for x in memelist] 
+            # take all of the numbers from the image files and put them on a list
+            vImages                 = random.sample(numbers, 6) 
+            # select 6 random numbers from the list, but they do not repeat each other
             player.iImgPost1        = vImages[0]
             player.iImgPost2        = vImages[1]
             player.iImgPost3        = vImages[2]
@@ -97,7 +109,7 @@ def creating_session(subsession):
             player.iImgPost5        = vImages[4]
             player.iImgPost6        = vImages[5]
             # player.iImgPost6      = random.randint(low=101,high=len(os.listdir('_static/LR')))
-             
+            
         else:
             player.sReward = 'HR' 
             # dRange                  = range(1,len(os.listdir('_static/HR')))
@@ -121,12 +133,12 @@ def creating_session(subsession):
         print('set player.sTreat to', player.sTreat)
 
         player.iImgFeed         = random.randint(1,len(os.listdir('_static/feed_memes')))  
-        #!!!!!!! subsamples ?
+        #!!!!!!! subsamples... they referred to the vectorization
 
         print('set player.iImgFeed to', player.iImgFeed)
         print('set player.iImgPost1 to', player.iImgPost1)
 
-# def past_players=player.in_previous_rounds()
+# printing statements to check how everything is going
 
 # PAGES
 
@@ -135,34 +147,26 @@ class ToMemeOrNotToMeme(Page):
     form_fields = [
         'iTrialDec',
         'dRTDec1',
+        'image_path'
     ]
     
     @staticmethod
     def vars_for_template(player): 
-        if player.round_number > 1:
-            return dict(prev_player = player.in_round(player.round_number - 1)) #define the last round
-            if prev_player.iTrialDec == 'Post':
+        if player.round_number > 1: #if you do return too early, you fuck it up! return is the last thing you should do
+            prev_player = player.in_round(player.round_number - 1)
+            if prev_player.iTrialDec == 'Post': 
                 return {
-                    'lala'    :  "".join([player.in_round(player.round_number - 1).sReward,'/meme', str(player.in_round(player.round_number - 1).iDec2) , '.jpg']),
-                    # 'prev_player' : player.in_round(player.round_number - 1)
+                    'prev_player'   :  player.in_round(player.round_number - 1), #define the last round
+                    'image_path'    :  "".join([prev_player.sReward,'/meme', str(prev_player.iDec2) , '.jpg']) ,
+                    'dislikes'      :  prev_player.iDislikes ,
+                    'likes'         :  prev_player.iLikes ,
+                    'roundnumber'   :  prev_player.round_number ,
                 }
-
-class history(Page):
-    form_model = 'player' #from who are you extracting the info
-
-    @staticmethod
-    def vars_for_template(player): 
-        return {
-            'Image'    :  "".join([prev_player.sReward,'/meme', str(prev_player.iDec2) , '.jpg']) ,
-        }
-    
-    # @staticmethod
-    # def vars_for_template(player: Player):
-    #     return dict(past_players=player.in_previous_rounds())
-    
-    @staticmethod
-    def is_displayed(player):
-        return player.round_number > 1
+            else: 
+                return {
+                    'prev_player'   :  player.in_round(player.round_number - 1), #define the last round
+                }
+            # curly brackets before return is the same as a dictionary
 
 class Feed(Page):
     form_model = 'player' #from who are you extracting the info
@@ -222,7 +226,7 @@ class Posting(Page):
             'Image3'    :  "".join([player.sReward,'/meme', str(player.iImgPost3), '.jpg']) ,
             'Image4'    :  "".join([player.sReward,'/meme', str(player.iImgPost4), '.jpg']) ,
             'Image5'    :  "".join([player.sReward,'/meme', str(player.iImgPost5) , '.jpg']) ,
-            'Image6'    :  "".join([player.sReward,'/meme', str(player.iImgPost6) , '.jpg'])    
+            'Image6'    :  "".join([player.sReward,'/meme', str(player.iImgPost6) , '.jpg']) ,   
         }
         # this might not work bc im concatating the string and not actually summing numbers
         # if i do it like this i need to get 110 memes in both HR and LR 
@@ -270,12 +274,19 @@ class Feedback(Page):
     ] 
 
     @staticmethod
-    def vars_for_template(player): 
-        return {
-            'img'        : player.iDec2,
-            'l'          : Constants.df.loc[player.iDec2,"Likes"],
-            'd'          : Constants.df.loc[player.iDec2,"Dislikes"]
-        }
+    def vars_for_template(player):
+        if player.sReward == 'HR': 
+            return {
+                'img'        : player.iDec2,
+                'l'          : Constants.df.loc[player.iDec2,"Likes"],
+                'd'          : Constants.df.loc[player.iDec2,"Dislikes"]
+            }
+        else:
+            return {
+                'img'        : player.iDec2,
+                'l'          : Constants.df2.loc[player.iDec2,"Likes"],
+                'd'          : Constants.df2.loc[player.iDec2,"Dislikes"]
+            }
 
     @staticmethod
     def is_displayed(player):
@@ -287,8 +298,6 @@ class Feedback(Page):
             'treatment'   :  player.treatment ,
         }
 
-
-        
 #! THINGS TO  BE CODED 
 # ToMemeOrNotToMeme: better layout
 # QUESTIONNAIRE APP with social media and demographics question

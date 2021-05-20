@@ -11,6 +11,7 @@
 
 # SOME UNUSED CODE but was useful to learn about it
 
+#   <img src="{{ static image_path }}"/>
 
 # EmotionalStatus   = models.IntegerField(widget=widgets.RadioSelect, choices=[ [1, 'Quitebadyooo'], [2], [3], [4], [5], [6], [7, 'excellent'] ])
 # EmotionalStatus   = models.IntegerField(widget=widgets.RadioSelect, choices=[ [1, 'Strongly negative'], [2, 'Negative'], [3, 'Somewhat negative'], [4, 'Neutral'], [5, 'Somewhat positive'], [6, 'Positive'], [7, 'Strongly positive'] ])
@@ -44,7 +45,7 @@
         # {{ endif }}
 
 #  <div class="img-wrapper">
-                # <img id='lastp' src= {{ static Image }} style="width:100%"/>
+ # <img id='lastp' src= {{ static Image }} style="width:100%"/>
         
 
 #   <div><img id='??' src= {{ static Image }} /></div>
