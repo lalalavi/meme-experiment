@@ -16,8 +16,6 @@
         var TStart       = new Date().getTime();
         var TEnd         = new Date().getTime();
 </script>
-    
-<ul></ul>
 
     {{ for choice in Constants.choices }}
         <button name="iTrialDec" class="btn effect01" target="_blank" value="{{choice}}">{{choice}}</button>
@@ -56,11 +54,11 @@
 
     {{ if subsession.round_number > 1 }} <!-- access the last round feedback only if it's past round 1 -->
         {{ if prev_player.iTrialDec == 'Post' }}  <!-- and last trial they decided to post -->
+            
             <h1>{{ dislikes }} people out of 25 did not like your post</h1> 
-
             <h1>{{ likes }} people out of 25 did not like your post</h1>
             
-            <p>post {{ roundnumber }}</p>
+            <p>Post {{ roundnumber }}</p>
             <img style="width:100%" src="{{ static image_path }}"/>
         {{ endif }}
     {{ endif }}

@@ -2,50 +2,65 @@
 {% load otree static %} 
 
 {% block title %}
-    Select a meme to post by pressing a number
+    Select a meme to post by pressing a number in your KEYBOARD
 {% endblock %}
 
 {% block content %}
 
 
-<!-- need to choose different random images (┛ಠ_ಠ)┛彡┻━┻. 
- src="{{ static Image2 }}"-->
+<!-- need to choose different random images (┛ಠ_ಠ)┛彡┻━┻.-->
 
-
- 
 <div class="row">
     <div class="column">
-      <div class="box box2">
-        <div class="evenboxinner"> 1</div>
+      <div class="polaroid">
         <img id='memeshown1' src= {{ static Image }} value="1" style="width:100%">
+        <div class="container">
+          <p>1</p>
+        </div>
       </div>
     </div>
     <div class="column">
-      <div class="box box2">
-        <div class="evenboxinner"> 2</div>
+      <div class="polaroid">
         <img id='memeshown2' src= {{ static Image2 }} value="2" style="width:100%">
+        <div class="container">
+          <p>2</p>
+        </div>
       </div>
     </div>
     <div class="column">
-      <div class="box box2">
-        <div class="evenboxinner"> 2</div>
+      <div class="polaroid">
         <img id='memeshown3' src= {{ static Image3 }} value="3" style="width:100%">
+        <div class="container">
+          <p>3</p>
+        </div>
       </div>
     </div>
 </div>
 
 <div class="row">
     <div class="column">
-      <label>4</label>
-      <img id='memeshown4' src= {{ static Image4 }}  value="4" style="width:100%">
+      <div class="polaroid">
+        <img id='memeshown4' src= {{ static Image4 }}  value="4" style="width:100%">
+        <div class="container">
+          <p>4</p>
+        </div>
+      </div>
     </div>
     <div class="column">
-      <label>5</label>
-      <img id='memeshown5' src= {{ static Image5 }}  value="5" style="width:100%">
+      <div class="polaroid">
+        <img id='memeshown5' src= {{ static Image5 }}  value="5" style="width:100%">
+        <div class="container">
+          <p>5</p>
+        </div>
+      </div>
     </div>
     <div class="column">
-      <label>6</label>
-      <img id='memeshown6' src= {{ static Image6 }}  value="6" style="width:100%">
+      <div class="polaroid">
+        <img id='memeshown6' src= {{ static Image6 }}  value="6" style="width:100%">
+        <div class="container">
+          <p>6</p>
+        </div>
+      </div>
     </div>
 </div>
 
@@ -132,39 +147,27 @@
 }
 
 /* to make the numbers big and aligned in the middle :D */
-label {
+/* label {
   display: block;
   text-align: center;
   font-size: 2em;
+} */
+/* did not use the labels in the ebd */
+
+body {margin:25px;}
+
+div.polaroid {
+  width: 80%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
 }
 
-@import url(https://fonts.googleapis.com/css?family=Bangers);
-
-body{
-  background:#fff;
-  font-family: 'Bangers', cursive;
-  font-size: 25px;
-}
-
-.box2{
-  width:350px;
-  border-width: 3px 3px 5px 5px;
-  border-radius:4% 95% 6% 95%/95% 4% 92% 5%;
-  transform: rotate(-2deg);
-}
-
-.evenboxinner{
-  transform: rotate(2deg);
-  margin:15px;
-  padding:0 5px;
-  float:right;
-  background:#ddd;
-  border:1px solid #222;
-  box-shadow:3px 3px 0 #222;
+div.container {
+  text-align: center;
+  padding: 10px 20px;
 }
 </style>
-
-<button class="btn btn-primary">Continue yooooo</button>
 
 <!-- keycode seems to change for the top of the keyboard and the numbers in numeric keyboard 
   (one is e.keycode and the other is keycode )
