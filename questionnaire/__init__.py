@@ -40,31 +40,31 @@ class Player(BasePlayer):
     iFBfriends          = models.IntegerField(label="If applicable, how many followers/friends/subscribers (or similar) do you have on Facebook?", blank=True)
     iSMS1               = models.IntegerField(
                         choices=[[1, 'Yes'],[2, 'No'], ],
-                        label="regularly found that you can't think of anything else but the moment that you will be able to use social media again?",)
+                        label="...regularly found that you can't think of anything else but the moment that you will be able to use social media again?",)
     iSMS2               = models.IntegerField(
                         choices=[[1, 'Yes'],[2, 'No'], ],
-                        label="regularly felt dissatisfied because you wanted to spend more time on social media?",)
+                        label="...regularly felt dissatisfied because you wanted to spend more time on social media?",)
     iSMS3               = models.IntegerField(
                         choices=[[1, 'Yes'],[2, 'No'], ],
-                        label="often felt bad when you could not use social media?",)
+                        label="...often felt bad when you could not use social media?",)
     iSMS4               = models.IntegerField(
                         choices=[[1, 'Yes'],[2, 'No'], ],
-                        label="tried to spend less time on social media, but failed?",)
+                        label="...tried to spend less time on social media, but failed?",)
     iSMS5               = models.IntegerField(
                         choices=[[1, 'Yes'],[2, 'No'], ],
-                        label="regularly neglected other activities (e.g. hobbies, sport) because you wanted to use social media?",)
+                        label="...regularly neglected other activities (e.g. hobbies, sport) because you wanted to use social media?",)
     iSMS6               = models.IntegerField(
                         choices=[[1, 'Yes'],[2, 'No'], ],
-                        label="regularly had arguments with others because of your social media use?",)                     
+                        label="...regularly had arguments with others because of your social media use?",)                     
     iSMS7               = models.IntegerField(
                         choices=[[1, 'Yes'],[2, 'No'], ],
-                        label="regularly lied to your parents or friends about the amount of time you spend on social media?",)               
+                        label="...regularly lied to your parents or friends about the amount of time you spend on social media?",)               
     iSMS8               = models.IntegerField(
                         choices=[[1, 'Yes'],[2, 'No'], ],
-                        label="often used social media to escape from negative feelings?",)   
+                        label="...often used social media to escape from negative feelings?",)   
     iSMS9               = models.IntegerField(
                         choices=[[1, 'Yes'],[2, 'No'], ],
-                        label="had serious conflict with your parents, brother(s) or sister(s) because of your social media use?",)   
+                        label="...had serious conflict with your parents, brother(s) or sister(s) because of your social media use?",)   
 
     # email = models.StringField(label="Please enter your e-mail adress if you want to be in the random selection to be paid according to your outcomes:", blank=True)
 
