@@ -40,4 +40,7 @@ class instruct_2(Page):
 class instruct_3(Page):
     pass
 
-page_sequence = [consent, instruct_0, instruct_1, instruct_2, instruct_3]
+class ready(Page):
+    pass
+
+page_sequence = [consent, instruct_0, instruct_1, instruct_2, instruct_3, ready]

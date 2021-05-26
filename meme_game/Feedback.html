@@ -1,24 +1,11 @@
 {{ block title }}
-    Your post received...
+    Your feedback
 {{ endblock }}
 
 {{ block content }}
 
-
-<p id="control-text"><label id="iLikes" value="{{l}}">{{l}}</text> people out of 40 liked your post</p>
-<p id="dislike-text"><label id="iDislikes" value="{{d}}">{{d}}</label> people out of 40 did not like your post</p>
-
-	 <script>
-		generateHeart(500, 195, 1);
-		generateHeart(550, 195, 1);
-		generateHeart(600, 195, 1);
-		generateHeart(650, 195, 1);
-		generateHeart(690, 190, 1);
-		generateHeart(750, 190, 1);
-	</script>
-
-	<!-- and 	<text id="iDislikes" value="{{d}}">{{d}}</text> dislikes -->
-
+<p id="liketext"><label id="iLikes" value="{{l}}">{{l}}</label>  <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> people out of 40 liked your post</p>
+<p id="disliketext"><label id="iDislikes" value="{{d}}">{{d}}</label> people out of 40 did not like your post</p>
 
 	<!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"> </script> 
 	<script> 
@@ -54,6 +41,9 @@ let d        = document.createElement("input");
 	d.id         = 'iDislikes';
 	d.value      = "{{d}}";
 
+// Load Treatment
+treatment = js_vars.treatment
+
 let dRT          = document.createElement("input");
 	dRT.type         = 'hidden';
 	dRT.name         = 'dRTFeedback';
@@ -69,14 +59,16 @@ let dRT          = document.createElement("input");
 			OtreeBody.appendChild(l); // append likes
 			OtreeBody.appendChild(d); // apend dislikes
 
-			let DislikeText = document.getElementById("dislike-text")
-			if (js_vars.treatment == "Control") {
-				DislikeText.style.visibility = "none"
-			}; //hidden
-
-			// l.value = "{{l}}"
-			// d.value = "{{d}}"
-			// could have done this too
+			console.log(treatment);
+			if (js_vars.treatment=='Control') {
+				//if we are in the control treatment, we don't show amount of dislikes
+				let x = document.getElementById('disliketext');
+            	x.style.visibility = 'hidden';
+			} else {
+				//if we are in the emotional treatment, we don't show the amount of likes
+				let c = document.getElementById('liketext');
+           		c.style.visibility = 'hidden';
+			}
 
             function addtoev() {
             var bns = document.getElementsByTagName("button");
@@ -175,6 +167,14 @@ form .buttons .btn-primary:hover {background-color: #14892c;}
 	// 
 	</script>
 
+<script>
+	// generateHeart(500, 195, 1);
+	// generateHeart(550, 195, 1);
+	// generateHeart(600, 195, 1);
+	// generateHeart(650, 195, 1);
+	// generateHeart(690, 190, 1);
+	// generateHeart(750, 190, 1);
+</script>
+
+
 {{ endblock }}
-
-

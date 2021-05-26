@@ -7,6 +7,8 @@
 {% block content %}
 <div class="container">
   <div class="choicetrial">
+    <h2>Your decision...</h2>
+    <br />
     Do you want to post memes or see memes?
     <br />
     <br />
@@ -16,15 +18,12 @@
       {{ endfor }}
   </div>
   <div class="feedback">
-
+    <h3>Your last post...</h3>
     {{ if subsession.round_number > 1 }} <!-- access the last round feedback only if it's past round 1 -->
         {{ if prev_player.iTrialDec == 'Post' }}  <!-- and last trial they decided to post -->
-            <h2>Feedback.</h2>
-
-            <h1>{{ likes }} people out of 40 liked your post</h1> 
-            <h1>{{ dislikes }} people out of 40 did not like your post</h1>
-            <!-- <p>Post {{ roundnumber }}</p> -->
             <br />
+            <h1><p id="controltext">{{ likes }} <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> people out of 40 liked your post</p></h1>
+            <h1><p id="emotionaltext">{{ dislikes }} people out of 40 did not like your post</p></h1>
             <div class="polaroid">
               <img style="width:100%" src="{{ static image_path }}"/>
             </div>
@@ -33,41 +32,52 @@
   </div>  
 </div>
 
-<script>     // we create hidden input to measure the time spent in the page
-  let dRT          = document.createElement("input");
-      dRT.type         = 'hidden';
-      dRT.name         = 'dRTDec1';
-      dRT.id           = 'dRTDec1';
-      dRT.value        = '';
-      var TStart       = new Date().getTime();
-      var TEnd         = new Date().getTime();
+<script>    
+// Load Treatment
+treatment = js_vars.treatment
 
-document.addEventListener("DOMContentLoaded", function(debug=true) {
-    console.log('Loading info');
-    let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
-    OtreeBody.appendChild(dRT);
-  
-    function addtoev() {
-    var bns = document.getElementsByTagName("button");
-    for (i = 0; i < bns.length; i++) {
-        bns[i].addEventListener("click", function() {
-        TEnd      = new Date().getTime();
-        dRT.value = +TEnd -TStart;   // end the timer and rewrite the RT value
+// we create hidden input to measure the time spent in the page
+let dRT          = document.createElement("input");
+    dRT.type         = 'hidden';
+    dRT.name         = 'dRTDec1';
+    dRT.id           = 'dRTDec1';
+    dRT.value        = '';
+    var TStart       = new Date().getTime();
+    var TEnd         = new Date().getTime();
+
+    document.addEventListener("DOMContentLoaded", function(debug=true) {
+        console.log('Loading info');
+        let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
+        OtreeBody.appendChild(dRT);
+        
+        //check in the console if the communication between javascript and python is working
+        console.log(treatment);
+
+        if (js_vars.treatment=='Control') {
+          //if we are in the control treatment, we don't show amount of dislikes
+          let x = document.getElementById('emotionaltext');
+          x.style.visibility = 'hidden';
+        } else {
+          //if we are in the emotional treatment, we don't show the amount of likes
+          let c = document.getElementById('controltext');
+          c.style.visibility = 'hidden';
+        }
+
+        function addtoev() {
+        var bns = document.getElementsByTagName("button");
+        for (i = 0; i < bns.length; i++) {
+            bns[i].addEventListener("click", function() {
+            TEnd      = new Date().getTime();
+            dRT.value = +TEnd -TStart;   // end the timer and rewrite the RT value
+          });
+        }} // what this function is doing is the same as we do when we check
+                // if somebody pressed a key, but instead of checking keys, 
+                // we check whether they press any buttons :D
+        window.addEventListener("load",function() {
+        addtoev();
+        });
       });
-    }} // what this function is doing is the same as we do when we check
-            // if somebody pressed a key, but instead of checking keys, 
-            // we check whether they press any buttons :D
-    window.addEventListener("load",function() {
-    addtoev();
-    });
-  });
 </script>
-
-  <!-- &emsp;
-  &emsp; -->
-  <!-- <br />
-  <br />
-  <br /> -->
 
 <!-- CSS STYLE FOR THE BUTTONS -->
 
@@ -114,29 +124,41 @@ document.addEventListener("DOMContentLoaded", function(debug=true) {
   }
 
   .choicetrial {
-    width: 45vw
+    width: 50vw
   }
 
   .feedback {
-    width: 55vw
+    width: 50vw;
+    /* align-items: center;
+    justify-content: center;
+    text-align: center; */
   }
   
   div.polaroid {
-  width: 80%;
-  background-color: white;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  margin-bottom: 25px;
+    width: 70%;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom: 25px;
   }
 
   h1 {
-    text-align: left;
-    color: #444;
+    text-align: center;
+    color: #333;
     letter-spacing: 0.05em;
     margin: 0 0 0.4em;
-    font-size: 1em;
+    font-size: 1.2em;
+    font-family: sans-serif;
   }
 
   h2 {
+    text-align: center;
+    color:  #000 ;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.4em;
+    font-size: 2em;
+  }
+
+  h3 {
     text-align: left;
     color:  #000 ;
     letter-spacing: 0.05em;

@@ -63,22 +63,15 @@ class Player(BasePlayer): #define here ALL variables i will save at player level
     dRTTags            = models.FloatField(blank=True)
     dRTFeedback        = models.FloatField(blank=True)
     dRTEmotionalStatus = models.FloatField(blank=True) 
-    sTreat             = models.StringField(blank=True)
-    image_path         = models.StringField(blank=True)
-
-
 
 # FUNCTIONS
 
-# 1. numero de rondas
-
 def creating_session(subsession):
-
 
     for player in subsession.get_players():
         # randomize to treatments
         if player.round_number == 1:
-            player.participant.treatment = random.choice(["Control", "Emotional"])
+            player.participant.treatment = random.choice(['Control', 'Emotional'])
         player.treatment = player.participant.treatment
         print('set player.treatment to', player.treatment)
 
@@ -147,12 +140,11 @@ class ToMemeOrNotToMeme(Page):
     form_fields = [
         'iTrialDec',
         'dRTDec1',
-        'image_path'
     ]
     
     @staticmethod
     def vars_for_template(player): 
-        if player.round_number > 1: #if you do return too early, you fuck it up! return is the last thing you should do
+        if player.round_number > 1: #if you do return too early, you break the code! return is the last thing you should do
             prev_player = player.in_round(player.round_number - 1)
             if prev_player.iTrialDec == 'Post': 
                 return {
@@ -166,7 +158,17 @@ class ToMemeOrNotToMeme(Page):
                 return {
                     'prev_player'   :  player.in_round(player.round_number - 1), #define the last round
                 }
-            # curly brackets before return is the same as a dictionary
+                # curly brackets before return is the same as a dictionary
+
+    @staticmethod
+    def js_vars(player: Player):
+        if player.round_number > 1: 
+            prev_player = player.in_round(player.round_number - 1)
+            if prev_player.iTrialDec == 'Post': 
+                return {
+                    # 'prev_player'   :  player.in_round(player.round_number - 1) ,
+                    'treatment'   :  player.treatment ,
+                }
 
 class Feed(Page):
     form_model = 'player' #from who are you extracting the info
@@ -179,12 +181,6 @@ class Feed(Page):
     def vars_for_template(player): #otree function for the html
         return {
             'Image'    :  "".join(['feed_memes/feed', str(player.iImgFeed) , '.jpg']) ,
-        }
-
-    @staticmethod
-    def js_vars(player: Player):
-        return {
-            'sTreat'    :  player.sTreat,
         }
     
     @staticmethod
@@ -300,9 +296,8 @@ class Feedback(Page):
 
 #! THINGS TO  BE CODED 
 # ToMemeOrNotToMeme: better layout 
-# make display of feedback according to treatmennnnnt :D
-# correct the feed treatment thing that does not exist (sTreat)
-# Layout of questionnaire and instructions
+# Layout of questionnaire and instructions (!!)
 # ResultsWaitPage ???
+# animation of likes in the feedback page
 
 page_sequence = [ToMemeOrNotToMeme, Feed, Posting, addTags, Feedback, HowDoYaFeel]
