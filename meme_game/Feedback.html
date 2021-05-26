@@ -4,73 +4,9 @@
 
 {{ block content }}
 
-<style>
-	.heart {
-	   z-index : 999;
-	   position : absolute;
-	}
-	.heart:before,
-	.heart:after {
-	   content : "";
-	   background-color : #fc2a62;
-	   position : absolute;
-	   height : 30px;
-	   width : 45px;
-	   border-radius : 15px 0px 0px 15px;
-	}
-	.heart:before {
-	   transform : rotate(45deg);
-	}
-	.heart:after {
-	   left : 10.5px;
-	   transform : rotate(135deg);
-	}  	
-</style>
-	
-<script>
-	var brd = document.createElement("DIV");
-	document.body.insertBefore(brd, document.getElementById("board"));
-	// const duration = 3000;
-	// const speed = 0.5;
-	// const cursorXOffset = 0;
-	// const cursorYOffset = -5;
-	var hearts = [];
-	function generateHeart(x, y, scale)
-	{
-	   var heart = document.createElement("DIV");
-	   heart.setAttribute('class', 'heart');
-	   brd.appendChild(heart);
-	// heart.time = duration;
-	   heart.x = x;
-	   heart.y = y;
-	// heart.bound = xBound;
-	// heart.direction = xStart;
-	   heart.style.left = heart.x + "px";
-	   heart.style.top = heart.y + "px";
-	   heart.scale = scale;
-	   heart.style.transform = "scale(" + scale + "," + scale + ")";
-	   if(hearts == null)
-		hearts = [];
-	   hearts.push(heart);
-	   return heart;
-	}
-	</script>
-	<script> 
-	// //show otree timer lasy 10 sec
-	// $(function () {
-	// 	$('.otree-timer__time-left').on('update.countdown', function (event) {
-	// 		if (event.offset.totalSeconds === 10) {
-	// 			$('.otree-timer').show();
-	// 		}
-	// 	});
-	// });
-	// 
-	</script>
 
-	<p>your post received <label id="iLikes" value="{{l}}">{{l}}</text> likes </p>
-	<p id="dislike-text">and	<label id="iDislikes" value="{{d}}"> {{d}}</label> dislikes</p>
-	
-	
+<p id="control-text"><label id="iLikes" value="{{l}}">{{l}}</text> people out of 40 liked your post</p>
+<p id="dislike-text"><label id="iDislikes" value="{{d}}">{{d}}</label> people out of 40 did not like your post</p>
 
 	 <script>
 		generateHeart(500, 195, 1);
@@ -176,133 +112,69 @@ form .buttons .btn-primary {background-color: #67ab49;}
 form .buttons .btn-primary:hover {background-color: #14892c;}  
 </style>
 
+<style>
+	.heart {
+	   z-index : 999;
+	   position : absolute;
+	}
+	.heart:before,
+	.heart:after {
+	   content : "";
+	   background-color : #fc2a62;
+	   position : absolute;
+	   height : 30px;
+	   width : 45px;
+	   border-radius : 15px 0px 0px 15px;
+	}
+	.heart:before {
+	   transform : rotate(45deg);
+	}
+	.heart:after {
+	   left : 10.5px;
+	   transform : rotate(135deg);
+	}  	
+</style>
+	
+<script>
+	var brd = document.createElement("DIV");
+	document.body.insertBefore(brd, document.getElementById("board"));
+	// const duration = 3000;
+	// const speed = 0.5;
+	// const cursorXOffset = 0;
+	// const cursorYOffset = -5;
+	var hearts = [];
+	function generateHeart(x, y, scale)
+	{
+	   var heart = document.createElement("DIV");
+	   heart.setAttribute('class', 'heart');
+	   brd.appendChild(heart);
+	// heart.time = duration;
+	   heart.x = x;
+	   heart.y = y;
+	// heart.bound = xBound;
+	// heart.direction = xStart;
+	   heart.style.left = heart.x + "px";
+	   heart.style.top = heart.y + "px";
+	   heart.scale = scale;
+	   heart.style.transform = "scale(" + scale + "," + scale + ")";
+	   if(hearts == null)
+		hearts = [];
+	   hearts.push(heart);
+	   return heart;
+	}
+	</script>
+	<script> 
+	// //show otree timer lasy 10 sec
+	// $(function () {
+	// 	$('.otree-timer__time-left').on('update.countdown', function (event) {
+	// 		if (event.offset.totalSeconds === 10) {
+	// 			$('.otree-timer').show();
+	// 		}
+	// 	});
+	// });
+	// 
+	</script>
+
 {{ endblock }}
 
-<script>
-
-    // DOWNLOAD RAPHAEL. 
-    // raphael.js
-/*
-
-You can copy and paste the below into your codebase somewhere.
-As long as Raphael is a global object, it'll just work.
-
-USAGE (same default values for optional parameters as Rapha�l's "animate" method)
-=====
-element.animateAlong({
-	path: REQUIRED - Path data string or path element,
-	rotate: OPTIONAL - Boolean whether to rotate element with the direction it is moving
-	                   (this is a beta feature - currently kills existing transformations
-	                    and rotation may not be perfect),
-	duration: OPTIONAL - Number in milliseconds,
-	easing: OPTIONAL - String (see Rapha�l's docs),
-	debug: OPTIONAL - Boolean, when set to true, paints the animating path, which is
-					  helpful if it isn't already rendered to the screen
-},
-props - Object literal containing other properties to animate,
-callback - Function where the "this" object refers to the element itself
-);
-
-EXAMPLE
-=======
-var rect = paper.rect(0,0,50,50);
-rect.animateAlong({
-	path: "M0,0L100,100",
-	rotate: true,
-	duration: 5000,
-	easing: 'ease-out',
-	debug: true
-},
-{
-	transform: 's0.25',
-	opacity: 0
-},
-function() {
-	alert("Our opacity is now:" + this.attr('opacity'));
-});
-
-LOADING THIS WEIRD RAPHAEL THING
-// */ 
-
-// Raphael.el.animateAlong = function(params, props, callback) {
-// 	var element = this,
-// 		paper = element.paper,
-// 		path = params.path,
-// 		rotate = params.rotate,
-// 		duration = params.duration,
-// 		easing = params.easing,
-// 		debug = params.debug,
-// 		isElem = typeof path !== 'string';
-	
-// 	element.path = 
-// 		isElem
-// 			? path
-// 			: paper.path(path);
-// 	element.pathLen = element.path.getTotalLength();
-// 	element.rotateWith = rotate;
-	
-// 	element.path.attr({
-// 		stroke: debug ? 'red' : isElem ? path.attr('stroke') : 'rgba(0,0,0,0)',
-// 		'stroke-width': debug ? 2 : isElem ? path.attr('stroke-width') : 0
-// 	});
-
-// 	paper.customAttributes.along = function(v) {
-// 		var point = this.path.getPointAtLength(v * this.pathLen),
-// 			attrs = {
-// 				x: point.x,
-// 				y: point.y 
-// 			};
-// 		this.rotateWith && (attrs.transform = 'r'+point.alpha);
-// 		// TODO: rotate along a path while also not messing
-// 		//       up existing transformations
-		
-// 		return attrs;
-// 	};
-
-// 	if(props instanceof Function) {
-// 		callback = props;
-// 		props = null;
-// 	}
-// 	if(!props) {
-// 		props = {
-// 			along: 1
-// 		};
-// 	} else {
-// 		props.along = 1;	
-// 	}
-	
-// 	var startAlong = element.attr('along') || 0;
-	
-// 	element.attr({along: startAlong}).animate(props, duration, easing, function() {
-// 		!isElem && element.path.remove();
-		
-// 		callback && callback.call(element);
-// 	});
-// };
-
-// SCREEN_WIDTH = 1200,
-// SCREEN_HEIGHT = 1000,
-
-// // psiTurk.showPage('stage.html');
-
-// psiTurk.showPage('Feedback.html');
-//     var R = Raphael("stim", SCREEN_WIDTH, SCREEN_HEIGHT);   //width, height of "canvas"	
-
-//
-// var receiveLikes = function(){
-// 	R.clear()
-// 	// //vary the number of likes people see based on condition
-// 	// if(cond=="low") {
-// 	// 	min=0;
-//     // 	max=9;
-// 	// }else if(cond=="high"){
-// 	// 	min=10;
-// 	// 	max=19;
-// 	// }
-// 	window.Numlikes=getRandomInt(1,19);
-//     // window.Numlikes=getRandomInt(min,max);
-
-
-
-// </script>
 

@@ -21,8 +21,8 @@ Meme experiment by Vi (◕ᴗ◕✿)
 
 class Constants(BaseConstants):
     name_in_url = 'meme_game'
-    players_per_group = None
-    num_rounds = 4 #here you define the number of trials
+    players_per_group = None 
+    num_rounds = 10 #here you define the number of trials
     choices = ['Post', 'See'] 
     history_template = 'meme_game/history.html'
     df = pd.read_excel("_static/global/HR.xlsx",index_col="Numbers") #does it matter that it is csv or xsls
@@ -299,8 +299,10 @@ class Feedback(Page):
         }
 
 #! THINGS TO  BE CODED 
-# ToMemeOrNotToMeme: better layout
-# QUESTIONNAIRE APP with social media and demographics question !!!!
-# ResultsWaitPage
+# ToMemeOrNotToMeme: better layout 
+# make display of feedback according to treatmennnnnt :D
+# correct the feed treatment thing that does not exist (sTreat)
+# Layout of questionnaire and instructions
+# ResultsWaitPage ???
 
 page_sequence = [ToMemeOrNotToMeme, Feed, Posting, addTags, Feedback, HowDoYaFeel]

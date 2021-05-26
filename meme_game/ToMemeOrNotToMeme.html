@@ -2,86 +2,89 @@
 {% load otree static %} 
 
 {% block title %}
-    Do you want to post memes or see memes?
+    <!-- Do you want to post memes or see memes? -->
 {% endblock %}
-
 {% block content %}
-
-<script>     // we create hidden input to measure the time spent in the page
-    let dRT          = document.createElement("input");
-        dRT.type         = 'hidden';
-        dRT.name         = 'dRTDec1';
-        dRT.id           = 'dRTDec1';
-        dRT.value        = '';
-        var TStart       = new Date().getTime();
-        var TEnd         = new Date().getTime();
-</script>
-
-    {{ for choice in Constants.choices }}
+<div class="container">
+  <div class="choicetrial">
+    Do you want to post memes or see memes?
+    <br />
+    <br />
+      {{ for choice in Constants.choices }}
         <button name="iTrialDec" class="btn effect01" target="_blank" value="{{choice}}">{{choice}}</button>
         <!-- line 24 & 25 form the buttons from the init file -->
-
-        <script>
-        document.addEventListener("DOMContentLoaded", function(debug=true) {
-            console.log('Loading info');
-            let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
-            OtreeBody.appendChild(dRT);
-
-            function addtoev() {
-            var bns = document.getElementsByTagName("button");
-            for (i = 0; i < bns.length; i++) {
-                bns[i].addEventListener("click", function() {
-                TEnd      = new Date().getTime();
-                dRT.value = +TEnd -TStart;   // end the timer and rewrite the RT value
-              });
-            }} // what this function is doing is the same as we do when we check
-            // if somebody pressed a key, but instead of checking keys, 
-            // we check whether they press any buttons :D
-            
-
-            window.addEventListener("load",function() {
-            addtoev();
-            });
-        });
-        </script>
-    {{ endfor }}
-
-    <!-- &emsp;
-    &emsp; -->
-    <br />
-    <br />
-    <br />
+      {{ endfor }}
+  </div>
+  <div class="feedback">
 
     {{ if subsession.round_number > 1 }} <!-- access the last round feedback only if it's past round 1 -->
         {{ if prev_player.iTrialDec == 'Post' }}  <!-- and last trial they decided to post -->
-            
-            <h1>{{ dislikes }} people out of 25 did not like your post</h1> 
-            <h1>{{ likes }} people out of 25 did not like your post</h1>
-            
-            <p>Post {{ roundnumber }}</p>
-            <img style="width:100%" src="{{ static image_path }}"/>
+            <h2>Feedback.</h2>
+
+            <h1>{{ likes }} people out of 40 liked your post</h1> 
+            <h1>{{ dislikes }} people out of 40 did not like your post</h1>
+            <!-- <p>Post {{ roundnumber }}</p> -->
+            <br />
+            <div class="polaroid">
+              <img style="width:100%" src="{{ static image_path }}"/>
+            </div>
         {{ endif }}
     {{ endif }}
+  </div>  
+</div>
+
+<script>     // we create hidden input to measure the time spent in the page
+  let dRT          = document.createElement("input");
+      dRT.type         = 'hidden';
+      dRT.name         = 'dRTDec1';
+      dRT.id           = 'dRTDec1';
+      dRT.value        = '';
+      var TStart       = new Date().getTime();
+      var TEnd         = new Date().getTime();
+
+document.addEventListener("DOMContentLoaded", function(debug=true) {
+    console.log('Loading info');
+    let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
+    OtreeBody.appendChild(dRT);
+  
+    function addtoev() {
+    var bns = document.getElementsByTagName("button");
+    for (i = 0; i < bns.length; i++) {
+        bns[i].addEventListener("click", function() {
+        TEnd      = new Date().getTime();
+        dRT.value = +TEnd -TStart;   // end the timer and rewrite the RT value
+      });
+    }} // what this function is doing is the same as we do when we check
+            // if somebody pressed a key, but instead of checking keys, 
+            // we check whether they press any buttons :D
+    window.addEventListener("load",function() {
+    addtoev();
+    });
+  });
+</script>
+
+  <!-- &emsp;
+  &emsp; -->
+  <!-- <br />
+  <br />
+  <br /> -->
 
 <!-- CSS STYLE FOR THE BUTTONS -->
 
 <style>
-* {
+/* * {
     margin: 0;
     padding: 0;
   }
-  
+   */
   html,
-  /* body {
-    box-sizing: border-box;
+  body { 
     height: 100%;
     width: 100%;
-  } */
-  
-  body {
     background: #FFF;
     font-family: 'Noto Sans JP', sans-serif;
-    font-weight: 400;
+    /* font-weight: 400; 
+     #FFF; for white*/
   }
   
   .buttons {
@@ -95,24 +98,50 @@
     margin: 0 auto;
   /*   padding: 2em 0em; */
   }
-  
+
   .container {
-    align-items: center;
+    align-items: flex-start; /* i want the things at the top */
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     text-align: center;
     background-color: #FFF;
     padding:  40px 0px;
-    width: 500px;
+    width: 100vw; 
+    /* px is pixels and vw is viewing width,
+    if you put 100vw (100%) that would basically solve a bit the problem of
+    different screen sizes but it does something weird to the format when i trial test it :_D*/
+  }
+
+  .choicetrial {
+    width: 45vw
+  }
+
+  .feedback {
+    width: 55vw
   }
   
+  div.polaroid {
+  width: 80%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+  }
+
   h1 {
     text-align: left;
     color: #444;
     letter-spacing: 0.05em;
     margin: 0 0 0.4em;
     font-size: 1em;
+  }
+
+  h2 {
+    text-align: left;
+    color:  #000 ;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.4em;
+    font-size: 2em;
   }
   
   p {

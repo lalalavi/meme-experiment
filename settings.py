@@ -5,18 +5,18 @@ SESSION_CONFIGS = [
     dict(
         name='formatting_instructions',
         display_name="instructions life lol",
-        num_demo_participants=2,
+        num_demo_participants=3,
         app_sequence=['instructions'],
     ),dict(
         name='memessssss',
         display_name="meme life",
-        num_demo_participants=2,
-        app_sequence=['instructions','meme_game'],
+        num_demo_participants=3,
+        app_sequence=['meme_game'],
     ),
      dict(
         name='formatting_questionnaire',
         display_name="questionnaire life",
-        num_demo_participants=2,
+        num_demo_participants=3,
         app_sequence=['questionnaire'],
     ),
 ]
