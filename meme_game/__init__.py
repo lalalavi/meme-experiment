@@ -19,6 +19,11 @@ Meme experiment by Vi (◕ᴗ◕✿)
 """
 
 
+###########################################################################################
+#  CLASS DEFINITION ᕕ(ᐛ)ᕗ
+###########################################################################################
+
+
 class Constants(BaseConstants):
     name_in_url = 'meme_game'
     players_per_group = None 
@@ -38,7 +43,6 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer): #define here ALL variables i will save at player level
-
     treatment          = models.StringField(blank=True)
     sReward            = models.StringField(blank=True)
     iTrialDec          = models.StringField(choices=Constants.choices) #first decision where u can choose between seeing and posting
@@ -64,7 +68,10 @@ class Player(BasePlayer): #define here ALL variables i will save at player level
     dRTFeedback        = models.FloatField(blank=True)
     dRTEmotionalStatus = models.FloatField(blank=True) 
 
-# FUNCTIONS
+
+###########################################################################################
+#  FUNCTION ᕕ(ᐛ)ᕗ
+###########################################################################################
 
 def creating_session(subsession):
 
@@ -83,7 +90,7 @@ def creating_session(subsession):
             # print(os.getcwd())
             memelist = os.listdir('_static/LR')[1:-1] 
             # ! if you do not put the [1:-1] it crashes because there is a 
-            # ! HIDDEN file inside of the mac folder called 'DS store' that breaks it :D
+            # ! HIDDEN file inside of the mac folder called 'DS store' that breaks it lmao :D
             # print(memelist)
             pattern = r"meme(?P<number>\d{3})\.jpg"
             # you are telling the pattern of the files inside of the folder, in my case a string...
@@ -102,38 +109,36 @@ def creating_session(subsession):
             player.iImgPost5        = vImages[4]
             player.iImgPost6        = vImages[5]
             # player.iImgPost6      = random.randint(low=101,high=len(os.listdir('_static/LR')))
-            
+        
+        # depending on reward we check different images...  
         else:
             player.sReward = 'HR' 
             # dRange                  = range(1,len(os.listdir('_static/HR')))
             # vImages                 = random.sample(range(dRange), 6)
             vImages                 = random.sample(range(1,len(os.listdir('_static/HR'))), 6)
+            #! make a subsample of 6 random images that are not the same and store the images in a vector
             player.iImgPost1        = vImages[0]
             player.iImgPost2        = vImages[1]
             player.iImgPost3        = vImages[2]
             player.iImgPost4        = vImages[3]
             player.iImgPost5        = vImages[4]
             player.iImgPost6        = vImages[5]
-            
-        # 2.  # depending on reward we check different images,
-        # then we sample six images from respective folder and...
-        # 3. save image post in the variable
+            #save image post in the variable as one of the positions of the vector
+        
+        player.iImgFeed       = random.randint(1,89)  
+        
+        # player.iImgFeed         = random.randint(1,len(os.listdir('_static/feed_memes')))  
+        # if i use this method and it randomly chooses the last (90) it wont work
+        # so you generate random number between 1 and 89 instead (bc we have 89 images inside folder)
 
+        # printing statements to check how everything is going
         print('set player.sReward to', player.sReward)
-
-        # Setup a treatment condition (changes each round)
-        player.sTreat          = random.choice(['Like', 'Dislike'])
-        print('set player.sTreat to', player.sTreat)
-
-        player.iImgFeed         = random.randint(1,len(os.listdir('_static/feed_memes')))  
-        #!!!!!!! subsamples... they referred to the vectorization
-
         print('set player.iImgFeed to', player.iImgFeed)
-        print('set player.iImgPost1 to', player.iImgPost1)
-
-# printing statements to check how everything is going
-
-# PAGES
+        
+        
+###########################################################################################
+#  PAGES ᕕ(ᐛ)ᕗ
+###########################################################################################
 
 class ToMemeOrNotToMeme(Page):
     form_model = 'player'
@@ -224,10 +229,10 @@ class Posting(Page):
             'Image5'    :  "".join([player.sReward,'/meme', str(player.iImgPost5) , '.jpg']) ,
             'Image6'    :  "".join([player.sReward,'/meme', str(player.iImgPost6) , '.jpg']) ,   
         }
+        # str(player.iImgPost)+str(3)  <- previous approach
         # this might not work bc im concatating the string and not actually summing numbers
         # if i do it like this i need to get 110 memes in both HR and LR 
-        # str(player.iImgPost)+str(3)  <- previous approach
-    
+         
     @staticmethod
     def js_vars(player: Player):
         return {
@@ -254,12 +259,12 @@ class HowDoYaFeel(Page):
     def is_displayed(player):
         return player.iTrialDec == 'Post'
 
-class ResultsWaitPage(WaitPage):
+class Wait(Page):
+    timeout_seconds = 4
 
     @staticmethod
     def is_displayed(player):
         return player.iTrialDec == 'Post'
-
 
 class Feedback(Page):
     form_model = 'player'
@@ -294,10 +299,12 @@ class Feedback(Page):
             'treatment'   :  player.treatment ,
         }
 
-#! THINGS TO  BE CODED 
-# ToMemeOrNotToMeme: better layout 
-# Layout of questionnaire and instructions (!!)
-# ResultsWaitPage ???
-# animation of likes in the feedback page
 
-page_sequence = [ToMemeOrNotToMeme, Feed, Posting, addTags, Feedback, HowDoYaFeel]
+###########################################################################################
+#  RANDOM STUFF AND PAGE ORDER ᕕ(ᐛ)ᕗ
+###########################################################################################
+
+#! THINGS TO  BE CODED 
+# Animation of likes in the feedback page
+
+page_sequence = [ToMemeOrNotToMeme, Feed, Posting, addTags, Wait, Feedback, HowDoYaFeel]

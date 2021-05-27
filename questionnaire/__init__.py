@@ -23,7 +23,7 @@ class Player(BasePlayer):
     iGender             = models.IntegerField(
                         choices=[[1, 'Male'],[2, 'Female'],[3, 'Non-binary/ third gender'],[4, 'Prefer not to answer'], ],
                         label="Please select your gender:",)   
-    sNationality        = models.StringField(label="Please enter your nationality:", blank=True)  
+    sNationality        = models.StringField(label="*Optional. Please enter your nationality:", blank=True)  
     iEducation          = models.IntegerField(
                         choices=[[1, 'Primary education'],[2, 'High school or equivalent'],[3, 'Vocational school (Dutch: MBO)'],[4, 'Higher education (Dutch: HBO)'],[5, 'Bachelors degree (Dutch: WO bachelor)'],[6, 'Masters degree (Dutch: WO master)'],[7, 'Doctorate (e.g., PhD, EdD)'],[7, 'Other'], ],
                         label="Highest level of education obtained",) 
@@ -33,8 +33,8 @@ class Player(BasePlayer):
     iSocialmediause     = models.IntegerField(
                         choices=[[1, 'Almost Constantly'],[2, 'Several times a day'],[3, 'About once a day'],[4, 'Several times a week'],[5, 'Less often'],[6, 'Never'],],
                         label="How often do you use social media?",) 
-    sHours              = models.StringField(label="If you reported using social media daily, please provide an estimate about how much time you normally spend on a day inside all social media platforms cumulatevely:", blank=True)
-    iTypicallikes       = models.IntegerField(label="How many likes (or similar) do you typically get when you post on social media (for example on Instagram, Twitter, Facebook, Reddit)?", blank=True)
+    sHours              = models.StringField(label="If you reported using social media daily, provide an estimate of how much time you normally spend on a day inside all social media platforms:", blank=True)
+    iTypicallikes       = models.IntegerField(label="If applicable, how many likes (or similar) do you typically get when you post on social media (for example on Instagram, Twitter, Facebook, Reddit)?", blank=True)
     iInstafollowers     = models.IntegerField(label="If applicable, how many followers/friends/subscribers (or similar) do you have on Instagram?", blank=True)
     iTwitterfollowers   = models.IntegerField(label="If applicable, how many followers/friends/subscribers (or similar) do you have on Twitter?", blank=True)
     iFBfriends          = models.IntegerField(label="If applicable, how many followers/friends/subscribers (or similar) do you have on Facebook?", blank=True)
@@ -86,7 +86,6 @@ class Demographics(Page):
         ]
 
 # SMS refers to social media scale
-
 class SMS(Page):
     form_model = 'player'
     form_fields = ['iSMS1', 'iSMS2', 'iSMS3', 'iSMS4', 'iSMS5', 'iSMS6', 'iSMS7', 'iSMS8', 'iSMS9',]
