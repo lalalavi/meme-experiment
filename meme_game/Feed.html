@@ -73,7 +73,7 @@
         document.addEventListener("keyup", function(event) {
         if (event.keyCode === 76) {
             // change input value
-            iDec.value = 'L';
+            iDec.value = 1;
             console.log('L was pressed');
             // press next button
             TEnd      = new Date().getTime();
@@ -83,7 +83,7 @@
         });
         document.addEventListener("keyup", function(event) {
         if (event.keyCode === 75) {
-            iDec.value = 'K';
+            iDec.value = 2;
             console.log('K was pressed');
             TEnd      = new Date().getTime();
             dRT.value = +TEnd -TStart;

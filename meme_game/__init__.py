@@ -27,7 +27,7 @@ Meme experiment by Vi (◕ᴗ◕✿)
 class Constants(BaseConstants):
     name_in_url = 'meme_game'
     players_per_group = None 
-    num_rounds = 10 #here you define the number of trials
+    num_rounds = 40 #here you define the number of trials
     choices = ['Post', 'See'] 
     history_template = 'meme_game/history.html'
     df = pd.read_excel("_static/global/HR.xlsx",index_col="Numbers") #does it matter that it is csv or xsls
@@ -46,7 +46,7 @@ class Player(BasePlayer): #define here ALL variables i will save at player level
     treatment          = models.StringField(blank=True)
     sReward            = models.StringField(blank=True)
     iTrialDec          = models.StringField(choices=Constants.choices) #first decision where u can choose between seeing and posting
-    iDec               = models.BooleanField(blank=True) #why is this a boolean
+    iDec               = models.IntegerField(blank=True) # FEED. 1 is like, 2 is dislike
     iDec2              = models.IntegerField(blank=True) #the meme they choose during posting
     EmotionalStatus    = models.IntegerField(choices=[1,2,3,4,5])
     iImgFeed           = models.IntegerField(blank=True)
@@ -67,6 +67,28 @@ class Player(BasePlayer): #define here ALL variables i will save at player level
     dRTTags            = models.FloatField(blank=True)
     dRTFeedback        = models.FloatField(blank=True)
     dRTEmotionalStatus = models.FloatField(blank=True) 
+    dRTTotal           = models.FloatField(blank=True) 
+    dRTLatency         = models.FloatField(blank=True) 
+    def time_keeping_total(self):   
+        """
+        Defines total trial duration depending on first decision
+        """
+        if self.round_number > 1:
+            if self.iTrialDec == 'Post':
+                self.dRTTotal = self.dRTDec1 + self.dRTPost + self.dRTTags + self.dRTFeedback + self.dRTEmotionalStatus
+            else:
+                self.dRTTotal = self.dRTDec1 + self.dRTFeed 
+    
+    def time_keeping_latency(self):
+        """
+        Defines time elapsed between posts :D
+        """
+        prev_player = self.in_round(self.round_number - 1)
+        while prev_player.iTrialDec == 'See':
+            self.dRTLatency = self.dRTTotal + prev_player.dRTTotal
+            # we keep adding up the time of all trials until they decide to post
+        else:
+            self.dRTLatency = self.dRTLatency + self.dRTDec1  
 
 
 ###########################################################################################
@@ -80,10 +102,7 @@ def creating_session(subsession):
         if player.round_number == 1:
             player.participant.treatment = random.choice(['Control', 'Emotional'])
         player.treatment = player.participant.treatment
-        print('set player.treatment to', player.treatment)
-
-        if player.round_number > 1:
-            prev_player = player.in_round(player.round_number - 1)
+        # print('set player.treatment to', player.treatment)
 
         if player.round_number > Constants.num_rounds/2:
             player.sReward = 'LR'
@@ -128,14 +147,15 @@ def creating_session(subsession):
         player.iImgFeed       = random.randint(1,89)  
         
         # player.iImgFeed         = random.randint(1,len(os.listdir('_static/feed_memes')))  
-        # if i use this method and it randomly chooses the last (90) it wont work
+        # If i use this method and it randomly chooses the last (90) it wont work
         # so you generate random number between 1 and 89 instead (bc we have 89 images inside folder)
 
-        # printing statements to check how everything is going
-        print('set player.sReward to', player.sReward)
-        print('set player.iImgFeed to', player.iImgFeed)
-        
-        
+        # # printing statements to check how everything is going
+        # print('set player.sReward to', player.sReward)
+        # print('set player.iImgFeed to', player.iImgFeed)
+
+
+
 ###########################################################################################
 #  PAGES ᕕ(ᐛ)ᕗ
 ###########################################################################################
@@ -167,13 +187,9 @@ class ToMemeOrNotToMeme(Page):
 
     @staticmethod
     def js_vars(player: Player):
-        if player.round_number > 1: 
-            prev_player = player.in_round(player.round_number - 1)
-            if prev_player.iTrialDec == 'Post': 
-                return {
-                    # 'prev_player'   :  player.in_round(player.round_number - 1) ,
-                    'treatment'   :  player.treatment ,
-                }
+        return {
+            'treatment'   :  player.treatment ,
+        }
 
 class Feed(Page):
     form_model = 'player' #from who are you extracting the info
@@ -260,7 +276,7 @@ class HowDoYaFeel(Page):
         return player.iTrialDec == 'Post'
 
 class Wait(Page):
-    timeout_seconds = 4
+    timeout_seconds = 3
 
     @staticmethod
     def is_displayed(player):

@@ -19,7 +19,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    iAge                = models.IntegerField(label="For statistical purposes, please enter your age:", min=18, max=100)
+    iAge                = models.IntegerField(label="For statistical purposes, please enter your age:", min=13, max=100)
     iGender             = models.IntegerField(
                         choices=[[1, 'Male'],[2, 'Female'],[3, 'Non-binary/ third gender'],[4, 'Prefer not to answer'], ],
                         label="Please select your gender:",)   

@@ -39,7 +39,7 @@ class Player(BasePlayer):
         ],
         blank=True)
     q3 = models.IntegerField(
-        label="Q2: Pick the TRUE statement",
+        label="Q3: Pick the TRUE statement",
         choices=[
             [1, 'I select a meme by pressing a number on my keyboard'],
             [2, 'I select a meme by clicking on it with my mouse'] ,

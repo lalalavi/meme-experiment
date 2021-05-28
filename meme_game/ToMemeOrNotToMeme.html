@@ -5,6 +5,18 @@
     <!-- Do you want to post memes or see memes? -->
 {% endblock %}
 {% block content %}
+
+<script>
+// we create hidden input to measure the time spent in the page
+let dRT          = document.createElement("input");
+    dRT.type         = 'hidden';
+    dRT.name         = 'dRTDec1';
+    dRT.id           = 'dRTDec1';
+    dRT.value        = '';
+    var TStart       = new Date().getTime();
+    var TEnd         = new Date().getTime();
+</script>  
+
 <div class="container">
   <div class="choicetrial">
     <h2>Your decision...</h2>
@@ -13,8 +25,7 @@
     <br />
     <br />
       {{ for choice in Constants.choices }}
-        <button name="iTrialDec" class="btn effect01" target="_blank" value="{{choice}}">{{choice}}</button>
-        <!-- line 24 & 25 form the buttons from the init file -->
+        <button id="iT" name="iTrialDec" class="btn effect01" target="_blank" value="{{choice}}">{{choice}}</button>
       {{ endfor }}
   </div>
   <div class="feedback">
@@ -33,27 +44,37 @@
   </div>  
 </div>
 
-<script>    
-// Load Treatment
+<script>   
+// Load JavaScript variables from init file
 treatment = js_vars.treatment
-
-// we create hidden input to measure the time spent in the page
-let dRT          = document.createElement("input");
-    dRT.type         = 'hidden';
-    dRT.name         = 'dRTDec1';
-    dRT.id           = 'dRTDec1';
-    dRT.value        = '';
-    var TStart       = new Date().getTime();
-    var TEnd         = new Date().getTime();
 
     document.addEventListener("DOMContentLoaded", function(debug=true) {
         console.log('Loading info');
         let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
         OtreeBody.appendChild(dRT);
         
+
+        function addtoev() {
+        // var y = document.getElementById("container");
+        // var x = y.getElementById("choicetrial");
+        var bns = document.getElementsByTagName("button"); 
+        for (i = 0; i < bns.length; i++) {
+            bns[i].addEventListener("click", function() {
+            console.log('A button was pressed');
+            TEnd      = new Date().getTime();
+            dRT.value = +TEnd -TStart ;   // end the timer and rewrite the RT value
+          });
+        }} 
+        // what this function is doing is the same as we do when we check
+        // if somebody pressed a key, but instead of checking keys, 
+        // we check whether they press any buttons :D
+
+        window.addEventListener("load",function() {
+        addtoev();
+        });
+
         //check in the console if the communication between javascript and python is working
         console.log(treatment);
-
         if (js_vars.treatment=='Control') {
           //if we are in the control treatment, we don't show amount of dislikes
           let x = document.getElementById('emotionaltext');
@@ -63,20 +84,6 @@ let dRT          = document.createElement("input");
           let c = document.getElementById('controltext');
           c.style.visibility = 'hidden';
         }
-
-        function addtoev() {
-        var bns = document.getElementsByTagName("button");
-        for (i = 0; i < bns.length; i++) {
-            bns[i].addEventListener("click", function() {
-            TEnd      = new Date().getTime();
-            dRT.value = +TEnd -TStart;   // end the timer and rewrite the RT value
-          });
-        }} // what this function is doing is the same as we do when we check
-                // if somebody pressed a key, but instead of checking keys, 
-                // we check whether they press any buttons :D
-        window.addEventListener("load",function() {
-        addtoev();
-        });
       });
 </script>
 
