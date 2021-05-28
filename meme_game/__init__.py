@@ -67,29 +67,6 @@ class Player(BasePlayer): #define here ALL variables i will save at player level
     dRTTags            = models.FloatField(blank=True)
     dRTFeedback        = models.FloatField(blank=True)
     dRTEmotionalStatus = models.FloatField(blank=True) 
-    dRTTotal           = models.FloatField(blank=True) 
-    dRTLatency         = models.FloatField(blank=True) 
-    def time_keeping_total(self):   
-        """
-        Defines total trial duration depending on first decision
-        """
-        if self.round_number > 1:
-            if self.iTrialDec == 'Post':
-                self.dRTTotal = self.dRTDec1 + self.dRTPost + self.dRTTags + self.dRTFeedback + self.dRTEmotionalStatus
-            else:
-                self.dRTTotal = self.dRTDec1 + self.dRTFeed 
-    
-    def time_keeping_latency(self):
-        """
-        Defines time elapsed between posts :D
-        """
-        prev_player = self.in_round(self.round_number - 1)
-        while prev_player.iTrialDec == 'See':
-            self.dRTLatency = self.dRTTotal + prev_player.dRTTotal
-            # we keep adding up the time of all trials until they decide to post
-        else:
-            self.dRTLatency = self.dRTLatency + self.dRTDec1  
-
 
 ###########################################################################################
 #  FUNCTION ᕕ(ᐛ)ᕗ
@@ -103,6 +80,9 @@ def creating_session(subsession):
             player.participant.treatment = random.choice(['Control', 'Emotional'])
         player.treatment = player.participant.treatment
         # print('set player.treatment to', player.treatment)
+
+        if player.round_number > 1:
+            prev_player = player.in_round(player.round_number - 1)
 
         if player.round_number > Constants.num_rounds/2:
             player.sReward = 'LR'
@@ -287,7 +267,7 @@ class Feedback(Page):
     form_fields = [
         'iLikes',
         'iDislikes',
-        'dRTFeedback'
+        'dRTFeedback',
     ] 
 
     @staticmethod
