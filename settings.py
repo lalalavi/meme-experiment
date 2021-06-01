@@ -4,15 +4,21 @@ from os import environ
 SESSION_CONFIGS = [
     # dict(
     #     name='formatting_instructions',
-    #     display_name="instructions life lol",
+    #     display_name="instructions life",
     #     num_demo_participants=3,
     #     app_sequence=['instructions'],
     # ),
     dict(
         name='Thesis_Experiment',
         display_name="meme life",
-        num_demo_participants=1,
-        app_sequence=['meme_game', 'questionnaire'],
+        num_demo_participants=150, # should this be one or 150
+        app_sequence=['instructions','meme_game', 'questionnaire'],
+    ),
+    dict(
+        name='Beta_Testing',
+        display_name="Beta life",
+        num_demo_participants=5, 
+        app_sequence=['instructions','meme_game', 'questionnaire'],
     ),
      dict(
         name='formatting_questionnaire',
@@ -39,11 +45,21 @@ LANGUAGE_CODE = 'en'
 REAL_WORLD_CURRENCY_CODE = 'USD'
 USE_POINTS = True
 
+# ROOMS = [
+#     dict(
+#         name='econ101',
+#         display_name='Econ 101 class',
+#         participant_label_file='_rooms/econ101.txt',
+#     ),
+#     dict(name='live_demo', display_name='Room for live demo (no participant labels)'),
+# ]
+
 ROOMS = [
     dict(
-        name='econ101',
-        display_name='Econ 101 class',
-        participant_label_file='_rooms/econ101.txt',
+        name='Thesis',
+        display_name='Social Media experiment',
+        # participant_label_file='_rooms/labels.txt',
+        # use_secure_urls=True
     ),
     dict(name='live_demo', display_name='Room for live demo (no participant labels)'),
 ]
@@ -53,7 +69,7 @@ ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 
 DEMO_PAGE_INTRO_HTML = """
-Here are some oTree games.
+Here is my Master Thesis experiment. ᕕ(ᐛ)ᕗ
 """
 
 

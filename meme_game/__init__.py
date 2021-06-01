@@ -46,9 +46,9 @@ class Player(BasePlayer): #define here ALL variables i will save at player level
     treatment          = models.StringField(blank=True)
     sReward            = models.StringField(blank=True)
     iTrialDec          = models.StringField(choices=Constants.choices) #first decision where u can choose between seeing and posting
-    iDec               = models.IntegerField(blank=True) # FEED. 1 is like, 2 is dislike
-    iDec2              = models.IntegerField(blank=True) #the meme they choose during posting
-    EmotionalStatus    = models.IntegerField(choices=[1,2,3,4,5])
+    iDec               = models.IntegerField(blank=True) # FOR THE FEED. 1 is like, 2 is dislike
+    iDec2              = models.IntegerField(blank=True) # the meme they choose during posting
+    EmotionalStatus    = models.IntegerField() #this is required
     iImgFeed           = models.IntegerField(blank=True)
     iImgPost1          = models.IntegerField(blank=True)
     iImgPost2          = models.IntegerField(blank=True)
@@ -63,7 +63,7 @@ class Player(BasePlayer): #define here ALL variables i will save at player level
     iDislikes          = models.IntegerField(blank=True)
     dRTDec1            = models.FloatField(blank=True)
     dRTFeed            = models.FloatField(blank=True) 
-    dRTPost            = models.FloatField(blank=True) #d because double, reaction time
+    dRTPost            = models.FloatField(blank=True) #d because the type is double, reaction time
     dRTTags            = models.FloatField(blank=True)
     dRTFeedback        = models.FloatField(blank=True)
     dRTEmotionalStatus = models.FloatField(blank=True) 
@@ -301,6 +301,8 @@ class Feedback(Page):
 ###########################################################################################
 
 #! THINGS TO  BE CODED 
-# Animation of likes in the feedback page
+# Animation of likes in the feedback page?
+# Change the Likert scale to a continous scale?
+# Test the app in Microsoft, safari, firefox...
 
 page_sequence = [ToMemeOrNotToMeme, Feed, Posting, addTags, Wait, Feedback, HowDoYaFeel]
