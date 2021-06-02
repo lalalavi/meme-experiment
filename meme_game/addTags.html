@@ -24,7 +24,6 @@
 <div id="centered">
   <br>
   <br>
-  <br>
     <h1>You can add 3 Tags to your Meme before you post it.</h1>
 
     <hr>
@@ -34,9 +33,9 @@
       <form id="postquiz" action="debrief" method="post">
 
        Please add 3 tags to your meme here if you want.
-       
+       <br>
         <div class="polaroid">
-          <img src= {{ static Image }} style="width:50%">
+          <img src= {{ static Image }} style="width:50%" class="center">
           <div class="container">
             <p>Your post</p>
           </div>
@@ -95,6 +94,13 @@ div.container {
   text-align: center;
   padding: 10px 20px;
 }
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
 
 .centered {
       text-align: center;
