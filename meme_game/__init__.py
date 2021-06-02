@@ -189,19 +189,6 @@ class Feed(Page):
         return player.iTrialDec == 'See'
         # is_displayed allows you to decide in what moment do you want to show the page
 
-class addTags(Page):
-    form_model = 'player' 
-    form_fields = [
-        'sTag1',
-        'sTag2',
-        'sTag3',
-        'dRTTags',
-    ] 
-    
-    @staticmethod
-    def is_displayed(player):
-        return player.iTrialDec == 'Post'
-
 class Posting(Page):
     form_model = 'player' 
     form_fields = [
@@ -240,6 +227,26 @@ class Posting(Page):
             'Image6ID'    :  player.iImgPost6 ,
     }
 
+    @staticmethod
+    def is_displayed(player):
+        return player.iTrialDec == 'Post'
+
+
+class addTags(Page):
+    form_model = 'player' 
+    form_fields = [
+        'sTag1',
+        'sTag2',
+        'sTag3',
+        'dRTTags',
+    ] 
+
+    @staticmethod
+    def vars_for_template(player): 
+        return {
+            'Image'    :  "".join([player.sReward,'/meme', str(player.iDec2) , '.jpg']) , 
+        }
+    
     @staticmethod
     def is_displayed(player):
         return player.iTrialDec == 'Post'

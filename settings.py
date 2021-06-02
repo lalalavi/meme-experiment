@@ -11,7 +11,7 @@ SESSION_CONFIGS = [
     dict(
         name='Thesis_Experiment',
         display_name="meme life",
-        num_demo_participants=150, # should this be one or 150
+        num_demo_participants=100, # should this be one or 150
         app_sequence=['instructions','meme_game', 'questionnaire'],
     ),
     dict(
@@ -64,7 +64,7 @@ ROOMS = [
     dict(name='live_demo', display_name='Room for live demo (no participant labels)'),
 ]
 
-ADMIN_USERNAME = 'admin'
+ADMIN_USERNAME = 'admin' # IMPORTANT!! YOU USE THIS TO ACCESS OTREEHUB
 # for security, best to set admin password in an environment variable
 ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 

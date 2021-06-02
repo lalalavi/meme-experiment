@@ -25,7 +25,7 @@ class Player(BasePlayer):
                         label="Please select your gender:",)   
     sNationality        = models.StringField(label="*Optional. Please enter your nationality:", blank=True)  
     iEducation          = models.IntegerField(
-                        choices=[[1, 'Primary education'],[2, 'High school or equivalent'],[3, 'Vocational school (Dutch: MBO)'],[4, 'Higher education (Dutch: HBO)'],[5, 'Bachelors degree (Dutch: WO bachelor)'],[6, 'Masters degree (Dutch: WO master)'],[7, 'Doctorate (e.g., PhD, EdD)'],[7, 'Other'], ],
+                        choices=[[1, 'Primary education'],[2, 'High school or equivalent'],[3, 'Vocational school'],[4, 'Higher education'],[5, 'Bachelors degree'],[6, 'Masters degree'],[7, 'Doctorate (e.g. PhD)'],[7, 'Other'], ],
                         label="Highest level of education obtained",) 
     iEnglish            = models.IntegerField(
                         choices=[[1, 'Native speaker'],[2, 'Near native/fluent'],[3, 'Excellent command / highly proficient in spoken and written English'],[4, 'Very good command'],[5, 'Good command / good working knowledge'],[6, 'Basic communication skills / working knowledge'],],
@@ -33,7 +33,7 @@ class Player(BasePlayer):
     iSocialmediause     = models.IntegerField(
                         choices=[[1, 'Almost Constantly'],[2, 'Several times a day'],[3, 'About once a day'],[4, 'Several times a week'],[5, 'Less often'],[6, 'Never'],],
                         label="How often do you use social media?",) 
-    sHours              = models.StringField(label="If you reported using social media daily, provide an estimate of how much time you normally spend on a day inside all social media platforms:", blank=True)
+    sHours              = models.StringField(label="If you reported using social media daily, provide an estimate of how much time you normally spend on a day inside all social media platforms (in minutes):", blank=True)
     iTypicallikes       = models.IntegerField(label="If applicable, how many likes (or similar) do you typically get when you post on social media (for example on Instagram, Twitter, Facebook, Reddit)?", blank=True)
     iInstafollowers     = models.IntegerField(label="If applicable, how many followers/friends/subscribers (or similar) do you have on Instagram?", blank=True)
     iTwitterfollowers   = models.IntegerField(label="If applicable, how many followers/friends/subscribers (or similar) do you have on Twitter?", blank=True)

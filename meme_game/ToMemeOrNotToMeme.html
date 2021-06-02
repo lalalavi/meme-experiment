@@ -34,7 +34,7 @@ let dRT          = document.createElement("input");
         {{ if prev_player.iTrialDec == 'Post' }}  <!-- and last trial they decided to post -->
             <br />
             <h1><p id="controltext">{{ likes }} <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> people out of 40 liked your post</p></h1>
-            <h1><p id="emotionaltext">{{ dislikes }} <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> people out of 40 did not like your post</p></h1>
+            <h1><p id="emotionaltext">{{ dislikes }} <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> people out of 40 <b>did not</b> like your post</p></h1>
             <br />
             <div class="polaroid">
               <img style="width:100%" src="{{ static image_path }}"/>

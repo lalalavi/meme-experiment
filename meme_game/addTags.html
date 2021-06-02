@@ -33,7 +33,15 @@
 
         <form id="postquiz" action="debrief" method="post">
 
-       Please add 3 tags to your meme here if you want.<br/> 
+       Please add 3 tags to your meme here if you want.
+       
+       <div class="polaroid">
+        <img src= {{ static Image }} style="width:100%">
+        <div class="container">
+          <p>Your post</p>
+        </div>
+      </div>
+       <br/> 
         <textarea rows="1" cols="30" maxlength="20" name="sTag1" id="sTag1" ></textarea>
         <br>
 <textarea rows="1" cols="30"  maxlength="20" name="sTag2" id="sTag2" ></textarea>
@@ -72,5 +80,28 @@
             });
         });
 </script>
+
+<style>
+div.polaroid {
+  width: 80%;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 25px;
+}
+
+div.container {
+  text-align: center;
+  padding: 10px 20px;
+}
+
+h1 {
+    /* text-align: center; */
+    color: #333;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.4em;
+    font-size: 1.2em;
+    font-family: sans-serif;
+}
+</style>
 
 {% endblock %}
