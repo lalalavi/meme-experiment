@@ -11,12 +11,22 @@ import os #allows you to look at system directories aka access file system
 import re #for the raw interpretation of regular expressions i think?
 from openpyxl import load_workbook
 import json
+import requests # import requests module
+# from flask import Flask, render_template, jsonify 
+# from flask_cors import CORS, cross_origin
+# from reddit_handler import *
+
+
+#! THINGS TO  BE CODED 
+# change requirements txt to include requests, flask...
 
 c = Currency
 
 doc = """
 Meme experiment by Vi (◕ᴗ◕✿)  
 """
+
+
 
 
 ###########################################################################################
@@ -44,6 +54,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer): #define here ALL variables i will save at player level
     treatment          = models.StringField(blank=True)
+    scrollol           = models.IntegerField(blank=True)
     sReward            = models.StringField(blank=True)
     iTrialDec          = models.StringField(choices=Constants.choices) #first decision where u can choose between seeing and posting
     iDec               = models.IntegerField(blank=True) # FOR THE FEED. 1 is like, 2 is dislike
@@ -182,6 +193,13 @@ class Feed(Page):
     def vars_for_template(player): #otree function for the html
         return {
             'Image'    :  "".join(['feed_memes/feed', str(player.iImgFeed) , '.jpg']) ,
+        }
+    
+    @staticmethod
+    def js_vars(player: Player):
+        return {
+            'scrollol'   :  "".join(['feed_memes/feed', str(random.randint(1,89)) , '.jpg']) , 
+            # somehow i must keep adding different photos
         }
     
     @staticmethod
