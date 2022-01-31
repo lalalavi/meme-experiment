@@ -232,7 +232,7 @@
 <script>
 const container = document.querySelector(".container");
 // const url = "https://meme-api.herokuapp.com/gimme" // this is a random meme API?
-const url = "https://picsum.photos/600";
+// const url = "https://picsum.photos/600";
 // const url = "https://github.com/lalalavi/meme-experiment/tree/main/_static/feed_memes/feed"
 var images = [];
 var page = 1;
@@ -243,53 +243,33 @@ window.addEventListener("scroll", () => {
   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
   // console.log({ scrollTop, scrollHeight, clientHeight });
   if (clientHeight + scrollTop >= scrollHeight - 5) {
-    loadImages(6);
+    num_img=10
+    console.log("sending shit");
+    liveSend({num_img});
+    
+    loadImages(num_img);
   }
 });
+
+function liveRecv(data) {
+    new_meme_urls=data;
+    // here we need to write the new url to a local variable
+}
 
 function loadImages(range) {
   for (let i = 0; i < range; i++) {
     let image = document.createElement("div");
-
     image.classList.add("col");
-
-    // HOW TO DO IT WITH MINE
-    // image.innerHTML = `
-    //    <img src="${url}${+ i + 3}.jpg" alt="" />
-    // `;
-
-    // ORIGINAL EXAMPLE
+    // here it should be getting the new url liveRecv has written
     image.innerHTML = `
-        // <img src="${url}?t=${new Date().getTime() + i }" alt="" />
-        <img src="${url}?t=${+ i}" alt="" />
+        <img src="${new_meme_urls[i]}" alt="" />
     `;
 
     container.appendChild(image);
   }
 }
 
-loadImages(9);    
-
-// async function getPost() {
-//     console.log(scrollol);
-// 	const newMeme = await fetch(`https://jsonplaceholder.typicode.com/photos${getRandomNr()}`);
-//     // const postResponse = await fetch([`https://github.com/lalalavi/meme-experiment/tree/main/_static/feed_memes/feed${getRandomNr()}.jpg`]);
-//     //const postResponse = await fetch(js_vars.scrollol);
-//    // const postResponse = await fetch {{ js_vars.scrollol }};
-//     const postData = await newMeme.json();
-	
-// 	// const userResponse = await fetch('https://randomuser.me/api');
-// 	// const userData = await userResponse.json();
-	
-// 	// const data = { post: postData, user: userData.results[0] };
-	
-//     const data = { post: postData };
-
-// 	addDataToDOM(data);
-// }
-
-
-
+    
 
 
 
@@ -323,9 +303,12 @@ document.addEventListener("DOMContentLoaded", function(debug=true) {
             }
         });
     });
+
+
+
 </script>
 
-
+<!-- 
 <style>
 
 body {
@@ -394,6 +377,6 @@ p {
 
     
 
-</style>
+</style> -->
 
 {% endblock %}

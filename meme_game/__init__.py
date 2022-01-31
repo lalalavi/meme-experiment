@@ -54,7 +54,6 @@ class Group(BaseGroup):
 
 class Player(BasePlayer): #define here ALL variables i will save at player level
     treatment          = models.StringField(blank=True)
-    scrollol           = models.IntegerField(blank=True)
     sReward            = models.StringField(blank=True)
     iTrialDec          = models.StringField(choices=Constants.choices) #first decision where u can choose between seeing and posting
     iDec               = models.IntegerField(blank=True) # FOR THE FEED. 1 is like, 2 is dislike
@@ -196,11 +195,18 @@ class Feed(Page):
         }
     
     @staticmethod
-    def js_vars(player: Player):
+    def live_method(player : Player, data):
+        print("Pzthon got your message")
+        response = requests.get(f'https://meme-api.herokuapp.com/gimme/{data["num_img"]}')
+        print(response.json())
+        memes=response.json()['memes']
+        url_list=[]
+        for meme in memes:
+            url_list.append(meme['url'])
         return {
-            'scrollol'   :  "".join(['feed_memes/feed', str(random.randint(1,89)) , '.jpg']) , 
-            # somehow i must keep adding different photos
+            0   :  url_list, 
         }
+
     
     @staticmethod
     def is_displayed(player):
