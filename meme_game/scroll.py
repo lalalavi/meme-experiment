@@ -35,6 +35,17 @@ for meme in response.json()['memes']:
 
 
 
+# OnScroll event (Taken from Florin Pop's Infinite Scroll - https://codepen.io/FlorinPop17/pen/RwwvKYJ)
+# possible like button
+#     https://codepen.io/emilandersson/pen/rWwvwq 
+#     https://codepen.io/LMarran/pen/zxBELo
+#     they should not have scss
+#     https://codepen.io/kieranfivestars/pen/PwzjgN this one is pretty and simple
+#     https://usejquery.com/css/css-like-buttons/ a bunch of them
+#     https://codepen.io/abaicus/pen/gNXdQP/ facebook style
+#     https://codepen.io/drumsensei/pen/VjemKy?css-preprocessor=sass this one has a reset condition 
+#     https://codepen.io/mateusz800/pen/OJPZXMa pretty and simple too
+#     https://codepen.io/Barrydreamt/pen/vopyPz epic 
 
 
 

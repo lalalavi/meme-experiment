@@ -198,7 +198,7 @@ class Feed(Page):
     def live_method(player : Player, data):
         print("Pzthon got your message")
         response = requests.get(f'https://meme-api.herokuapp.com/gimme/{data["num_img"]}')
-        print(response.json())
+        # print(response.json())
         memes=response.json()['memes']
         url_list=[]
         for meme in memes:
