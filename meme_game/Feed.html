@@ -1,11 +1,16 @@
 {% extends "global/Page.html" %}
 {% load otree static %} 
 
+'<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+      <script src="https://kit.fontawesome.com/f6dcf461c1.js" crossorigin="anonymous"></script>'
+
 {% block title %}
     Do you like the Meme?
 {% endblock %}
 
 {% block content %}
+
 
 <div class="meme-body"> 
     <div class="img-wrapper">
@@ -37,6 +42,18 @@
     </div>
 </div>
 
+
+<div class="center">
+  <div class="dislike">
+    <i class="fa fa-thumbs-down"></i>
+    <i class="outer fa fa-circle-thin"></i>
+  </div>
+  <div class="like">
+    <i class="fa fa-heart"></i>
+    <i class="outer fa fa-circle-thin"></i>
+  </div>
+</div> 
+
 <button class="btn btn-primary">Continue</button>
 
 <div class="loading">
@@ -52,10 +69,75 @@
   <div class="child-1"></div>
 </div>
 
+<!-- <head>
+<script src="https://kit.fontawesome.com/f6dcf461c1.js" crossorigin="anonymous"></script>
+</head>
+   -->
+<!-- https://drive.google.com/drive/folders/1ow4ulAws9dxW6Fyh-Ivf2bTomGXb5hM7  -->
+
+
 <script>
 const container = document.querySelector(".container");
 var images = [];
+var likebuttons = []
 var page = 1;
+
+// Create hidden input (Decision)
+let iFeedLikes        = document.createElement("input");
+iFeedLikes.type       = 'hidden';
+iFeedLikes.name       = 'iFeedLikes';
+iFeedLikes.id         = 'iFeedLikes';
+iFeedLikes.value      = '';
+
+// Create hidden input (Decision)
+let iFeedDislikes        = document.createElement("input");
+iFeedDislikes.type       = 'hidden';
+iFeedDislikes.name       = 'iFeedDislikes';
+iFeedDislikes.id         = 'iFeedDislikes';
+iFeedDislikes.value      = '';
+
+
+//event listener on dynamic buttons not in DOM
+// window or container
+container.addEventListener('click', function (e) {
+    if (e.target.classList.contains('.like') || e.target.closest('.like')) {
+      console.log('like it like it like that'); // yes
+      iFeedLikes.value = iFeedLikes.value + 1;
+    }
+    if (e.target.classList.contains('.dislike') || e.target.closest('.dislike')) {
+      console.log('i do not like itt'); // noooooo
+      iFeedDislikes.value = iFeedDislikes.value + 1;
+    } true}
+);
+
+$(function() {
+  $('.like, .dislike').click(function() {
+    event.preventDefault();
+    $('.active').removeClass('active');
+    $(this).effect("bounce", {
+      times: 4
+    }, 1000);
+    $(this).addClass('active');
+  });
+});
+
+// https://carlanderson.xyz/adding-event-listeners-to-dynamic-content-with-event-delegation/ 
+
+// https://blog.logrocket.com/deep-dive-into-event-bubbling-and-capturing/ 
+// for the true part at the end
+
+
+//  taken from https://stackoverflow.com/questions/50372243/js-event-listener-on-dynamic-buttons
+
+// ready(function() {
+//   var newBtns = document.querySelectorAll('.like');
+//   newBtns.forEach(function(i) {
+//       i.addEventListener('click', function() {
+//         console.log('oh yes man'); // 
+//       })
+//     })
+// })
+
 
 window.addEventListener("scroll", () => {
   const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
@@ -75,8 +157,42 @@ function liveRecv(data) {
 
 function loadImages(range) {
   for (let i = 0; i < range; i++) {
-    let image = document.createElement("div");
-    // const button = ` <button id="yasbutton" class="like-button">
+    // first we load the new meme
+    const image = document.createElement("div");
+    image.classList.add("col");
+    image.insertAdjacentHTML('afterbegin', `
+    <img src="${new_meme_urls[i]}" alt="" style="width:90%" />`);     // here it should be getting the new url liveRecv has written
+    
+
+    // then we load the like button
+    // find the good way to add it
+    const likebutton = document.createElement("div");
+    likebutton.classList.add("center");
+    likebutton.insertAdjacentHTML('afterbegin', ` 
+    <div class="center">
+      <div class="dislike">
+        <i class="fa fa-thumbs-down"></i>
+        <i class="outer fa fa-circle-thin"></i>
+      </div>
+      <div class="like">
+        <i class="fa fa-heart"></i>
+        <i class="outer fa fa-circle-thin"></i>
+      </div>
+    </div> `
+    );
+
+    container.appendChild(image);
+    image.appendChild(likebutton);
+
+    
+    // image.insertAdjacentHTML('afterbegin', likebutton)
+
+    // const myFragment = document.createRange().createContextualFragment(likebutton)
+    // image.appendChild(myFragment);
+
+    // const likebutton = document.createElement("button");
+    // likebutton.classList.add("like-button");
+    // likebutton.insertAdjacentHTML('afterbegin', ` 
     //         <div class="like-wrapper">
     //             <div class="ripple"></div>
     //             <svg class="heart" width="24" height="24" viewBox="0 0 24 24">
@@ -90,57 +206,73 @@ function loadImages(range) {
     //                     <div class="particle" style="--i: 5; --color: #5686F2"></div>
     //                     <div class="particle" style="--i: 6; --color: #D53EF3"></div>
     //                 </div>
-    //         </div>
-    //     </button>`;
-    // const meme = `<img src="${new_meme_urls[i]}" alt="" style="width:90%" />`
-    // const space = ` <p class="text"></p> />`
-    
-    image.classList.add("col");
-    // here it should be getting the new url liveRecv has written
-    // image.innerHTML = `
-    // `;
-
-    // image.insertAdjacentHTML('afterbegin', meme, button, button)
-
-    image.insertAdjacentHTML('afterbegin', `
-    <img src="${new_meme_urls[i]}" alt="" style="width:90%" />
-        <p class="text"></p>
-        <button class="like-button">
-            <div class="like-wrapper">
-                <div class="ripple"></div>
-                <svg class="heart" width="24" height="24" viewBox="0 0 24 24">
-                    <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-                    </svg>
-                    <div class="particles" style="--total-particles: 6">
-                        <div class="particle" style="--i: 1; --color: #7642F0"></div>
-                        <div class="particle" style="--i: 2; --color: #AFD27F"></div>
-                        <div class="particle" style="--i: 3; --color: #DE8F4F"></div>
-                        <div class="particle" style="--i: 4; --color: #D0516B"></div>
-                        <div class="particle" style="--i: 5; --color: #5686F2"></div>
-                        <div class="particle" style="--i: 6; --color: #D53EF3"></div>
-                    </div>
-            </div>
-        </button>
-    `);
-    container.appendChild(image);
+    //            </div>`
+    //       );
   }
 }
 
-let b = document.querySelector('button');
-setTimeout(()=>b.focus(), 100);
-setTimeout(()=>b.blur(), 1000);
+// const btn = document.querySelector('.like')
+// btn.addEventListener('click', showMore)
+// console.log(btn)
+
+// Click handler for entire DIV container (!!!)
+//  https://typeofnan.dev/how-to-bind-event-listeners-on-dynamically-created-elements-in-javascript/ IMPORTANT 
+// //  what if i change it to window
+
+
+
+
+
+// THIS FUNCTION SEMI-WORKS
+
+// $(function() {
+//   $('.like').click(function() {
+//     console.log('oh yes man'); // 
+//     iFeedLikes.value = iFeedLikes.value + 1;
+//   });
+// });
+
+
+// function addtoev() {
+//   var bns = document.getElementsByTagName("button");
+//         for (i = 0; i < bns.length; i++) {
+//             bns[i].addEventListener("click", function() {
+//                 console.log('like it like it like that'); // yeeeees :D
+                
+//           });
+//         }}       
+  
+//   window.addEventListener("load",function() {
+//     addtoev();
+// });  
+
+    // let likebutton = document.createElement('button');
+    // likebutton.classList.add("like-button");
+    // let like = document.createTextNode('like');
+    // const meme = `<img src="${new_meme_urls[i]}" alt="" style="width:90%" />`
+    // const space = ` <p class="text"></p> />`
+    // const dislike = `<Button onclick="Toggle1()" id="btnh4" class="btn"><i class="fas fa-heart-broken"></i></Button>`
+
+    // image.insertAdjacentElement('afterbegin', likebutton) 
+    //       <div class="btns">
+    //           <Button onclick="Toggle1()" id="btnh1" class="btn"><i class="fas fa-heart"></i></Button>
+    //           <Button onclick="Toggle2()" id="btnh2" class="btn"><i class="far fa-heart"></i></Button>
+    //           <Button onclick="Toggle3()" id="btnh3" class="btn"><i class="fab fa-gratipay"></i></Button>
+    //           <Button onclick="Toggle1()" id="btnh4" class="btn"><i class="fas fa-heart-broken"></i></Button>
+    //       </div>
+    // );
+
+// src="dynamicListener.min.js"
+
+// let b = document.querySelector('button');
+// setTimeout(()=>b.focus(), 100);
+// setTimeout(()=>b.blur(), 1000);
 
     // Hidden Next Button
 let EndButton               = document.createElement('button');
 EndButton.style.visibility  = 'hidden';
 EndButton.className         = 'next_button btn btn-primary btn-large';
 
-    // Create hidden input (Decision)
-let iDec        = document.createElement("input");
-iDec.type       = 'hidden';
-iDec.name       = 'iDec';
-iDec.id         = 'iDec';
-iDec.value      = '';
 
     // Create hidden input (Time spent in the page)
 let dRT          = document.createElement("input");
@@ -151,13 +283,28 @@ dRT.value        = '';
 var TStart       = new Date().getTime();
 var TEnd         = new Date().getTime();
 
-    document.addEventListener("DOMContentLoaded", function(debug=true) {
-        console.log('Loading info');
 
-        let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
-        OtreeBody.appendChild(iDec);
-        OtreeBody.appendChild(dRT);
-        OtreeBody.appendChild(EndButton);
+document.addEventListener("DOMContentLoaded", function(debug=true) {
+    console.log('Loading info');
+
+    let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
+    OtreeBody.appendChild(iFeedLikes);
+    OtreeBody.appendChild(iFeedDislikes);
+    OtreeBody.appendChild(dRT);
+    OtreeBody.appendChild(EndButton);
+});
+        
+        // addDynamicEventListener(document.body, 'click', '.like-button', function (e) {
+        //     console.log('Clicked', e.delegatedTarget.innerText);
+        // });
+
+
+        // document.querySelector('#like-button').addEventListener('click', test_addlikes)
+        // const test_addlikes = () => {
+        // console.log('like it like it like that'); // yeeeees :D
+        // iDec.value = iDec.value + 1;
+        // }
+        
 
         // document.addEventListener("click", function(event) {
         //     if (event.button === "like-button") {
@@ -169,44 +316,53 @@ var TEnd         = new Date().getTime();
         // CHECK LIKE BUTTON FIRST, CHECK DISLIKE BUTTON AFTER
         // somehow must take into account that the buttons are inside the innerHTML
 
-        function addtoev() {
-        var bns = document.getElementsByTagName("button");
-        for (i = 0; i < bns.length; i++) {
-            bns[i].addEventListener("click", function() {
-                console.log('like it like it like that'); // yeeeees :D
-                iDec.value = iDec.value + i;
-          });
-        }} 
-
         // $(document).on('click','#like-button',function(){
         //     iDec.value = iDec.value + i
         // })
         
-        const likes = document.querySelector('#yasbutton');
-        likes.addEventListener("click", function(){
-            console.log('I am now applied to the element'); 
-            iDec.value = iDec.value + i;
-        });
+     
+        
+   
 
-        window.addEventListener("load",function() {
-            addtoev();
-        });
-    });
+     
 
-// // function to animate likes ? How to do it for each button
-// $(function(range){
-//     for (let i = 0; i < range; i++) {
-//         $(document).one('click', '.like-review', function(e) {
-//             $(this).html('<i class="fa fa-heart" aria-hidden="true"></i> You liked this');
-//             $(this).children('.fa-heart').addClass('animate-like');
-//         });
-//     }
-// });
+// // animate like function
+// //    First Like Button   
+// var btnvar1 = document.getElementById('btnh1');
+// function Toggle1(){
+//   if (btnvar1.style.color =="red") {
+//     btnvar1.style.color = "grey"
+//   }
+//   else{
+//     btnvar1.style.color = "red"
+//   }
+// }
+  
+// //    Second Like Button   
+// var btnvar2 = document.getElementById('btnh2');
+//    function Toggle2(){
+//             if (btnvar2.style.color =="red") {
+//                 btnvar2.style.color = "grey"
+//             }
+//             else{
+//                 btnvar2.style.color = "red"
+//             }
+//    }       
 
-// animate like function
-
-
+//   //  Third Like Button   
+// var btnvar3 = document.getElementById('btnh3');
+// function Toggle3(){
+//   if (btnvar3.style.color =="red") {
+//     btnvar3.style.color = "grey"
+//   }
+//   else{
+//     btnvar3.style.color = "red"
+//   }            
+// }                                   
+   
 // pass information to python 
+
+
 
 </script>
 
@@ -214,6 +370,7 @@ var TEnd         = new Date().getTime();
 
 
 <style>
+
     .meme-body{
         display: flex;
         flex-direction: column;
@@ -261,39 +418,7 @@ var TEnd         = new Date().getTime();
 	max-width: 600px;
 }
 
-    .blog-post {
-	background-color: #fff;
-    box-shadow: 0px 1px 2px rgba(50, 50, 50, .1), 
-		0px 2px 4px rgba(60, 60, 60, 0.1);
-	border-radius: 4px;
-	padding: 40px;
-	margin: 20px 0;
-}
 
-.title {
-	margin: 0;
-}
-
-.text {
-	color: #555;
-	margin: 20px 0;
-}
-
-.user-info {
-	display: flex;
-	align-items: center;
-}
-
-.user-info img {
-	border-radius: 50%;
-	height: 30px;
-	width: 30px;
-}
-
-.user-info span {
-	font-size: 13px;
-	margin-left: 10px;
-}
 
 .loading {
 	opacity: 0;
@@ -686,6 +811,92 @@ p {
   pointer-events: none;
   cursor: normal;
 }
+
+html {
+  width: 100%;
+  height: 100%;
+  font-family: 'open-sans', sans-serif;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;   /* So that mobiles don't highlight complete div element! */
+  -moz-user-tap-highlight-color: transparent; /* So that mobiles don't highlight complete div element! */
+  -ms-user-tap-highlight-color: transparent;  /* So that mobiles don't highlight complete div element! */
+}
+/* 
+.cred {
+  font-size: 8pt;
+  color: #666464;;
+  text-decoration: none;
+  border-bottom: 1px solid #272727;
+  padding:10px 0px;
+}
+.cred:hover {
+  color: #169AF9;
+}
+
+body {
+  position: relative;
+  background-color: #1D1F20;
+  color: #494949;
+  width: 100%;
+  height: 100%;
+}*/
+
+.center {
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  width: 300px;
+  top: 25%;
+}
+
+.like,
+.dislike {
+  position: relative;
+  font-size: 2.5em;
+  width: 150px;
+  height: 150px;
+  text-align: center;
+  float: left;
+  cursor: pointer;
+}
+
+.dislike i,
+.like i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  line-height: 150px;
+  -webkit-transition: all .25s ease-in-out;
+  -moz-transition: all .25s ease-in-out;
+  -o-transition: all .25s ease-in-out;
+  transition: all .25s ease-in-out;
+    -webkit-box-reflect: below -45px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent) , to(rgba(250, 250, 250, 0.1)));
+}
+
+.outer {
+  font-size: 280%;
+  color: #8C8C8C;
+
+}
+
+.dislike:hover i,
+.like:hover i {
+  color: #169AF9;
+}
+
+.dislike:hover .outer,
+.like:hover .outer {
+  font-size: 300%;
+  color: #fff;
+}
+
+.active {
+  color: #169AF9;
+}
+
+.active .outer {
+  color: #fff;
+} 
 
 </style>
 

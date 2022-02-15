@@ -56,7 +56,9 @@ class Player(BasePlayer): #define here ALL variables i will save at player level
     treatment          = models.StringField(blank=True)
     sReward            = models.StringField(blank=True)
     iTrialDec          = models.StringField(choices=Constants.choices) #first decision where u can choose between seeing and posting
-    iDec               = models.IntegerField(blank=True) # FOR THE FEED. 1 is like, 2 is dislike
+    iFeedLikes         = models.StringField(blank=True)
+    iFeedDislikes      = models.StringField(blank=True)
+    # iDec             = models.IntegerField(blank=True) # FOR THE FEED. 1 is like, 2 is dislike
     iDec2              = models.IntegerField(blank=True) # the meme they choose during posting
     EmotionalStatus    = models.IntegerField() #this is required
     iImgFeed           = models.IntegerField(blank=True)
@@ -184,7 +186,8 @@ class ToMemeOrNotToMeme(Page):
 class Feed(Page):
     form_model = 'player' #from who are you extracting the info
     form_fields = [
-        'iDec',
+        'iFeedLikes',
+        'iFeedDislikes',
         'dRTFeed',
     ] #todas las variables q quieres salvar de una pagina
 
@@ -207,7 +210,6 @@ class Feed(Page):
             0   :  url_list, 
         }
 
-    
     @staticmethod
     def is_displayed(player):
         return player.iTrialDec == 'See'
