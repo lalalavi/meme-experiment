@@ -190,24 +190,43 @@ class Feed(Page):
         'iFeedDislikes',
         'dRTFeed',
     ] #todas las variables q quieres salvar de una pagina
+    
+    # @staticmethod   #for Reddit infinite scroll
+    # def live_method(player : Player, data):
+    #     print("Python got your message")
+    #     # response = requests.get(f'https://meme-api.herokuapp.com/gimme/{data["num_img"]}')
+    #     # # print(response.json())
+    #     # memes=response.json()['memes']
+    #     # url_list=[]
+    #     # for meme in memes:
+    #     #     url_list.append(meme['url'])
+    #     # return {
+    #     #     0   :  url_list, 
+    #     # }
+
+    @staticmethod   #for infinite scroll
+    def live_method(player : Player, data):
+        print("Python got your message")
+        url_list=[]
+
+        y = [0, 90] # we want to exclude these ones
+        # for meme in range(90)
+        for meme in [x for x in range(90) if x not in y]:
+            # url_list.append(f'feed_memes/feed{meme}.jpg')  #gives correct path
+            # url_list.append(f'https://raw.githubusercontent.com/lalalavi/meme-experiment/tree/main/_static/feed_memes/feed{meme}.jpg?raw=true')  #gives correct path
+            # url_list.append(f'https://github.com/lalalavi/meme-experiment/blob/main/_static/feed_memes/feed{meme}?raw=true')  #gives correct path
+            url_list.append(f'https://raw.githubusercontent.com/lalalavi/meme-experiment/main/_static/feed_memes/feed{meme}.jpg?raw=true') 
+
+        return {
+                # ''  :  "".join([url_list]) , 
+                0   :   url_list, 
+                # 'Placeholder'   :  "".join(f'[url_list{meme}]') ,
+        }
 
     @staticmethod
     def vars_for_template(player): #otree function for the html
         return {
             'Image'    :  "".join(['feed_memes/feed', str(player.iImgFeed) , '.jpg']) ,
-        }
-    
-    @staticmethod
-    def live_method(player : Player, data):
-        print("Pzthon got your message")
-        response = requests.get(f'https://meme-api.herokuapp.com/gimme/{data["num_img"]}')
-        # print(response.json())
-        memes=response.json()['memes']
-        url_list=[]
-        for meme in memes:
-            url_list.append(meme['url'])
-        return {
-            0   :  url_list, 
         }
 
     @staticmethod
