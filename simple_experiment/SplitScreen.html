@@ -1,0 +1,233 @@
+{{ block title }}
+    ᕕ(ᐛ)ᕗ
+{{ endblock }}
+{{ block content }}
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://kit.fontawesome.com/f6dcf461c1.js" crossorigin="anonymous"></script>
+
+<div class="container">
+    <div class="leftscreen">   <!-- here the infinite feed and the post button-->
+        <br>
+        <p >Scroll down to see more memes or press this button to post. </p>
+        <!-- style="position:fixed; background-color: white;" -->
+        <br>
+        <button class="button_slide slide_right" id="post" style="position:fixed; align-self: center;">take me to post   ᕕ(ᐛ)ᕗ</button>   
+        <br><br><br><br>
+
+        {% for meme in url_list %}
+        <div class="polaroid">
+            <img src= "{% static meme %}"/> 
+            <button type="button" class="btn" onclick="animateButtons(this.id)" id="dislike-{% forloop.counter0 %}"> <i class="fa fa-thumbs-down"></i></button>            
+            <button type="button" class="btn" onclick="animateButtons(this.id)" id="like-{% forloop.counter0 %}"><i class="fas fa-heart"></i></button>
+        </div>
+        {% endfor %}        
+    </div>
+
+
+    <div class="rightscreen">
+        <!-- Right part of the screen. This should stick. -->
+        <br>
+        <!-- <button class="button_slide slide_right" id="post" style="position:fixed; align-self: center;">take me to post   ᕕ(ᐛ)ᕗ</button>    -->
+        <!-- <h3>Your last post...</h3> -->
+        {{ if subsession.round_number > 1 }} <!-- access the last round feedback only if it's past round 1 -->
+                Your last post.<br>
+                <br  style="position:fixed;" />
+                <h2 style="position:fixed;font-weight: 200;"><p id="controltext">{{ likes }} <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> people out of 40 liked your post</p></h2>
+                <h2 style="position:fixed;font-weight: 200;"><p id="emotionaltext">{{ dislikes }} <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> people out of 40 <b>did not</b> like your post</p></h2>
+                <br  style="position:fixed;" />  <br  style="position:fixed;" />  <br  style="position:fixed;" />
+                    <!-- <div class="lastpost" > -->
+                     <img style="width: 300px; position: fixed; margin-top: 150px; " src="{{ static image_path }}"/>
+                    <!-- </div> -->
+    
+        {{ endif }}
+
+    </div>
+
+</div>
+
+<script>   
+var Lcounter = 0;  //local counter for likes; once we go to posting we write this in db as iFeedLikes
+var Dcounter = 0;
+treatment = js_vars.sTreatment;
+
+
+function animateButtons(id) {
+    lSplit = id.split("-");
+    idName = lSplit[0]; 
+    idNr = lSplit[1];
+    console.log(id);
+    let likebtn = document.getElementById("like-"+idNr);  //let only creates variable in the context of the variable
+    let dislikebtn = document.getElementById("dislike-"+idNr);
+    if (idName == "like") {
+        if (likebtn.classList.contains("active")) { 
+            likebtn.classList.remove("active") ;
+            Lcounter+=-1 ;
+        } else if (dislikebtn.classList.contains("active")) { 
+            dislikebtn.classList.remove("active") ;
+            likebtn.classList.add("active") ;
+            Dcounter+=-1 ;
+            Lcounter++ ;
+        } else { 
+            likebtn.classList.add("active") ;
+            Lcounter++ ;
+        } 
+    } else {  
+        if (dislikebtn.classList.contains("active")) { 
+            dislikebtn.classList.remove("active") ;
+            Dcounter+=-1 ;
+        } else if (likebtn.classList.contains("active")) { 
+            likebtn.classList.remove("active") ;
+            dislikebtn.classList.add("active") ;
+            Lcounter+=-1 ;
+            Dcounter++ ;
+        } else { 
+            dislikebtn.classList.add("active") ;
+            Dcounter++ ;
+        } 
+    }
+    console.log(Lcounter, Dcounter);
+}
+
+// Create hidden input (number of likes in the feed)
+let iFeedLikes        = document.createElement("input");
+iFeedLikes.type       = 'hidden';
+iFeedLikes.name       = 'iFeedLikes';
+iFeedLikes.id         = 'iFeedLikes';
+iFeedLikes.value      = '';
+
+let iFeedDislikes        = document.createElement("input");
+iFeedDislikes.type       = 'hidden';
+iFeedDislikes.name       = 'iFeedDislikes';
+iFeedDislikes.id         = 'iFeedDislikes';
+iFeedDislikes.value      = '';
+  
+document.addEventListener("DOMContentLoaded", function(debug=true) {
+    console.log('Loading info');
+
+    let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
+    OtreeBody.appendChild(iFeedLikes);
+    OtreeBody.appendChild(iFeedDislikes);
+
+    let post = document.getElementById("post");
+    post.addEventListener("click", function(event) {
+        iFeedLikes.value = Lcounter ; 
+        iFeedDislikes.value = Dcounter ;
+        console.log('Post button was pressed');
+    });
+
+    console.log(treatment);
+    if (js_vars.sTreatment=='Control') {
+          let x = document.getElementById('emotionaltext');
+          x.style.visibility = 'hidden';  //if we are in the control treatment, we don't show amount of dislikes
+
+        } else {
+          let c = document.getElementById('controltext');
+          c.style.visibility = 'hidden';  //if we are in the emotional treatment, we don't show the amount of likes
+    }
+});
+</script>
+
+<style>
+
+/* .otree-timer {
+    display: none;
+} */
+
+.container {
+  display: flex;  
+  width: 100vw; 
+  gap: 2px 20px; /* row-gap column gap */
+  /* background: black;  */
+}
+
+.lastpost {
+    width: 300px;
+    position: fixed;
+    margin-top: 250px;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.leftscreen {
+    width: 50vw; 
+    align-items: center; 
+}
+
+.rightscreen {
+    width: 50vw; 
+}
+
+.polaroid {
+    width: 85%;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: flex; 
+    align-items: center; 
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 25px; /*Margin between polaroids */
+  }
+
+.h2 {
+    text-align: center;
+    color: #333;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.4em;
+    font-size: 0.7em;
+    font-family: sans-serif;
+
+}
+
+.btn {
+    background: transparent;
+    border: none;
+    margin: 0; /*25px */ /*Space around the buttons */
+    font-size: 70px;   /*88px */
+    outline: none;
+    color: grey;
+}
+
+.active {
+    color: rgb(184, 13, 13);
+}
+
+
+.button_slide {
+  color: rgb(0, 0, 0);
+  display: flex;
+  align-items: center; 
+  flex-flow: row wrap;
+  justify-content: center;
+  border: 2px solid rgb(216, 2, 134);
+  border-radius: 0px;
+  padding: 18px 36px;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 0 #D80286;
+  -webkit-transition: ease-out 0.4s;
+  -moz-transition: ease-out 0.4s;
+  transition: ease-out 0.4s;
+}
+
+.slide_right:hover {
+  box-shadow: inset 400px 0 0 0 #D80286;
+}
+/* for now this collides with animateButton */
+
+/* .btn i:hover{
+    cursor: pointer;
+} */
+
+</style>
+
+<!-- {{ next_button }} -->
+
+{{ endblock }}

@@ -1,0 +1,53 @@
+
+{{ block content }}
+
+<img src="{{ static 'global/UvA.jpeg' }}" class="center"/>
+<style>
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+  .centered {
+    text-align: center;
+    max-width:100%;
+    max-height:100%;
+    color:red;
+  }
+</style>
+
+
+<p>
+<br>Welcome! 
+<br>First of all, thank you for deciding to participate in this experiment.
+
+<br><br>
+In this study, we want to learn more about how people behave on social media.
+The study consists of multiple parts, including instructions, questions and interacting within a social media platform.
+Your full participation in this study will require approximately <b>15 – 20 minutes</b>, please make sure that you have sufficient time to complete it.
+The interaction within the social media platform part will be short and fast paced. For this short period you will need your full attention. Please try to remove any distractions now before you continue (e.g sounds, your phone).
+
+<br><br>
+At the end of the study, several demographic questions will be asked for statistical purposes. <b>Your identity will remain completely anonymous. </b>
+All information you provide will remain confidential. Completely anonymized data can be made publicly accessible, but your identity will under no circumstance be identifiable. 
+<br><br>
+This study is part of a Master's thesis in Neuroeconomics at the University of Amsterdam (UvA). 
+It has been designed and programmed by Violeta Céspedes with the supervision of Alejandro Hirmas Frisius. 
+If you have any questions about this study or concerns about privacy, please feel free to contact me (violeta.cespedes@live.com). 
+
+<br><br>
+<div class="centered">
+  <b>Important note! It is not possible to participate in this study using a smartphone. You need to use a computer.</b>
+</div>
+
+<br><br>
+By clicking the button below, you acknowledge that your participation in the study is voluntary, you are over 14 years of age, 
+and that you are aware that you may choose to terminate your participation in the study at any time and for any reason.
+{{formfields}}
+
+</p>
+    {{ next_button }}
+{{ endblock }}
+
+

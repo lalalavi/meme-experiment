@@ -1,0 +1,142 @@
+{{ block title }}
+    Understanding the experiment
+{{ endblock }}
+
+{{ block content }}
+
+<style>
+.center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%;
+    }
+    
+p {
+      text-align: justify;
+      text-justify: inter-word;
+    }
+</style>
+
+<p>
+    Before continuing to the next page, please answer the questions correctly:
+    <br><br>
+    Q1: Pick the <b>TRUE</b> statement
+    <div>
+        <input type="radio" id="Click" name="controlquestion1" value="1">
+        <label for="Click">The feedback of the memes I choose is not real</label>
+    </div>
+    <div>
+        <input type="radio" id="Hover" name="controlquestion1" value="2">
+        <label for="Hover">The maximum amount of likes I can receive is 40</label>
+    </div>
+    <div>
+        <input type="radio" id="Look" name="controlquestion1" value="3">
+        <label for="Look">The maximum amount of likes I can receive is 34</label>
+        </div>
+    <div>
+    <p id="text1"></p>
+
+    Q2: Pick the <b>TRUE</b> statement
+    <div>
+        <input type="radio" id="Click" name="controlquestion2" value="1">
+        <label for="Click">I am required to put tags in my posts </label>
+    </div>
+    <div>
+        <input type="radio" id="Hover" name="controlquestion2" value="2">
+        <label for="Hover">I am required to inform of my emotional status'</label>
+    </div>
+    <div>
+        <input type="radio" id="Look" name="controlquestion2" value="3">
+        <label for="Look">I am required to post from time to time</label>
+        </div>
+    <div>
+    <p id="text2"></p>
+
+    Q3: How do you choose a meme?
+    <div>
+        <input type="radio" id="Hover" name="controlquestion3" value="1">
+        <label for="Hover">By pressing a number on my keyboard'</label>
+    </div>
+    <div>
+        <input type="radio" id="Look" name="controlquestion2" value="2">
+        <label for="Look">By clicking on it with my mouse</label>
+        </div>
+    <div>
+    <p id="text3"></p>
+
+    <button type="button" id="submit"> Submit </button>   
+    <br><br>
+    <p id="text4"></p>
+</p>
+
+<br>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(debug=true) {
+        //define variables
+        let body = document.getElementsByClassName("otree-body")[0];
+        //Hidden Next Button
+        let EndButton               = document.getElementsByClassName('otree-btn-next btn btn-primary')[0];
+        EndButton.style.visibility  = 'hidden'; 
+        
+        button = document.getElementById("submit");
+
+        button.addEventListener("click", function checkfunction() {
+            var getSelectedValue1 = document.querySelector(   
+                'input[name="controlquestion1"]:checked');   
+                
+            if(getSelectedValue1 != null) {   
+                if (getSelectedValue1.value == "3") {
+                    document.getElementById("text1").innerHTML = "Correct";
+                } else {
+                    document.getElementById("text1").innerHTML = "Incorrect";
+                }  
+            }   
+            else {   
+                document.getElementById("text1").innerHTML   
+                    = "You have not selected any option";   
+            }     
+
+            var getSelectedValue2 = document.querySelector(   
+                'input[name="controlquestion2"]:checked');   
+                
+            if(getSelectedValue2 != null) {   
+                if (getSelectedValue2.value == "2") {
+                    document.getElementById("text2").innerHTML = "Correct";
+                } else {
+                    document.getElementById("text2").innerHTML = "Incorrect";
+                }  
+            }   
+            else {   
+                document.getElementById("text2").innerHTML   
+                    = "You have not selected any option";   
+            }   
+
+            var getSelectedValue3 = document.querySelector(   
+                'input[name="controlquestion3"]:checked');   
+                
+            if(getSelectedValue3 != null) {   
+                if (getSelectedValue3.value == "1") {
+                    document.getElementById("text3").innerHTML = "Correct";
+                } else {
+                    document.getElementById("text3").innerHTML = "Incorrect";
+                }  
+            }   
+            else {   
+                document.getElementById("text3").innerHTML   
+                    = "You have not selected any option";   
+            }   
+
+            if (getSelectedValue1.value == "3" & getSelectedValue2.value == "2" & getSelectedValue3.value == "1"){
+                document.getElementById("text4").innerHTML = "All are correct! Please click next to start the task:";
+                EndButton.style.visibility  = 'visible';  
+            }            
+        });
+
+    });
+   
+</script>
+
+    {{ next_button }}
+{{ endblock }}

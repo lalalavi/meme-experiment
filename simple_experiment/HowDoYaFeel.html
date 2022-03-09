@@ -1,0 +1,125 @@
+{{ block title }}
+    How would you describe your current emotional status?
+{{ endblock }}
+
+{{ block content }}
+
+<br>
+<head><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body>
+  <p>1 = Extremely negative / 100 = Extremely positive</p>
+  <div class="slidecontainer">
+  <input type="range" min="1" max="100" class="slider" name="iEmotionalStatus" id="iEmotionalStatus">
+  <p>Rating: <span id="iEmotionalStatus_value"></span></p>
+  </div>
+
+<div class="buttons">
+  <button class="btn btn-primary">Submit</button> 
+</div>
+
+</body>
+
+<script>
+let dRT          = document.createElement("input");
+dRT.type         = 'hidden';
+dRT.name         = 'dRTEmotionalStatus';
+dRT.id           = 'dRTEmotionalStatus';
+dRT.value        = '';
+
+var TStart       = new Date().getTime();
+var TEnd         = new Date().getTime();
+
+var slider = document.getElementById("iEmotionalStatus");
+var output = document.getElementById("iEmotionalStatus_value");
+output.innerHTML = slider.value;
+
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+
+document.addEventListener("DOMContentLoaded", function(debug=true) {
+  console.log('Loading info');
+
+  let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
+  OtreeBody.appendChild(dRT);
+  
+  function addtoev() {
+  var bns = document.getElementsByTagName("button");
+  for (i = 0; i < bns.length; i++) {
+    bns[i].addEventListener("click", function() {
+    TEnd      = new Date().getTime();
+    dRT.value = +TEnd -TStart;   // end the timer and rewrite the RT value
+    });
+  }} 
+
+  window.addEventListener("load",function() {
+  addtoev();
+  });
+});
+</script>
+
+{{ endblock }}
+
+
+<style>
+  .slidecontainer {
+  width: 70%;
+  
+  }
+
+  .fit {
+      width: 70%;
+  }
+  
+  .slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  }
+  
+  .slider:hover {
+  opacity: 1;
+  }
+  
+  .slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #04AA6D;
+  cursor: pointer;
+  }
+  
+  .slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #04AA6D;
+  cursor: pointer;
+  }
+  
+  html,body {padding:0;margin:0;}
+  .wrap {
+    font:12px Arial, san-serif;
+    text-align: center;
+  }
+  
+  form .buttons {
+    margin:30px 0;
+    padding:0 4.25%;
+    text-align:right
+  } 
+  form .buttons button {
+    padding: 5px 10px;
+    background-color: #67ab49;
+    border: 0;
+    border-radius: 3px;
+  }
+  
+  form .buttons .btn-primary {background-color: #67ab49;} 
+  form .buttons .btn-primary:hover {background-color: #14892c;}    
+</style>

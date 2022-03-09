@@ -1,0 +1,84 @@
+{{ block title }}
+<div class="centered">Your feedback</div>
+{{ endblock }}
+
+{{ block content }}
+
+<div class="centered">
+<p id="liketext"><label id="iLikes" value="{{l}}">{{l}}</label>  <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> people out of 40 liked your post</p>
+<p id="disliketext"><label id="iDislikes" value="{{d}}">{{d}}</label> <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> people out of 40 <b>did not</b> like your post</p>
+</div>
+<br>
+<br>
+<script>
+// if you do not put this stuff it will not get saved
+let l        	= document.createElement("input");
+	l.type       = 'hidden';
+	l.name       = 'iLikes';
+	l.id         = 'iLikes';
+	l.value      = "{{l}}";
+
+let d        = document.createElement("input");
+	d.type       = 'hidden';
+	d.name       = 'iDislikes';
+	d.id         = 'iDislikes';
+	d.value      = "{{d}}";
+
+// Load Treatment
+treatment = js_vars.treatment
+
+let dRT          = document.createElement("input");
+	dRT.type         = 'hidden';
+	dRT.name         = 'dRTFeedback';
+	dRT.id           = 'dRTFeedback';
+	dRT.value        = '';
+	var TStart       = new Date().getTime();
+	var TEnd         = new Date().getTime();
+
+	document.addEventListener("DOMContentLoaded", function(debug=true) {
+            console.log('Loading info');
+            let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
+            OtreeBody.appendChild(dRT);
+			OtreeBody.appendChild(l); // append likes
+			OtreeBody.appendChild(d); // apend dislikes
+
+			console.log(treatment);
+			if (js_vars.treatment=='Control') {
+				//if we are in the control treatment, we don't show amount of dislikes
+				let x = document.getElementById('disliketext');
+            	x.style.visibility = 'hidden';
+			} else {
+				//if we are in the emotional treatment, we don't show the amount of likes
+				let c = document.getElementById('liketext');
+           		c.style.visibility = 'hidden';
+			}
+
+            function addtoev() {
+            var bns = document.getElementsByTagName("button");
+            for (i = 0; i < bns.length; i++) {
+                bns[i].addEventListener("click", function() {
+                TEnd      = new Date().getTime();
+                dRT.value = +TEnd -TStart;   // end the timer and rewrite the RT value
+              });
+            }} 
+			
+            window.addEventListener("load",function() {
+            addtoev();
+            });
+        });
+</script>
+
+<div class="centered">
+<button class="btn btn-primary">Continue </button> 
+</div>
+
+<style>
+.centered {
+    text-align: center;
+    max-width:100%;
+    max-height:100%;
+}
+</style>
+
+
+{{ endblock }}
