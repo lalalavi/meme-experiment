@@ -3,6 +3,7 @@
 {{ endblock }}
 
 {{ block content }}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <br>
 <head><meta name="viewport" content="width=device-width, initial-scale=1"></head>
@@ -14,12 +15,16 @@
   </div>
 
 <div class="buttons">
-  <button class="btn btn-primary">Submit</button> 
+  <button type="button" id="lockrange">Lock range</button>
+  <button type="button" id="submit" onclick="checkRange()">Submit</button>
 </div>
-
 </body>
 
 <script>
+let EndButton               = document.createElement('button');
+EndButton.style.visibility  = 'hidden';
+EndButton.className         = 'next_button btn btn-primary btn-large';
+
 let dRT          = document.createElement("input");
 dRT.type         = 'hidden';
 dRT.name         = 'dRTEmotionalStatus';
@@ -28,7 +33,7 @@ dRT.value        = '';
 
 var TStart       = new Date().getTime();
 var TEnd         = new Date().getTime();
-
+var rangechanged=false;
 var slider = document.getElementById("iEmotionalStatus");
 var output = document.getElementById("iEmotionalStatus_value");
 output.innerHTML = slider.value;
@@ -37,11 +42,35 @@ slider.oninput = function() {
   output.innerHTML = this.value;
 }
 
+function checkRange() {
+  console.log(rangechanged);
+   if(rangechanged==false) {
+     alert("You must lock the range first");
+     event.preventDefault();
+    //  return rangechanged;   //  ?
+    }
+   if(rangechanged==true){
+      EndButton.click();
+    }
+}
+
+$("#lockrange").click(function(){
+  rangechanged=true;
+  $("#lockrange").hide();
+});
+
+$("#iEmotionalStatus").change(function(){
+  rangechanged=true;
+  $("#lockrange").hide();
+});
+
+
 document.addEventListener("DOMContentLoaded", function(debug=true) {
   console.log('Loading info');
 
   let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
   OtreeBody.appendChild(dRT);
+  OtreeBody.appendChild(EndButton);
   
   function addtoev() {
   var bns = document.getElementsByTagName("button");

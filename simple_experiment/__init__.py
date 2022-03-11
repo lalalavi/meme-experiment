@@ -84,35 +84,6 @@ def creating_session(subsession):
         if player.round_number > 1:
             prev_player = player.in_round(player.round_number - 1)
 
-# def start_timer(player): # function to start timer
-#     import time
-#     player.participant.dExpiry = time.time() + 4*60   # EXPIRY time across pages; 4 MINUTES
-#     player.participant.dExpiry = round(player.participant.dExpiry)
-#     player.dExpiry = player.participant.dExpiry
-
-    # @staticmethod
-    # def get_timeout_seconds(player):
-    #     import time
-    #     return player.dExpiry - time.time()
-
-# def get_timeout_seconds(player):
-#     participant = player.participant
-#     import time
-#     return participant.expiry - time.time()
-
-    # @staticmethod
-    # def before_next_page(player): 
-    #     if player.round_number == 1:
-    #         start_timer()
-    #     else:
-    #         pass
-    # @staticmethod
-    # def before_next_page(player):
-    #     participant = player.participant
-    #     import time
-    #     participant.expiry = time.time() + 4*60
-
-
 ###########################################################################################
 #  Pages ᕕ(ᐛ)ᕗ
 ###########################################################################################
