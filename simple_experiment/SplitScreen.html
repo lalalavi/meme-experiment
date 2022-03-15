@@ -1,57 +1,54 @@
-{{ block title }}
-    ᕕ(ᐛ)ᕗ
-{{ endblock }}
+<!-- {{ block title }}
+{{ endblock }} -->
 {{ block content }}
 
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="https://kit.fontawesome.com/f6dcf461c1.js" crossorigin="anonymous"></script>
 
-<div class="container">
-    <div class="leftscreen">   <!-- here the infinite feed and the post button-->
+<div class="cover leftcover">
+    <br><br><p >Scroll down to see more memes or press button below post. </p> <br><br><br><br>
+    {% for meme in url_list %}
+    <div class="polaroid">
+        <img src= "{% static meme %}"/> 
         <br>
-        <p >Scroll down to see more memes or press this button to post. </p>
-        <!-- style="position:fixed; background-color: white;" -->
-        <br>
-        <button class="button_slide slide_right" id="post" style="position:fixed; align-self: center;">take me to post   ᕕ(ᐛ)ᕗ</button>   
-        <br><br><br><br>
-
-        {% for meme in url_list %}
-        <div class="polaroid">
-            <img src= "{% static meme %}"/> 
-            <button type="button" class="btn" onclick="animateButtons(this.id)" id="dislike-{% forloop.counter0 %}"> <i class="fa fa-thumbs-down"></i></button>            
-            <button type="button" class="btn" onclick="animateButtons(this.id)" id="like-{% forloop.counter0 %}"><i class="fas fa-heart"></i></button>
-        </div>
-        {% endfor %}        
+        <button type="button" class="btn" onclick="animateButtons(this.id)" id="dislike-{% forloop.counter0 %}"> <i class="fa fa-thumbs-down"></i></button>            
+        <button type="button" class="btn" onclick="animateButtons(this.id)" id="like-{% forloop.counter0 %}"><i class="fas fa-heart"></i></button>
     </div>
-
-
-    <div class="rightscreen">
-        <!-- Right part of the screen. This should stick. -->
-        <br>
-        <!-- <button class="button_slide slide_right" id="post" style="position:fixed; align-self: center;">take me to post   ᕕ(ᐛ)ᕗ</button>    -->
-        <!-- <h3>Your last post...</h3> -->
-        {{ if subsession.round_number > 1 }} <!-- access the last round feedback only if it's past round 1 -->
-                Your last post.<br>
-                <br  style="position:fixed;" />
-                <h2 style="position:fixed;font-weight: 200;"><p id="controltext">{{ likes }} <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> people out of 40 liked your post</p></h2>
-                <h2 style="position:fixed;font-weight: 200;"><p id="emotionaltext">{{ dislikes }} <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> people out of 40 <b>did not</b> like your post</p></h2>
-                <br  style="position:fixed;" />  <br  style="position:fixed;" />  <br  style="position:fixed;" />
-                    <!-- <div class="lastpost" > -->
-                     <img style="width: 300px; position: fixed; margin-top: 150px; " src="{{ static image_path }}"/>
-                    <!-- </div> -->
-    
-        {{ endif }}
-
-    </div>
-
+    {% endfor %} 
 </div>
+
+<div class="cover rightcover">
+    {{ if subsession.round_number > 1 }} <!-- access the last round feedback only if it's past round 1 -->
+    <br> <br><br><br>Your last post.    ᕕ(ᐛ)ᕗ                <br>
+            <br  style="position:fixed;" />
+            <h2 style="position:fixed;font-weight: 200;"><p id="controltext"><br>{{ likes }} <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> people out of 40 liked your post</p></h2>
+            <h2 style="position:fixed;font-weight: 200;"><p id="emotionaltext"><br>{{ dislikes }} <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> people out of 40 <b>did not</b> like your post</p></h2>
+            <br  style="position:fixed;" />  <br  style="position:fixed;" />  <br  style="position:fixed;" />
+                 <img style="width: 300px; position: fixed; margin-top: 150px; " src="{{ static image_path }}"/>
+    {{ endif }}
+</div>
+
+<div class="post-container active">
+    <button class="button_slide slide_right" id="post" style="align-self: center;">take me to post   ᕕ(ᐛ)ᕗ</button>   
+</div>
+
 
 <script>   
 var Lcounter = 0;  //local counter for likes; once we go to posting we write this in db as iFeedLikes
 var Dcounter = 0;
 treatment = js_vars.sTreatment;
 
+// var e = window.event;
+// var posX = e.clientX;  //position of mouse
+// var posY = e.clientY;
+
+
+// function mouse_position(){
+//     
+//     document.Form1.posx.value = posX;
+//     document.Form1.posy.value = posY;
+// }
 
 function animateButtons(id) {
     lSplit = id.split("-");
@@ -110,6 +107,10 @@ document.addEventListener("DOMContentLoaded", function(debug=true) {
     OtreeBody.appendChild(iFeedLikes);
     OtreeBody.appendChild(iFeedDislikes);
 
+    let hidestuff = document.getElementsByClassName("card debug-info")[0];
+    hidestuff.style.visibility = 'hidden';  
+    // this hides the debug information so i do not go crazy 
+
     let post = document.getElementById("post");
     post.addEventListener("click", function(event) {
         iFeedLikes.value = Lcounter ; 
@@ -131,15 +132,56 @@ document.addEventListener("DOMContentLoaded", function(debug=true) {
 
 <style>
 
-/* .otree-timer {
+.otree-timer {
     display: none;
-} */
+}
+
+.cover {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    height: 100vh;
+    /* bottom:100%; */
+    top: 50vh;
+    background-color: blue;
+    /* z-index: -1; */
+}
 
 .container {
   display: flex;  
-  width: 100vw; 
-  gap: 2px 20px; /* row-gap column gap */
+  flex-direction: row;
+  /* width: 100vw;  */
+  /* gap: 2px 20px; row-gap column gap */
   /* background: black;  */
+}
+
+
+.leftcover {
+    left: 25vw;
+    display: flex;
+    flex-direction: column;
+    z-index: -1;
+    align-items: center;
+}
+
+.rightcover {
+    left: 75vw;
+    position: fixed; /* This is in order to keep the social reward always there */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: -1;
+}
+
+.leftscreen {
+    width: 50vw; 
+    /* left: 25vw; */
+    align-items: center; 
+}
+
+.rightscreen {
+    width: 50vw; 
+    /* left: 75vw; */
 }
 
 .lastpost {
@@ -153,17 +195,9 @@ img {
     max-height: 100%;
 }
 
-.leftscreen {
-    width: 50vw; 
-    align-items: center; 
-}
-
-.rightscreen {
-    width: 50vw; 
-}
 
 .polaroid {
-    width: 85%;
+    width: 70%;
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     display: flex; 
@@ -198,6 +232,28 @@ img {
 }
 
 
+.post-container {
+    position:           fixed;
+    bottom:             -100%;
+    left:               0;
+    right:              0;
+    background:         #edbed2ea;
+    color:              #f5f6fa;
+    padding:            32px;
+    transition:         200ms;
+    display:            flex;
+    align-items:        center;
+    justify-content:    space-evenly;
+    z-index: 100;
+}
+  
+.post-container.active {bottom: 0;}
+
+.post-container a,p,.cookie-button {color: #f5f6fa;}
+
+.post-container p { flex-grow: 1;}
+
+
 .button_slide {
   color: rgb(0, 0, 0);
   display: flex;
@@ -220,6 +276,7 @@ img {
 .slide_right:hover {
   box-shadow: inset 400px 0 0 0 #D80286;
 }
+
 /* for now this collides with animateButton */
 
 /* .btn i:hover{

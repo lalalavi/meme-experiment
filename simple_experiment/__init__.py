@@ -35,14 +35,14 @@ class Player(BasePlayer):
     sReward            = models.StringField(blank=True)
     sRandom            = models.StringField(blank=True)
     sRandom2           = models.StringField(blank=True)
-    ## Attention Variables (??)
-    sButtonClick       = models.LongStringField(blank=True) 
-    sTimeClick         = models.LongStringField(blank=True)
+    ## Attention Variables 
+    sButtonClick       = models.LongStringField(blank=True) # Order of buttons clicked
+    sTimeClick         = models.LongStringField(blank=True) # Time each of them was looked at
     ## Participant input Variables 
     iFeedLikes         = models.IntegerField(blank=True)
     iFeedDislikes      = models.IntegerField(blank=True)
     iPost              = models.IntegerField(blank=True) # the meme they choose during posting
-    iEmotionalStatus   = models.IntegerField() #this is required
+    iEmotionalStatus   = models.IntegerField()           # this is required
     sTag1              = models.StringField(blank=True)
     sTag2              = models.StringField(blank=True)
     sTag3              = models.StringField(blank=True)
@@ -56,7 +56,7 @@ class Player(BasePlayer):
     iImgPost5          = models.IntegerField(blank=True)
     iImgPost6          = models.IntegerField(blank=True)
     ## RT variables
-    # dExpiry            = models.IntegerField(blank=True)
+    # dExpiry          = models.IntegerField(blank=True)
     dRTDec1            = models.FloatField(blank=True)
     dRTFeed            = models.FloatField(blank=True) 
     dRTPost            = models.FloatField(blank=True) #d because the type is double, reaction time
@@ -66,27 +66,42 @@ class Player(BasePlayer):
 
 
 
-###########################################################################################
+###################################################################################################
 #  FUNCTION ᕕ(ᐛ)ᕗ
-###########################################################################################
+###################################################################################################
 
 def creating_session(subsession):
     for player in subsession.get_players():
+        p = player.participant
         if player.round_number == 1:
-            player.participant.sTreatment = random.choice(['Control', 'Emotional']) #between randomization
-            player.participant.sRandom = random.choice(['LR', 'HR']) #within randomization
-            player.participant.sRandom2 = random.choice(['LR', 'HR'])
-            while player.participant.sRandom == player.participant.sRandom2: #makes sure half of
-                player.participant.sRandom2 = random.choice(['LR', 'HR'])
-        player.sTreatment = player.participant.sTreatment
-        player.sRandom = player.participant.sRandom 
-        player.sRandom2 = player.participant.sRandom2 
+            #between randomization
+            p.sTreatment = random.choice(['Control', 'Emotional'])
+            #within randomization 
+            p.sRandom = random.choice(['LR', 'HR']) 
+            p.sRandom2 = random.choice(['LR', 'HR'])
+            while p.sRandom == p.sRandom2: #repeat randomization until it is different for each half
+                p.sRandom2 = random.choice(['LR', 'HR'])
+            #randomization of images?
+            # LRmemelist = os.listdir('_static/LR')[1:-1] 
+            # pattern = r"meme(?P<number>\d{3})\.jpg"
+            # numbers = [int(re.match(pattern, x).group("number")) for x in LRmemelist]  # take all of the numbers from the image files and put them on a list
+            # # vImages = memesHigh[] # crear matriz de 6 
+            # # vImages = numbers[:,6]
+
+            # random.sample(numbers, 6) 
+            # HRmemelist = random.sample(range(1,len(os.listdir('_static/HR'))), 6)
+
+        player.sTreatment = p.sTreatment
+        player.sRandom = p.sRandom 
+        player.sRandom2 = p.sRandom2 
         if player.round_number > 1:
             prev_player = player.in_round(player.round_number - 1)
+        
 
-###########################################################################################
+
+###################################################################################################
 #  Pages ᕕ(ᐛ)ᕗ
-###########################################################################################
+###################################################################################################
 
 class ready(Page):
     @staticmethod
