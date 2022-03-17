@@ -6,8 +6,8 @@
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="https://kit.fontawesome.com/f6dcf461c1.js" crossorigin="anonymous"></script>
 
-<div class="cover leftcover">
-    <br><br><p >Scroll down to see more memes or press button below post. </p> <br><br><br><br>
+<div class="cover leftcover" id="leftcover">
+    <br><br><p >Scroll down to see more memes or press button below post. </p> <br><br>
     {% for meme in url_list %}
     <div class="polaroid">
         <img src= "{% static meme %}"/> 
@@ -18,15 +18,14 @@
     {% endfor %} 
 </div>
 
-<div class="cover rightcover">
-    {{ if subsession.round_number > 1 }} <!-- access the last round feedback only if it's past round 1 -->
-    <br> <br><br><br>Your last post.    ᕕ(ᐛ)ᕗ                <br>
-            <br  style="position:fixed;" />
-            <h2 style="position:fixed;font-weight: 200;"><p id="controltext"><br>{{ likes }} <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> people out of 40 liked your post</p></h2>
-            <h2 style="position:fixed;font-weight: 200;"><p id="emotionaltext"><br>{{ dislikes }} <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> people out of 40 <b>did not</b> like your post</p></h2>
-            <br  style="position:fixed;" />  <br  style="position:fixed;" />  <br  style="position:fixed;" />
-                 <img style="width: 300px; position: fixed; margin-top: 150px; " src="{{ static image_path }}"/>
-    {{ endif }}
+<div class="cover rightcover" id="rightcover">
+{{ if subsession.round_number > 1 }} 
+    <br> <br><br><br>Your last post.    ᕕ(ᐛ)ᕗ         <br>   
+    <img style="width: 300px; position: fixed; margin-top: 150px; " src="{{ static image_path }}"/>
+    <br> <br><br><br>
+    <h2 style="position:fixed;font-weight: 200;"><p id="controltext">{{ likes }} <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> people out of 40 liked your post</p><br><br></h2>
+    <h2 style="position:fixed;font-weight: 200;"><p id="emotionaltext"><br>{{ dislikes }} <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> people out of 40 <b>did not</b> like your post</p><br><br></h2>
+{{ endif }}
 </div>
 
 <div class="post-container active">
@@ -37,18 +36,9 @@
 <script>   
 var Lcounter = 0;  //local counter for likes; once we go to posting we write this in db as iFeedLikes
 var Dcounter = 0;
-treatment = js_vars.sTreatment;
+treatment = js_vars.treatment;
+round_number = js_vars.round_number;
 
-// var e = window.event;
-// var posX = e.clientX;  //position of mouse
-// var posY = e.clientY;
-
-
-// function mouse_position(){
-//     
-//     document.Form1.posx.value = posX;
-//     document.Form1.posy.value = posY;
-// }
 
 function animateButtons(id) {
     lSplit = id.split("-");
@@ -100,16 +90,14 @@ iFeedDislikes.name       = 'iFeedDislikes';
 iFeedDislikes.id         = 'iFeedDislikes';
 iFeedDislikes.value      = '';
   
-document.addEventListener("DOMContentLoaded", function(debug=true) {
+document.addEventListener("DOMContentLoaded", function(debug=false) {
     console.log('Loading info');
-
     let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
     OtreeBody.appendChild(iFeedLikes);
     OtreeBody.appendChild(iFeedDislikes);
 
     let hidestuff = document.getElementsByClassName("card debug-info")[0];
-    hidestuff.style.visibility = 'hidden';  
-    // this hides the debug information so i do not go crazy 
+    hidestuff.style.visibility = 'hidden';   // this hides the debug information so i do not go crazy 
 
     let post = document.getElementById("post");
     post.addEventListener("click", function(event) {
@@ -119,14 +107,48 @@ document.addEventListener("DOMContentLoaded", function(debug=true) {
     });
 
     console.log(treatment);
-    if (js_vars.sTreatment=='Control') {
-          let x = document.getElementById('emotionaltext');
-          x.style.visibility = 'hidden';  //if we are in the control treatment, we don't show amount of dislikes
+    
+    if (js_vars.round_number > 1) {
+    let x = document.getElementById('emotionaltext');
+    let c = document.getElementById('controltext');
+	if (js_vars.treatment=='Control') {
+        x.style.visibility = 'hidden';  //for control treatment we don't show amount of dislikes
+	} else if (js_vars.treatment=='Emotional') { 
+        c.style.visibility = 'hidden';  //for emotional treatment we don't show the amount of likes
+	} else {
+		x.style.visibility = 'visible';
+		c.style.visibility = 'visible';
+	}};
 
-        } else {
-          let c = document.getElementById('controltext');
-          c.style.visibility = 'hidden';  //if we are in the emotional treatment, we don't show the amount of likes
+
+    function mousePosition(event) {
+    let left = document.getElementById('leftcover');
+    let right = document.getElementById('rightcover');
+    const results = left.getBoundingClientRect();    // returns DOMRect OBJECT with bottom, height, left, right, top, width (!!!!!), x, y of ELEMENT
+    let widthLeft = results.width;                   // we access the with only
+    console.log(widthLeft,event.clientX);
+
+    if (event.clientX > widthLeft) {
+        left.style.zIndex = "10";
+        left.style.visibility = "hidden";
+        right.style.zIndex = "1";
+        right.style.visibility = "visible";
+    } else {
+        left.style.zIndex = "1";
+        left.style.visibility = "visible";
+        right.style.zIndex = "10";
+        right.style.visibility = "hidden";
+    } 
+    
+    // console.log("pageX: ",event.pageX, 
+    // "pageY: ", event.pageY,            //calculate the x and y values from the beginning of the web page
+    // "clientX: ", event.clientX,        //calculate the x and y values from visible screen
+    // "clientY:", event.clientY)
+    // if event.clientX <
     }
+
+    window.addEventListener('mousemove', mousePosition);
+
 });
 </script>
 
@@ -160,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function(debug=true) {
     left: 25vw;
     display: flex;
     flex-direction: column;
-    z-index: -1;
+    /* z-index: -1; */
     align-items: center;
 }
 
@@ -170,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function(debug=true) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: -1;
+    /* z-index: -1; */
 }
 
 .leftscreen {

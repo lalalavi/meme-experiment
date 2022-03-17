@@ -20,6 +20,7 @@ class Constants(BaseConstants):
     df = pd.read_excel("_static/global/HR.xlsx",index_col="Numbers")
     df2 = pd.read_excel("_static/global/LR.xlsx",index_col="Numbers")
     total_time = 300 #5 minutes
+    IMG_ON_PAGE = 6
 
 class Subsession(BaseSubsession):
     pass
@@ -27,7 +28,6 @@ class Subsession(BaseSubsession):
 
 class Group(BaseGroup):
     pass
-
 
 class Player(BasePlayer):
     ## Treatment Variables 
@@ -38,11 +38,13 @@ class Player(BasePlayer):
     ## Attention Variables 
     sButtonClick       = models.LongStringField(blank=True) # Order of buttons clicked
     sTimeClick         = models.LongStringField(blank=True) # Time each of them was looked at
+    sButtonClickScreen = models.LongStringField(blank=True) 
+    sTimeClickScreen   = models.LongStringField(blank=True) 
     ## Participant input Variables 
     iFeedLikes         = models.IntegerField(blank=True)
     iFeedDislikes      = models.IntegerField(blank=True)
-    iPost              = models.IntegerField(blank=True) # the meme they choose during posting
-    iEmotionalStatus   = models.IntegerField()           # this is required
+    iPost              = models.IntegerField(blank=True)    # the meme they choose during posting
+    iEmotionalStatus   = models.IntegerField()              # this is required
     sTag1              = models.StringField(blank=True)
     sTag2              = models.StringField(blank=True)
     sTag3              = models.StringField(blank=True)
@@ -57,6 +59,8 @@ class Player(BasePlayer):
     iImgPost6          = models.IntegerField(blank=True)
     ## RT variables
     # dExpiry          = models.IntegerField(blank=True)
+    dContentReward     = models.FloatField(blank=True)
+    dSocialReward      = models.FloatField(blank=True)
     dRTDec1            = models.FloatField(blank=True)
     dRTFeed            = models.FloatField(blank=True) 
     dRTPost            = models.FloatField(blank=True) #d because the type is double, reaction time
@@ -75,29 +79,28 @@ def creating_session(subsession):
         p = player.participant
         if player.round_number == 1:
             #between randomization
-            p.sTreatment = random.choice(['Control', 'Emotional'])
+            p.sTreatment = random.choice(['Control', 'Emotional', 'Fullinfo'])
             #within randomization 
             p.sRandom = random.choice(['LR', 'HR']) 
             p.sRandom2 = random.choice(['LR', 'HR'])
             while p.sRandom == p.sRandom2: #repeat randomization until it is different for each half
                 p.sRandom2 = random.choice(['LR', 'HR'])
-            #randomization of images?
-            # LRmemelist = os.listdir('_static/LR')[1:-1] 
-            # pattern = r"meme(?P<number>\d{3})\.jpg"
-            # numbers = [int(re.match(pattern, x).group("number")) for x in LRmemelist]  # take all of the numbers from the image files and put them on a list
-            # # vImages = memesHigh[] # crear matriz de 6 
-            # # vImages = numbers[:,6]
-
-            # random.sample(numbers, 6) 
-            # HRmemelist = random.sample(range(1,len(os.listdir('_static/HR'))), 6)
-
+            #IMAGES 
+            LRmemelist = os.listdir('_static/LR')[1:-1] 
+            pattern = r"meme(?P<number>\d{3})\.jpg"
+            LRnumbers = [int(re.match(pattern, x).group("number")) for x in LRmemelist]  # take all of the numbers from the image files and put them on a list
+            LRnumbers = [LRnumbers[n-Constants.IMG_ON_PAGE:n] for n in range(Constants.IMG_ON_PAGE,len(LRnumbers), Constants.IMG_ON_PAGE)]
+            p.LRmemematrix = LRnumbers
+            HRnumbers = range(1,len(os.listdir('_static/HR')))
+            HRnumbers = [HRnumbers[n-Constants.IMG_ON_PAGE:n] for n in range(Constants.IMG_ON_PAGE,len(HRnumbers), Constants.IMG_ON_PAGE)]                
+            p.HRmemematrix = HRnumbers
         player.sTreatment = p.sTreatment
         player.sRandom = p.sRandom 
         player.sRandom2 = p.sRandom2 
+     
         if player.round_number > 1:
             prev_player = player.in_round(player.round_number - 1)
         
-
 
 ###################################################################################################
 #  Pages ᕕ(ᐛ)ᕗ
@@ -152,7 +155,8 @@ class SplitScreen(Page):
     @staticmethod
     def js_vars(player: Player):
         return {
-            'treatment'   :  player.sTreatment ,
+            'treatment'      :  player.sTreatment ,
+            'round_number'   :  player.round_number ,
         }
 
 
@@ -175,19 +179,16 @@ class Posting(Page):
             player.sReward = player.sRandom2
         
         if player.sReward == 'LR':
-            memelist = os.listdir('_static/LR')[1:-1] 
-            pattern = r"meme(?P<number>\d{3})\.jpg"
-            numbers = [int(re.match(pattern, x).group("number")) for x in memelist]  # take all of the numbers from the image files and put them on a list
-            vImages = random.sample(numbers, 6) 
+            vImages = participant.LRmemematrix 
         else:
-            vImages = random.sample(range(1,len(os.listdir('_static/HR'))), 6)
-        
-        player.iImgPost1        = vImages[0]
-        player.iImgPost2        = vImages[1]
-        player.iImgPost3        = vImages[2]
-        player.iImgPost4        = vImages[3]
-        player.iImgPost5        = vImages[4]
-        player.iImgPost6        = vImages[5]
+            vImages = participant.HRmemematrix 
+
+        player.iImgPost1        = vImages[player.round_number - 1][0]
+        player.iImgPost2        = vImages[player.round_number - 1][1]
+        player.iImgPost3        = vImages[player.round_number - 1][2]
+        player.iImgPost4        = vImages[player.round_number - 1][3]
+        player.iImgPost5        = vImages[player.round_number - 1][4]
+        player.iImgPost6        = vImages[player.round_number - 1][5]
         
         return {
             'Image'     :  "".join([player.sReward,'/meme', str(player.iImgPost1), '.jpg']) ,
@@ -249,7 +250,7 @@ class addTags(Page):
 class Feedback(Page):
     form_model = 'player'
     form_fields = [
-        'iLikes','iDislikes','dRTFeedback',
+        'iLikes','iDislikes','dRTFeedback', 'sButtonClick', 'sTimeClick',
     ] 
 
     @staticmethod
@@ -304,8 +305,6 @@ class HowDoYaFeel(Page):
 
 
 #! THINGS TO THINK
-# CSS PROPERTIES... position: absolute; transform: translate(-50%,-50%); top: 90vh; left: 90vw;
-# check out what is django?
 
 
 page_sequence = [ready, SplitScreen, Posting, addTags, Feedback, HowDoYaFeel]

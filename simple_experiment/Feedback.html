@@ -2,16 +2,14 @@
 <div class="centered">Your feedback</div>
 {{ endblock }}
 
-{{ block content }}
+{% block app_styles %}
+    <link href="{% static 'global/css/VT_functionality.css' %}" rel="stylesheet">
+{% endblock %}
 
-<div class="centered">
-<p id="liketext"><label id="iLikes" value="{{l}}">{{l}}</label>  <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> people out of 40 liked your post</p>
-<p id="disliketext"><label id="iDislikes" value="{{d}}">{{d}}</label> <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> people out of 40 <b>did not</b> like your post</p>
-</div>
-<br>
-<br>
+{% block app_scripts %}
+<script src="{% static 'global/js/VT_functionality.js' %}"></script> 
+
 <script>
-// if you do not put this stuff it will not get saved
 let l        	= document.createElement("input");
 	l.type       = 'hidden';
 	l.name       = 'iLikes';
@@ -24,61 +22,94 @@ let d        = document.createElement("input");
 	d.id         = 'iDislikes';
 	d.value      = "{{d}}";
 
-// Load Treatment
-treatment = js_vars.treatment
-
 let dRT          = document.createElement("input");
 	dRT.type         = 'hidden';
 	dRT.name         = 'dRTFeedback';
 	dRT.id           = 'dRTFeedback';
 	dRT.value        = '';
-	var TStart       = new Date().getTime();
-	var TEnd         = new Date().getTime();
 
-	document.addEventListener("DOMContentLoaded", function(debug=true) {
-            console.log('Loading info');
-            let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
-            OtreeBody.appendChild(dRT);
-			OtreeBody.appendChild(l); // append likes
-			OtreeBody.appendChild(d); // apend dislikes
+var TStart       = new Date().getTime();
+var TEnd         = new Date().getTime();
 
-			console.log(treatment);
-			if (js_vars.treatment=='Control') {
-				//if we are in the control treatment, we don't show amount of dislikes
-				let x = document.getElementById('disliketext');
-            	x.style.visibility = 'hidden';
-			} else {
-				//if we are in the emotional treatment, we don't show the amount of likes
-				let c = document.getElementById('liketext');
-           		c.style.visibility = 'hidden';
-			}
+treatment = js_vars.treatment // Load Treatment
 
-            function addtoev() {
-            var bns = document.getElementsByTagName("button");
-            for (i = 0; i < bns.length; i++) {
-                bns[i].addEventListener("click", function() {
-                TEnd      = new Date().getTime();
-                dRT.value = +TEnd -TStart;   // end the timer and rewrite the RT value
-              });
-            }} 
-			
-            window.addEventListener("load",function() {
-            addtoev();
-            });
-        });
+  // When page is loaded
+document.addEventListener("DOMContentLoaded", function() {
+    let body = document.getElementById('game-container');
+    InitializeVT(body);                                                 // Initialize visual tracing
+    hideEverything();                                                   // Hide Everything at the beginning                     
+    ConvertButtons2VT('r0', sActivation = 'mouseover', 'r0');           // Mouseover for Row0
+    ConvertButtons2VT('r1', sActivation = 'mouseover', 'r1');           // Mouseover for Row1
+    // ConvertButtons2VT('r2', sActivation = 'mouseover', 'r2');           // Mouseover for Row2
+	resizeButtons(); 
+	showFeedback();      										        // Resize the text of all overflown buttons
+
+	function resizeButtons() {
+    lButtons = document.getElementsByClassName('game-btn');
+    for (let i=0; i<lButtons.length; i++) {
+        adjustText(lButtons[i]);
+        };
+    };
+
+	function adjustText(elem) {
+    let ratioWidth = elem.clientWidth/elem.scrollWidth;
+    let ratioHeight = elem.clientHeight/elem.scrollHeight;
+    // Set initial scale as 100%
+    if (ratioWidth<1 || ratioHeight<1) {
+        let ratio = Math.floor(100*Math.min(ratioWidth,ratioHeight))-1
+        elem.style.fontSize = `${ratio}%`;
+        console.log(`Resized ${elem.id} to ${ratio}%`);
+        };                                  
+    };
+
+	console.log('Loading info');
+    let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
+    OtreeBody.appendChild(dRT);
+	OtreeBody.appendChild(l); // append likes
+	OtreeBody.appendChild(d); // apend dislikes
+	OtreeBody.appendChild(sButtonClick);
+	OtreeBody.appendChild(sTimeClick);
+	console.log(treatment);
+
+	function showFeedback() {
+	let x = document.getElementById('R0C1');
+	let c = document.getElementById('R0C0');
+	if (js_vars.treatment=='Control') {
+        x.style.visibility = 'hidden';  //for control treatment we don't show amount of dislikes
+	} else if (js_vars.treatment=='Emotional') { 
+        c.style.visibility = 'hidden';  //for emotional treatment we don't show the amount of likes
+	} else {
+		x.style.visibility = 'visible';
+		c.style.visibility = 'visible';
+	}};
+
+          
+ });
 </script>
+{% endblock %}
 
-<div class="centered">
-<button class="btn btn-primary">Continue </button> 
+{% block content %}
+
+<div class="game-container">
+	<button type="button" class="game-btn btn-outcome r0 c0" id="R0C0"> 
+		<div class="btn-content"> <label id="iLikes" value="{{l}}">{{l}}</label>  <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> people out of 40 liked your post </div>
+		<div class="btn-hidden">  </div>
+	</button> 
+	<div class="break"> </div>
+	<button type="button" class="game-btn btn-outcome r1 c0" id="R0C1">
+		<div class="btn-content"> <label id="iDislikes" value="{{d}}">{{d}}</label> <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> people out of 40 <b>did not</b> like your post</div>
+		<div class="btn-hidden">  </div>
+	</button>  
 </div>
 
-<style>
-.centered {
-    text-align: center;
-    max-width:100%;
-    max-height:100%;
-}
-</style>
+<br><br>
+
+<div class="centered">
+	<button class="btn btn-primary">Continue </button> 
+</div>
 
 
-{{ endblock }}
+
+
+{% endblock %}
+
