@@ -89,6 +89,7 @@ def creating_session(subsession):
             LRmemelist = os.listdir('_static/LR')[1:-1] 
             pattern = r"meme(?P<number>\d{3})\.jpg"
             LRnumbers = [int(re.match(pattern, x).group("number")) for x in LRmemelist]  # take all of the numbers from the image files and put them on a list
+            # SHUFFLE
             LRnumbers = [LRnumbers[n-Constants.IMG_ON_PAGE:n] for n in range(Constants.IMG_ON_PAGE,len(LRnumbers), Constants.IMG_ON_PAGE)]
             p.LRmemematrix = LRnumbers
             HRnumbers = range(1,len(os.listdir('_static/HR')))
@@ -120,7 +121,7 @@ class ready(Page):
 class SplitScreen(Page):
     form_model = 'player' 
     form_fields = [
-        'iFeedLikes','iFeedDislikes',
+        'iFeedLikes','iFeedDislikes', 'sButtonClickScreen', 'sTimeClickScreen'
     ] 
 
     @staticmethod

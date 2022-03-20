@@ -81,9 +81,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	} else {
 		x.style.visibility = 'visible';
 		c.style.visibility = 'visible';
-	}};
-
-          
+	}};   
  });
 </script>
 {% endblock %}
@@ -92,12 +90,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <div class="game-container">
 	<button type="button" class="game-btn btn-outcome r0 c0" id="R0C0"> 
-		<div class="btn-content"> <label id="iLikes" value="{{l}}">{{l}}</label>  <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> people out of 40 liked your post </div>
+		<div class="btn-content"> <label id="iLikes" value="{{l}}">{{l}}</label>  <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> <br> people out of 40 <br> liked your post  </div>
 		<div class="btn-hidden">  </div>
 	</button> 
 	<div class="break"> </div>
 	<button type="button" class="game-btn btn-outcome r1 c0" id="R0C1">
-		<div class="btn-content"> <label id="iDislikes" value="{{d}}">{{d}}</label> <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> people out of 40 <b>did not</b> like your post</div>
+		<div class="btn-content"> <label id="iDislikes" value="{{d}}">{{d}}</label> <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> <br> people out of 40 <br> <b>did not</b> like <br> your post</div>
 		<div class="btn-hidden">  </div>
 	</button>  
 </div>

@@ -1,13 +1,16 @@
-<!-- {{ block title }}
-{{ endblock }} -->
 {{ block content }}
+
+{% block app_styles %}
+    <link href="{% static 'global/css/VT_functionality.css' %}" rel="stylesheet">
+    <link href="{% static 'global/css/SplitScreen.css' %}" rel="stylesheet">
+{% endblock %}
 
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="https://kit.fontawesome.com/f6dcf461c1.js" crossorigin="anonymous"></script>
 
 <div class="cover leftcover" id="leftcover">
-    <br><br><p >Scroll down to see more memes or press button below post. </p> <br><br>
+    <br><br><p >Scroll down to see more memes or press button below post. </p>
     {% for meme in url_list %}
     <div class="polaroid">
         <img src= "{% static meme %}"/> 
@@ -20,11 +23,20 @@
 
 <div class="cover rightcover" id="rightcover">
 {{ if subsession.round_number > 1 }} 
-    <br> <br><br><br>Your last post.    ᕕ(ᐛ)ᕗ         <br>   
-    <img style="width: 300px; position: fixed; margin-top: 150px; " src="{{ static image_path }}"/>
-    <br> <br><br><br>
-    <h2 style="position:fixed;font-weight: 200;"><p id="controltext">{{ likes }} <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> people out of 40 liked your post</p><br><br></h2>
-    <h2 style="position:fixed;font-weight: 200;"><p id="emotionaltext"><br>{{ dislikes }} <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> people out of 40 <b>did not</b> like your post</p><br><br></h2>
+    <br>  <br> Your last post.    ᕕ(ᐛ)ᕗ    
+    <img style="width: 300px; position: fixed; margin-top: 85px; " src="{{ static image_path }}"/>
+    <br><br><br><br><br> <br><br><br><br> <br><br><br><br> <br> <br> 
+   
+    <button type="button" class="game-btn btn-outcome r0 c0" id="buttonLikes"> 
+        <div class="btn-content"> {{ likes }} <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> <br> people out of 40 <br> liked your post </div>
+        <div class="btn-hidden">  </div>
+    </button> 
+    <div class="break"> </div>
+    <button type="button" class="game-btn btn-outcome r1 c0" id="buttonDislikes">
+        <div class="btn-content"> {{ dislikes }} <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> <br> people out of 40 <br> <b>did not</b> like <br> your post</div>
+        <div class="btn-hidden">  </div>
+    </button>      
+
 {{ endif }}
 </div>
 
@@ -32,6 +44,8 @@
     <button class="button_slide slide_right" id="post" style="align-self: center;">take me to post   ᕕ(ᐛ)ᕗ</button>   
 </div>
 
+{% block app_scripts %}
+<script src="{% static 'global/js/VT_functionality.js' %}"></script> 
 
 <script>   
 var Lcounter = 0;  //local counter for likes; once we go to posting we write this in db as iFeedLikes
@@ -89,15 +103,51 @@ iFeedDislikes.type       = 'hidden';
 iFeedDislikes.name       = 'iFeedDislikes';
 iFeedDislikes.id         = 'iFeedDislikes';
 iFeedDislikes.value      = '';
+
+// Create hidden input (Pressed Buttons)
+  var sButtonClick        = document.createElement("input");
+  sButtonClick.type       = 'hidden';
+  sButtonClick.name       = 'sButtonClickScreen';
+  sButtonClick.id         = 'sButtonClickScreen';
+  sButtonClick.value      = '';
+
+// Create hidden input (Time Buttons)
+  var sTimeClick   = document.createElement("input");
+  sTimeClick.type  = 'hidden';
+  sTimeClick.name  = 'sTimeClickScreen';
+  sTimeClick.id    = 'sTimeClickScreen';
+  sTimeClick.value = '';
   
 document.addEventListener("DOMContentLoaded", function(debug=false) {
     console.log('Loading info');
-    let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
-    OtreeBody.appendChild(iFeedLikes);
-    OtreeBody.appendChild(iFeedDislikes);
-
     let hidestuff = document.getElementsByClassName("card debug-info")[0];
     hidestuff.style.visibility = 'hidden';   // this hides the debug information so i do not go crazy 
+
+    let body = document.getElementById('rightcover');
+    InitializeVT(body);                                                 // Initialize visual tracing
+    // InitializeVT(body,sNameButtonClicks='sButtonClickScreen', sNameTimeClicks='sTimeClickScreen');                                                 // Initialize visual tracing
+    hideEverything();                                                   // Hide Everything at the beginning                     
+    ConvertButtons2VT('r0', sActivation = 'mouseover', 'r0');           // Mouseover for Row0
+    ConvertButtons2VT('r1', sActivation = 'mouseover', 'r1');           // Mouseover for Row1
+	resizeButtons();                                                     // Resize the text of all overflown buttons
+     										      
+	function resizeButtons() {
+        lButtons = document.getElementsByClassName('game-btn');
+    for (let i=0; i<lButtons.length; i++) {
+        adjustText(lButtons[i]);
+        };
+    };
+
+	function adjustText(elem) {
+    let ratioWidth = elem.clientWidth/elem.scrollWidth;
+    let ratioHeight = elem.clientHeight/elem.scrollHeight;
+    // Set initial scale as 100%
+    if (ratioWidth<1 || ratioHeight<1) {
+        let ratio = Math.floor(100*Math.min(ratioWidth,ratioHeight))-1
+        elem.style.fontSize = `${ratio}%`;
+        console.log(`Resized ${elem.id} to ${ratio}%`);
+        };                                  
+    };
 
     let post = document.getElementById("post");
     post.addEventListener("click", function(event) {
@@ -109,8 +159,8 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
     console.log(treatment);
     
     if (js_vars.round_number > 1) {
-    let x = document.getElementById('emotionaltext');
-    let c = document.getElementById('controltext');
+    let x = document.getElementById('buttonDislikes');
+    let c = document.getElementById('buttonLikes');
 	if (js_vars.treatment=='Control') {
         x.style.visibility = 'hidden';  //for control treatment we don't show amount of dislikes
 	} else if (js_vars.treatment=='Emotional') { 
@@ -119,7 +169,6 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
 		x.style.visibility = 'visible';
 		c.style.visibility = 'visible';
 	}};
-
 
     function mousePosition(event) {
     let left = document.getElementById('leftcover');
@@ -132,12 +181,12 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
         left.style.zIndex = "10";
         left.style.visibility = "hidden";
         right.style.zIndex = "1";
-        right.style.visibility = "visible";
+        right.style.display = "flex";
     } else {
         left.style.zIndex = "1";
         left.style.visibility = "visible";
         right.style.zIndex = "10";
-        right.style.visibility = "hidden";
+        right.style.display = "none";
     } 
     
     // console.log("pageX: ",event.pageX, 
@@ -149,164 +198,16 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
 
     window.addEventListener('mousemove', mousePosition);
 
+    let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
+    OtreeBody.appendChild(iFeedLikes);
+    OtreeBody.appendChild(iFeedDislikes);
+    OtreeBody.appendChild(sButtonClick);
+	OtreeBody.appendChild(sTimeClick);
+
 });
 </script>
-
-<style>
-
-.otree-timer {
-    display: none;
-}
-
-.cover {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    width: 50vw;
-    height: 100vh;
-    /* bottom:100%; */
-    top: 50vh;
-    background-color: blue;
-    /* z-index: -1; */
-}
-
-.container {
-  display: flex;  
-  flex-direction: row;
-  /* width: 100vw;  */
-  /* gap: 2px 20px; row-gap column gap */
-  /* background: black;  */
-}
+{% endblock %}
 
 
-.leftcover {
-    left: 25vw;
-    display: flex;
-    flex-direction: column;
-    /* z-index: -1; */
-    align-items: center;
-}
-
-.rightcover {
-    left: 75vw;
-    position: fixed; /* This is in order to keep the social reward always there */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* z-index: -1; */
-}
-
-.leftscreen {
-    width: 50vw; 
-    /* left: 25vw; */
-    align-items: center; 
-}
-
-.rightscreen {
-    width: 50vw; 
-    /* left: 75vw; */
-}
-
-.lastpost {
-    width: 300px;
-    position: fixed;
-    margin-top: 250px;
-}
-
-img {
-    max-width: 100%;
-    max-height: 100%;
-}
-
-
-.polaroid {
-    width: 70%;
-    background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    display: flex; 
-    align-items: center; 
-    flex-flow: row wrap;
-    justify-content: center;
-    gap: 50px;
-    margin-bottom: 25px; /*Margin between polaroids */
-  }
-
-.h2 {
-    text-align: center;
-    color: #333;
-    letter-spacing: 0.05em;
-    margin: 0 0 0.4em;
-    font-size: 0.7em;
-    font-family: sans-serif;
-
-}
-
-.btn {
-    background: transparent;
-    border: none;
-    margin: 0; /*25px */ /*Space around the buttons */
-    font-size: 70px;   /*88px */
-    outline: none;
-    color: grey;
-}
-
-.active {
-    color: rgb(184, 13, 13);
-}
-
-
-.post-container {
-    position:           fixed;
-    bottom:             -100%;
-    left:               0;
-    right:              0;
-    background:         #edbed2ea;
-    color:              #f5f6fa;
-    padding:            32px;
-    transition:         200ms;
-    display:            flex;
-    align-items:        center;
-    justify-content:    space-evenly;
-    z-index: 100;
-}
-  
-.post-container.active {bottom: 0;}
-
-.post-container a,p,.cookie-button {color: #f5f6fa;}
-
-.post-container p { flex-grow: 1;}
-
-
-.button_slide {
-  color: rgb(0, 0, 0);
-  display: flex;
-  align-items: center; 
-  flex-flow: row wrap;
-  justify-content: center;
-  border: 2px solid rgb(216, 2, 134);
-  border-radius: 0px;
-  padding: 18px 36px;
-  font-family: "Lucida Console", Monaco, monospace;
-  font-size: 14px;
-  letter-spacing: 1px;
-  cursor: pointer;
-  box-shadow: inset 0 0 0 0 #D80286;
-  -webkit-transition: ease-out 0.4s;
-  -moz-transition: ease-out 0.4s;
-  transition: ease-out 0.4s;
-}
-
-.slide_right:hover {
-  box-shadow: inset 400px 0 0 0 #D80286;
-}
-
-/* for now this collides with animateButton */
-
-/* .btn i:hover{
-    cursor: pointer;
-} */
-
-</style>
-
-<!-- {{ next_button }} -->
 
 {{ endblock }}

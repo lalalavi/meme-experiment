@@ -1,0 +1,152 @@
+
+.otree-timer {
+    display: none;
+}
+
+.cover {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    height: 100vh;
+    /* bottom:100%; */
+    top: 50vh;
+    background-color: blue;
+    /* z-index: -1; */
+}
+
+.container {
+  display: flex;  
+  flex-direction: row;
+  /* width: 100vw;  */
+  /* gap: 2px 20px; row-gap column gap */
+  /* background: black;  */
+}
+
+
+.leftcover {
+    left: 25vw;
+    display: flex;
+    flex-direction: column;
+    /* z-index: -1; */
+    align-items: center;
+}
+
+.rightcover {
+    left: 75vw;
+    position: fixed; /* This is in order to keep the social reward always there */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* z-index: -1; */
+}
+
+.leftscreen {
+    width: 50vw; 
+    /* left: 25vw; */
+    align-items: center; 
+}
+
+.rightscreen {
+    width: 50vw; 
+    /* left: 75vw; */
+}
+
+.lastpost {
+    width: 300px;
+    position: fixed;
+    margin-top: 250px;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+
+.polaroid {
+    width: 70%;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: flex; 
+    align-items: center; 
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 25px; /*Margin between polaroids */
+  }
+
+.h2 {
+    text-align: center;
+    color: #333;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.4em;
+    font-size: 0.7em;
+    font-family: sans-serif;
+
+}
+
+.btn {
+    background: transparent;
+    border: none;
+    margin: 0; /*25px */ /*Space around the buttons */
+    font-size: 70px;   /*88px */
+    outline: none;
+    color: grey;
+}
+
+.active {
+    color: rgb(184, 13, 13);
+}
+
+
+.post-container {
+    position:           fixed;
+    bottom:             -100%;
+    left:               0;
+    right:              0;
+    background:         #edbed2ea;
+    color:              #f5f6fa;
+    padding:            15px;
+    transition:         200ms;
+    display:            flex;
+    align-items:        center;
+    justify-content:    space-evenly;
+    z-index: 100;
+}
+  
+.post-container.active {bottom: 0;}
+
+.post-container a,p,.cookie-button {color: #f5f6fa;}
+
+.post-container p { flex-grow: 1;}
+
+
+.button_slide {
+  color: rgb(0, 0, 0);
+  display: flex;
+  align-items: center; 
+  flex-flow: row wrap;
+  justify-content: center;
+  border: 2px solid rgb(216, 2, 134);
+  border-radius: 0px;
+  padding: 18px 36px;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 0 #D80286;
+  -webkit-transition: ease-out 0.4s;
+  -moz-transition: ease-out 0.4s;
+  transition: ease-out 0.4s;
+}
+
+.slide_right:hover {
+  box-shadow: inset 400px 0 0 0 #D80286;
+}
+
+/* for now this collides with animateButton */
+
+/* .btn i:hover{
+    cursor: pointer;
+} */
+
