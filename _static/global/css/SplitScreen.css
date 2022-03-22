@@ -22,7 +22,6 @@
   /* background: black;  */
 }
 
-
 .leftcover {
     left: 25vw;
     display: flex;
@@ -73,6 +72,7 @@ img {
     justify-content: center;
     gap: 50px;
     margin-bottom: 25px; /*Margin between polaroids */
+    z-index: -1; 
   }
 
 .h2 {

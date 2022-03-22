@@ -9,10 +9,10 @@
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="https://kit.fontawesome.com/f6dcf461c1.js" crossorigin="anonymous"></script>
 
-<div class="cover leftcover" id="leftcover">
+<div class="cover leftcover" id="leftcover" >
     <br><br><p >Scroll down to see more memes or press button below post. </p>
     {% for meme in url_list %}
-    <div class="polaroid">
+    <div class="polaroid" id="polaroid-{% forloop.counter0 %}" onmouseenter="mouselog(event,this.id)" onmouseleave="mouselog(event,this.id)">
         <img src= "{% static meme %}"/> 
         <br>
         <button type="button" class="btn" onclick="animateButtons(this.id)" id="dislike-{% forloop.counter0 %}"> <i class="fa fa-thumbs-down"></i></button>            
@@ -21,7 +21,7 @@
     {% endfor %} 
 </div>
 
-<div class="cover rightcover" id="rightcover">
+<div class="cover rightcover" id="rightcover" onmouseenter="mouselog(event,this.id)" onmouseleave="mouselog(event,this.id)">
 {{ if subsession.round_number > 1 }} 
     <br>  <br> Your last post.    ᕕ(ᐛ)ᕗ    
     <img style="width: 300px; position: fixed; margin-top: 85px; " src="{{ static image_path }}"/>
@@ -153,6 +153,7 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
     post.addEventListener("click", function(event) {
         iFeedLikes.value = Lcounter ; 
         iFeedDislikes.value = Dcounter ;
+
         console.log('Post button was pressed');
     });
 
@@ -175,17 +176,17 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
     let right = document.getElementById('rightcover');
     const results = left.getBoundingClientRect();    // returns DOMRect OBJECT with bottom, height, left, right, top, width (!!!!!), x, y of ELEMENT
     let widthLeft = results.width;                   // we access the with only
-    console.log(widthLeft,event.clientX);
+    // console.log(widthLeft,event.clientX);
 
     if (event.clientX > widthLeft) {
-        left.style.zIndex = "10";
+        left.style.zIndex = "1";
         left.style.visibility = "hidden";
-        right.style.zIndex = "1";
+        right.style.zIndex = "10";
         right.style.display = "flex";
     } else {
-        left.style.zIndex = "1";
+        left.style.zIndex = "10";
         left.style.visibility = "visible";
-        right.style.zIndex = "10";
+        right.style.zIndex = "1";
         right.style.display = "none";
     } 
     
@@ -205,6 +206,59 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
 	OtreeBody.appendChild(sTimeClick);
 
 });
+
+var mouseenterTime = 0;
+var fixations = [];
+var order = [];
+
+function mouselog(event,string) {
+  let currentTime = new Date();
+  if (event.type === 'mouseenter') {
+        mouseenterTime = currentTime.getTime();
+        console.log('mouseenterTime in '+ string+ ' was:' + mouseenterTime);
+    } else if (event.type === 'mouseleave') {
+        var mouseoverTime = currentTime.getTime() - mouseenterTime;
+        console.log('mouseover time was: ' + mouseoverTime);
+        fixations = fixations + ';' + mouseoverTime;
+        order = order + ';' + string;
+        console.log(fixations, order);
+    } 
+}
+
+// $(document).on('mouseenter mouseleave', '#rightcover', function (evt) {
+//     var currentTime = new Date();
+//     if (evt.type === 'mouseenter') {
+//         mouseenterTime = currentTime.getTime();
+//         console.log('mouseenterTime (#1): ' + mouseenterTime);
+//     } else if (evt.type === 'mouseleave') {
+//         // console.log('mouseenterTime (#2): ' + mouseenterTime);
+//         var mouseoverTime = currentTime.getTime() - mouseenterTime;
+//         console.log('mouseover time was: ' + mouseoverTime);
+//         fixations = fixations + ';' + mouseoverTime;
+//         order = order + ';' + 'socialR';
+//         console.log(fixations, order);
+//         // Checking if the Hover action has latest for longer than 3 seconds. 
+//         // if(mouseoverTime > 3000) {console.log("Three seconds have elapsed")}
+//     }
+// })
+
+// $(document).on('mouseenter mouseleave', '#leftcover', function (evt) {
+//     var currentTime = new Date();
+//     if (evt.type === 'mouseenter') {
+//         mouseenterTime = currentTime.getTime();
+//         console.log('mouseenterTime (#1): ' + mouseenterTime);
+//     } else if (evt.type === 'mouseleave') {
+//         // if related target is still the same we dont do nothing
+
+
+//         var mouseoverTime = currentTime.getTime() - mouseenterTime;
+//         console.log('mouseover time was: ' + mouseoverTime);
+        
+//         fixations = fixations + ';' + mouseoverTime;
+//         order = order + ';' + 'contentR';
+//         console.log(fixations, order);
+//     }
+// })
 </script>
 {% endblock %}
 

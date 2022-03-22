@@ -40,6 +40,9 @@ class Player(BasePlayer):
     sTimeClick         = models.LongStringField(blank=True) # Time each of them was looked at
     sButtonClickScreen = models.LongStringField(blank=True) 
     sTimeClickScreen   = models.LongStringField(blank=True) 
+    dContentReward     = models.FloatField(blank=True)
+    dSocialReward      = models.FloatField(blank=True)
+    
     ## Participant input Variables 
     iFeedLikes         = models.IntegerField(blank=True)
     iFeedDislikes      = models.IntegerField(blank=True)
@@ -59,8 +62,6 @@ class Player(BasePlayer):
     iImgPost6          = models.IntegerField(blank=True)
     ## RT variables
     # dExpiry          = models.IntegerField(blank=True)
-    dContentReward     = models.FloatField(blank=True)
-    dSocialReward      = models.FloatField(blank=True)
     dRTDec1            = models.FloatField(blank=True)
     dRTFeed            = models.FloatField(blank=True) 
     dRTPost            = models.FloatField(blank=True) #d because the type is double, reaction time
@@ -89,7 +90,7 @@ def creating_session(subsession):
             LRmemelist = os.listdir('_static/LR')[1:-1] 
             pattern = r"meme(?P<number>\d{3})\.jpg"
             LRnumbers = [int(re.match(pattern, x).group("number")) for x in LRmemelist]  # take all of the numbers from the image files and put them on a list
-            # SHUFFLE
+            LRnumbers = random.sample(LRnumbers, len(LRnumbers))        #shuffle so order is not the same across participants
             LRnumbers = [LRnumbers[n-Constants.IMG_ON_PAGE:n] for n in range(Constants.IMG_ON_PAGE,len(LRnumbers), Constants.IMG_ON_PAGE)]
             p.LRmemematrix = LRnumbers
             HRnumbers = range(1,len(os.listdir('_static/HR')))
