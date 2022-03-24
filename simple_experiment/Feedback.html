@@ -72,8 +72,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	console.log(treatment);
 
 	function showFeedback() {
-	let x = document.getElementById('R0C1');
-	let c = document.getElementById('R0C0');
+	let x = document.getElementById('btnD');
+	let c = document.getElementById('btnL');
 	if (js_vars.treatment=='Control') {
         x.style.visibility = 'hidden';  //for control treatment we don't show amount of dislikes
 	} else if (js_vars.treatment=='Emotional') { 
@@ -89,12 +89,12 @@ document.addEventListener("DOMContentLoaded", function() {
 {% block content %}
 
 <div class="game-container">
-	<button type="button" class="game-btn btn-outcome r0 c0" id="R0C0"> 
+	<button type="button" class="game-btn btn-outcome r0 c0" id="btnL"> 
 		<div class="btn-content"> <label id="iLikes" value="{{l}}">{{l}}</label>  <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> <br> people out of 40 <br> liked your post  </div>
 		<div class="btn-hidden">  </div>
 	</button> 
 	<div class="break"> </div>
-	<button type="button" class="game-btn btn-outcome r1 c0" id="R0C1">
+	<button type="button" class="game-btn btn-outcome r1 c0" id="btnD">
 		<div class="btn-content"> <label id="iDislikes" value="{{d}}">{{d}}</label> <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> <br> people out of 40 <br> <b>did not</b> like <br> your post</div>
 		<div class="btn-hidden">  </div>
 	</button>  

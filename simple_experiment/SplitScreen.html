@@ -9,30 +9,35 @@
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="https://kit.fontawesome.com/f6dcf461c1.js" crossorigin="anonymous"></script>
 
-<div class="cover leftcover" id="leftcover" >
-    <br><br><p >Scroll down to see more memes or press button below post. </p>
+<div class="cover leftcover" id="leftcover" name="lS" style="position:absolute;">
+    <!-- <div class="try"  style="position:static; background-color: blue;"> -->
+    <br><br><p style="color: black;">Scroll down to see more memes or press button below post. </p>
     {% for meme in url_list %}
-    <div class="polaroid" id="polaroid-{% forloop.counter0 %}" onmouseenter="mouselog(event,this.id)" onmouseleave="mouselog(event,this.id)">
+    <div class="polaroid" id="polaroid-{% forloop.counter0 %}" >
         <img src= "{% static meme %}"/> 
         <br>
         <button type="button" class="btn" onclick="animateButtons(this.id)" id="dislike-{% forloop.counter0 %}"> <i class="fa fa-thumbs-down"></i></button>            
         <button type="button" class="btn" onclick="animateButtons(this.id)" id="like-{% forloop.counter0 %}"><i class="fas fa-heart"></i></button>
-    </div>
+    <!-- </div> -->
+    </div> 
     {% endfor %} 
 </div>
 
-<div class="cover rightcover" id="rightcover" onmouseenter="mouselog(event,this.id)" onmouseleave="mouselog(event,this.id)">
+<div class="cover rightcover" id="rightcover" name="rS" onmouseenter="mouselog(event)" onmouseleave="mouselog(event)">
+{{ if subsession.round_number == 1 }} 
+    <br><br> Your history will be displayed here once you post.
+{{ endif }}
 {{ if subsession.round_number > 1 }} 
     <br>  <br> Your last post.    ᕕ(ᐛ)ᕗ    
     <img style="width: 300px; position: fixed; margin-top: 85px; " src="{{ static image_path }}"/>
     <br><br><br><br><br> <br><br><br><br> <br><br><br><br> <br> <br> 
    
-    <button type="button" class="game-btn btn-outcome r0 c0" id="buttonLikes"> 
+    <button type="button" class="game-btn btn-outcome r0 c0" id="btnL"> 
         <div class="btn-content"> {{ likes }} <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> <br> people out of 40 <br> liked your post </div>
         <div class="btn-hidden">  </div>
     </button> 
     <div class="break"> </div>
-    <button type="button" class="game-btn btn-outcome r1 c0" id="buttonDislikes">
+    <button type="button" class="game-btn btn-outcome r1 c0" id="btnD">
         <div class="btn-content"> {{ dislikes }} <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> <br> people out of 40 <br> <b>did not</b> like <br> your post</div>
         <div class="btn-hidden">  </div>
     </button>      
@@ -50,9 +55,50 @@
 <script>   
 var Lcounter = 0;  //local counter for likes; once we go to posting we write this in db as iFeedLikes
 var Dcounter = 0;
+var mouseenterTime = 0;
+var fixations = [];
+var order = [];
+var last = 'x';
+
+// Create hidden input (number of likes in the feed)
+let iFeedLikes        = document.createElement("input");
+iFeedLikes.type       = 'hidden';
+iFeedLikes.name       = 'iFeedLikes';
+iFeedLikes.id         = 'iFeedLikes';
+iFeedLikes.value      = '';
+
+let iFeedDislikes        = document.createElement("input");
+iFeedDislikes.type       = 'hidden';
+iFeedDislikes.name       = 'iFeedDislikes';
+iFeedDislikes.id         = 'iFeedDislikes';
+iFeedDislikes.value      = '';
+
+let sOrderFixations        = document.createElement("input");
+sOrderFixations.type       = 'hidden';
+sOrderFixations.name       = 'sOrderFixations';
+sOrderFixations.id         = 'sOrderFixations';
+sOrderFixations.value      = '';
+
+let sFixations        = document.createElement("input");
+sFixations.type       = 'hidden';
+sFixations.name       = 'sFixations';
+sFixations.id         = 'sFixations';
+sFixations.value      = '';
+
+var sButtonClick        = document.createElement("input");
+sButtonClick.type       = 'hidden';
+sButtonClick.name       = 'sButtonClickScreen';
+sButtonClick.id         = 'sButtonClickScreen';
+sButtonClick.value      = '';
+
+var sTimeClick   = document.createElement("input");
+sTimeClick.type  = 'hidden';
+sTimeClick.name  = 'sTimeClickScreen';
+sTimeClick.id    = 'sTimeClickScreen';
+sTimeClick.value = '';
+
 treatment = js_vars.treatment;
 round_number = js_vars.round_number;
-
 
 function animateButtons(id) {
     lSplit = id.split("-");
@@ -91,35 +137,49 @@ function animateButtons(id) {
     console.log(Lcounter, Dcounter);
 }
 
-// Create hidden input (number of likes in the feed)
-let iFeedLikes        = document.createElement("input");
-iFeedLikes.type       = 'hidden';
-iFeedLikes.name       = 'iFeedLikes';
-iFeedLikes.id         = 'iFeedLikes';
-iFeedLikes.value      = '';
+function mouselog(event) {
+let currentTime = new Date();
+let left = document.getElementById('leftcover');
+let right = document.getElementById('rightcover');
+const results = left.getBoundingClientRect();    // returns DOMRect OBJECT with bottom, height, left, right, top, width (!!!!!), x, y of ELEMENT
+let widthLeft = results.width; 
 
-let iFeedDislikes        = document.createElement("input");
-iFeedDislikes.type       = 'hidden';
-iFeedDislikes.name       = 'iFeedDislikes';
-iFeedDislikes.id         = 'iFeedDislikes';
-iFeedDislikes.value      = '';
-
-// Create hidden input (Pressed Buttons)
-  var sButtonClick        = document.createElement("input");
-  sButtonClick.type       = 'hidden';
-  sButtonClick.name       = 'sButtonClickScreen';
-  sButtonClick.id         = 'sButtonClickScreen';
-  sButtonClick.value      = '';
-
-// Create hidden input (Time Buttons)
-  var sTimeClick   = document.createElement("input");
-  sTimeClick.type  = 'hidden';
-  sTimeClick.name  = 'sTimeClickScreen';
-  sTimeClick.id    = 'sTimeClickScreen';
-  sTimeClick.value = '';
+if (event.type === 'mouseenter' && last === 'x') {     // entering right for the first time
+        mouseenterTime = currentTime.getTime();
+        console.log('FIRST enter time in rS was:' + mouseenterTime);
+        last = 'rS';
+    } else if (event.type === 'mouseenter' && last === 'lS') {     // entering right after being left
+        var mouseoverTime = currentTime.getTime() - mouseenterTime;
+        console.log('mouseover time in left screen time was: ' + mouseoverTime);
+        fixations = fixations + ';' + mouseoverTime;
+        order = order + ';' + last;
+        console.log(fixations, order);
+        mouseenterTime = currentTime.getTime();
+        console.log('mouseenterTime in rS was:' + mouseenterTime);
+        last = 'rS';
+    } else if (event.type === 'mouseleave') { 
+        var mouseoverTime = currentTime.getTime() - mouseenterTime;
+        console.log('mouseover time in right screen was: ' + mouseoverTime);
+        fixations = fixations + ';' + mouseoverTime;
+        last = 'rS'; 
+        order = order + ';' + last;
+        console.log(fixations, order); 
+    } 
+if (last === 'x' && event.clientX < widthLeft) {
+        mouseenterTime = currentTime.getTime();
+        console.log('FIRST enter time in lS was:' + mouseenterTime);   
+        last = 'lS';
+     } else if (last === 'rS' && event.clientX < widthLeft) {
+        mouseenterTime = currentTime.getTime();
+        console.log('mouseenterTime in lS was:' + mouseenterTime);   
+        last = 'lS';
+     }
+}
   
 document.addEventListener("DOMContentLoaded", function(debug=false) {
     console.log('Loading info');
+    console.log(treatment);
+
     let hidestuff = document.getElementsByClassName("card debug-info")[0];
     hidestuff.style.visibility = 'hidden';   // this hides the debug information so i do not go crazy 
 
@@ -153,15 +213,14 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
     post.addEventListener("click", function(event) {
         iFeedLikes.value = Lcounter ; 
         iFeedDislikes.value = Dcounter ;
-
+        sFixations.value = fixations ;
+        sOrderFixations.value = order ; 
         console.log('Post button was pressed');
     });
 
-    console.log(treatment);
-    
     if (js_vars.round_number > 1) {
-    let x = document.getElementById('buttonDislikes');
-    let c = document.getElementById('buttonLikes');
+    let x = document.getElementById('btnD');
+    let c = document.getElementById('btnL');
 	if (js_vars.treatment=='Control') {
         x.style.visibility = 'hidden';  //for control treatment we don't show amount of dislikes
 	} else if (js_vars.treatment=='Emotional') { 
@@ -176,8 +235,6 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
     let right = document.getElementById('rightcover');
     const results = left.getBoundingClientRect();    // returns DOMRect OBJECT with bottom, height, left, right, top, width (!!!!!), x, y of ELEMENT
     let widthLeft = results.width;                   // we access the with only
-    // console.log(widthLeft,event.clientX);
-
     if (event.clientX > widthLeft) {
         left.style.zIndex = "1";
         left.style.visibility = "hidden";
@@ -188,14 +245,7 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
         left.style.visibility = "visible";
         right.style.zIndex = "1";
         right.style.display = "none";
-    } 
-    
-    // console.log("pageX: ",event.pageX, 
-    // "pageY: ", event.pageY,            //calculate the x and y values from the beginning of the web page
-    // "clientX: ", event.clientX,        //calculate the x and y values from visible screen
-    // "clientY:", event.clientY)
-    // if event.clientX <
-    }
+    }}
 
     window.addEventListener('mousemove', mousePosition);
 
@@ -204,61 +254,10 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
     OtreeBody.appendChild(iFeedDislikes);
     OtreeBody.appendChild(sButtonClick);
 	OtreeBody.appendChild(sTimeClick);
-
+    OtreeBody.appendChild(sFixations);
+    OtreeBody.appendChild(sOrderFixations);
 });
 
-var mouseenterTime = 0;
-var fixations = [];
-var order = [];
-
-function mouselog(event,string) {
-  let currentTime = new Date();
-  if (event.type === 'mouseenter') {
-        mouseenterTime = currentTime.getTime();
-        console.log('mouseenterTime in '+ string+ ' was:' + mouseenterTime);
-    } else if (event.type === 'mouseleave') {
-        var mouseoverTime = currentTime.getTime() - mouseenterTime;
-        console.log('mouseover time was: ' + mouseoverTime);
-        fixations = fixations + ';' + mouseoverTime;
-        order = order + ';' + string;
-        console.log(fixations, order);
-    } 
-}
-
-// $(document).on('mouseenter mouseleave', '#rightcover', function (evt) {
-//     var currentTime = new Date();
-//     if (evt.type === 'mouseenter') {
-//         mouseenterTime = currentTime.getTime();
-//         console.log('mouseenterTime (#1): ' + mouseenterTime);
-//     } else if (evt.type === 'mouseleave') {
-//         // console.log('mouseenterTime (#2): ' + mouseenterTime);
-//         var mouseoverTime = currentTime.getTime() - mouseenterTime;
-//         console.log('mouseover time was: ' + mouseoverTime);
-//         fixations = fixations + ';' + mouseoverTime;
-//         order = order + ';' + 'socialR';
-//         console.log(fixations, order);
-//         // Checking if the Hover action has latest for longer than 3 seconds. 
-//         // if(mouseoverTime > 3000) {console.log("Three seconds have elapsed")}
-//     }
-// })
-
-// $(document).on('mouseenter mouseleave', '#leftcover', function (evt) {
-//     var currentTime = new Date();
-//     if (evt.type === 'mouseenter') {
-//         mouseenterTime = currentTime.getTime();
-//         console.log('mouseenterTime (#1): ' + mouseenterTime);
-//     } else if (evt.type === 'mouseleave') {
-//         // if related target is still the same we dont do nothing
-
-
-//         var mouseoverTime = currentTime.getTime() - mouseenterTime;
-//         console.log('mouseover time was: ' + mouseoverTime);
-        
-//         fixations = fixations + ';' + mouseoverTime;
-//         order = order + ';' + 'contentR';
-//         console.log(fixations, order);
-//     }
-// })
 </script>
 {% endblock %}
 

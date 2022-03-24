@@ -40,9 +40,8 @@ class Player(BasePlayer):
     sTimeClick         = models.LongStringField(blank=True) # Time each of them was looked at
     sButtonClickScreen = models.LongStringField(blank=True) 
     sTimeClickScreen   = models.LongStringField(blank=True) 
-    dContentReward     = models.FloatField(blank=True)
-    dSocialReward      = models.FloatField(blank=True)
-    
+    sFixations         = models.LongStringField(blank=True) 
+    sOrderFixations    = models.LongStringField(blank=True) 
     ## Participant input Variables 
     iFeedLikes         = models.IntegerField(blank=True)
     iFeedDislikes      = models.IntegerField(blank=True)
@@ -61,15 +60,12 @@ class Player(BasePlayer):
     iImgPost5          = models.IntegerField(blank=True)
     iImgPost6          = models.IntegerField(blank=True)
     ## RT variables
-    # dExpiry          = models.IntegerField(blank=True)
     dRTDec1            = models.FloatField(blank=True)
     dRTFeed            = models.FloatField(blank=True) 
     dRTPost            = models.FloatField(blank=True) #d because the type is double, reaction time
     dRTTags            = models.FloatField(blank=True)
     dRTFeedback        = models.FloatField(blank=True)
     dRTEmotionalStatus = models.FloatField(blank=True) 
-
-
 
 ###################################################################################################
 #  FUNCTION ᕕ(ᐛ)ᕗ
@@ -122,7 +118,7 @@ class ready(Page):
 class SplitScreen(Page):
     form_model = 'player' 
     form_fields = [
-        'iFeedLikes','iFeedDislikes', 'sButtonClickScreen', 'sTimeClickScreen'
+        'iFeedLikes','iFeedDislikes', 'sButtonClickScreen', 'sTimeClickScreen', 'sOrderFixations', 'sFixations',
     ] 
 
     @staticmethod
@@ -307,6 +303,7 @@ class HowDoYaFeel(Page):
 
 
 #! THINGS TO THINK
-
+# change mouseover for mouseenter in VT buttons
+# buttons under last post sometimes are hidden under post in splitscreen
 
 page_sequence = [ready, SplitScreen, Posting, addTags, Feedback, HowDoYaFeel]
