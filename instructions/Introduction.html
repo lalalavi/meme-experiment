@@ -1,0 +1,21 @@
+{% extends "_templates/global/SliderTemplate.html" %}
+
+{% block app_scripts %}
+    <script>
+        var bConsent = false;
+        // Disable Next button if checkbox not ticked when Next button is clicked-- >
+        document.getElementById("submit").addEventListener("click", (event) => {
+            if ($('#checkBox').is(':not(:checked)')) {
+                document.getElementById("submit").disabled = true;
+            }
+        });
+    </script>
+
+{% endblock %}
+
+
+{% block app_styles %}
+<link rel="stylesheet" href="{% static 'global/css/styling10.css' %}">
+{% endblock %}
+
+

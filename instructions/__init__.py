@@ -1,14 +1,56 @@
 from otree.api import *
+from statistics import mode
+import time
 
 doc = """
 Includes consent, instructions, and comprehension test for the meme experiment (◕ᴗ◕✿) 
 """
 
-
 class Constants(BaseConstants):
     name_in_url = 'instructions'
     players_per_group = None
     num_rounds = 1
+    UvA_logo = 'global/figures/UvA_logo.png'
+    FlatFee = "3 euros"
+
+    ## Slides for introduction
+    SlidePath = 'Instructions/slide'
+    SlidesIntro = [
+        dict(
+            Title = 'Introduction',
+            path='Introduction/slide0.html',
+            ),
+        dict(
+            Title = 'Informed Consent',
+            path='Introduction/slide1.html',
+            ),        
+    ]
+    Slides = [
+        dict(
+            Title = 'The Experiment',
+            path=SlidePath+'0.html',
+            ),
+        dict(
+            Title = 'Your Decisions',
+            path=SlidePath+'1.html'
+            ),
+        dict(
+            Title = 'The product characteristics',
+            path=SlidePath+'2.html'
+            ),
+        dict(
+            Title = 'Purchasing Platform',
+            path=SlidePath+'3.html'
+            ),
+        # dict(
+        #     Title = 'The product characteristics',
+        #     path=SlidePath+'4.html'
+        #     ),
+        dict(
+            Title = 'Is it all clear? Please answer these questions correctly to proceed:',
+            path=SlidePath+'4.html'
+            ),
+    ]
 
 class Subsession(BaseSubsession):
     pass
@@ -17,35 +59,71 @@ class Group(BaseGroup):
     pass
 
 class Player(BasePlayer):
-    consent = models.IntegerField(
-            choices=[[1, 'I would like to participate'],],
-            widget=widgets.RadioSelect,
-            label="",)  
-    # q1 = models.IntegerField(
-    #     label="Q1: Pick the TRUE statement",
-    #     choices=[
-    #         [1, 'The feedback of the memes I choose is not real'] ,
-    #         [2, 'The maximum amount of likes I can receive is 40'] ,
-    #         [3, 'The maximum amount of likes I can receive is 34'] 
-    #         ],
-    #      blank=True)
-    # q2 = models.IntegerField(
-    #     label="Q2: Pick the TRUE statement",
-    #     choices=[
-    #         [1, 'I am required to put tags in my posts'],
-    #         [2, 'I am required to inform of my emotional status'] ,
-    #         [3, 'I am required to post from time to time']
-    #     ],
-    #     blank=True)
-    # q3 = models.IntegerField(
-    #     label="Q3: Pick the TRUE statement",
-    #     choices=[
-    #         [1, 'I select a meme by pressing a number on my keyboard'],
-    #         [2, 'I select a meme by clicking on it with my mouse'] ,
-    #     ],
-    #     blank=True)    
+    sProlific_ID        = models.StringField()
+    sSlideSequence      = models.StringField(blank=True)
+    sSlideTime          = models.StringField(blank=True)
+    dPixelRatio         = models.FloatField()
 
-# PAGES
+
+
+###################################################################################################
+#  Pages ᕕ(ᐛ)ᕗ
+###################################################################################################
+
+class Introduction(Page):
+
+    @staticmethod
+    def vars_for_template(player):
+        return dict(
+            UvA_logo = Constants.UvA_logo,
+            Slides = Constants.SlidesIntro,
+        )
+
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        p = player.participant
+        # Initialize Focus variables#        
+        p.startTime          = time.time()
+        p.iOutFocus          = 0
+        p.iFullscreenChanges = 0
+        p.dTimeOutFocus      = 0
+        player.sProlific_ID     = p.label
+
+
+class Calibration(Page):
+    form_model = 'player'
+    form_fields = [ 'dPixelRatio' ]
+
+
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        part = player.participant
+        part.dPixelRatio = player.dPixelRatio
+
+class Instructions(Page):
+    form_model = 'player'
+    form_fields = [ 
+        'sSlideSequence',
+        'sSlideTime',
+        ]
+    
+    @staticmethod
+    def vars_for_template(player):
+        return dict(
+            Slides = Constants.Slides,
+            # lAttr = player.participant.lAttr,
+    )
+
+    @staticmethod
+    def js_vars(player: Player):
+        session = player.session
+        p = player.participant
+        return {
+            'bRequireFS'        : session.config['bRequireFS'],
+            'bCheckFocus'       : session.config['bCheckFocus'],
+            'dPixelRatio'       : p.dPixelRatio,
+        }
+
 class consent(Page):
     form_model = 'player'
     form_fields = ['consent']
@@ -67,4 +145,4 @@ class understanding(Page):
     #         return 'Some of your answers contain an error'
 
 
-page_sequence = [consent, instruct_0, instruct_1, understanding]
+page_sequence = [Introduction, Calibration, Instructions]

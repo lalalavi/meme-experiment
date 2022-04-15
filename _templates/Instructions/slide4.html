@@ -1,0 +1,55 @@
+<div class="flex-questions">
+    <ul>
+        <li>
+            <!--Question 1-->
+            <div class="inst-question">
+                <label for="Q1">How many minutes do you have to interact in the platform?</label>
+            </div>
+            <div class="answer-field">
+                <input type="text" name="Q1" id="Q1" class="ControlQuestions">
+            </div>
+
+        </li>
+        <div class="hint" id="hint1">
+            <!-- Hint -->
+            Incorrect: see slide 2!
+        </div>
+        <li>
+            <!--Question 2-->
+            <div class="inst-question">
+                <label for="Q2"> Pick the <b>TRUE</b> statement</label>
+            </div>
+            <div class="answer-field">
+                <select name="Q2" id="Q2" class="dropdown ControlQuestions">
+                    <option value="nothing">--Select--</option>
+                    <option value="a">The feedback of the memes I choose is not real</option>
+                    <option value="b">The maximum amount of likes I can receive is 40</option>
+                    <option value="c">The maximum amount of likes I can receive is XXXX</option>
+                </select>
+            </div>
+        </li>
+        <div class="hint" id="hint2">
+            Incorrect: see slide 3!
+        </div>
+        <li>
+            <!--Question 3-->
+            <div class="inst-question">
+                <label for="Q3">Pick the <b>TRUE</b> statement</label>
+            </div>
+            <div class="answer-field">
+                <select name="Q3" id="Q3" class="dropdown ControlQuestions">
+                    <option value="nothing"> --Select-- </option>
+                    <option value="a"> I am required to put tags in my posts </option>
+                    <option value="b"> I am required to inform of my emotional status </option>
+                    <option value="c"> I am required to post from time to time </option>
+                </select>
+            </div>
+        </li>
+        <div class="hint" id="hint3">
+            Incorrect: see slide 1!
+        </div>
+    </ul>    
+    <!-- Submit answers and Next button (next button appears when user answers all questions correctly)-->
+    <button type="button" id="submitAnswer" class="button" onclick="ValidateSaveSubmit()"> Submit </button>
+    <button id="submit" class="button otree-btn-next" style="display: none;">Next</button>
+</div>

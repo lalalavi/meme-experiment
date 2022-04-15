@@ -31,41 +31,41 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     ## Treatment Variables 
-    sTreatment         = models.StringField(blank=True) 
-    sReward            = models.StringField(blank=True)
-    sRandom            = models.StringField(blank=True)
-    sRandom2           = models.StringField(blank=True)
+    sTreatment              = models.StringField(blank=True) 
+    sReward                 = models.StringField(blank=True)
+    sRandom                 = models.StringField(blank=True)
+    sRandom2                = models.StringField(blank=True)
     ## Attention Variables 
-    sButtonClick       = models.LongStringField(blank=True) # Order of buttons clicked
-    sTimeClick         = models.LongStringField(blank=True) # Time each of them was looked at
-    sButtonClickScreen = models.LongStringField(blank=True) 
-    sTimeClickScreen   = models.LongStringField(blank=True) 
-    sFixations         = models.LongStringField(blank=True) 
-    sOrderFixations    = models.LongStringField(blank=True) 
+    sFeedback               = models.LongStringField(blank=True)    # Order of feedback seen
+    sTimeFeedback           = models.LongStringField(blank=True)    # Time each of them was looked at
+    sScreenFeedback         = models.LongStringField(blank=True)    # Order of feedback seen PAST post
+    sScreenTimeFeedback     = models.LongStringField(blank=True)    # Time PAST feedback was looked at
+    sFixations              = models.LongStringField(blank=True) 
+    sOrderFixations         = models.LongStringField(blank=True) 
     ## Participant input Variables 
-    iFeedLikes         = models.IntegerField(blank=True)
-    iFeedDislikes      = models.IntegerField(blank=True)
-    iPost              = models.IntegerField(blank=True)    # the meme they choose during posting
-    iEmotionalStatus   = models.IntegerField()              # this is required
-    sTag1              = models.StringField(blank=True)
-    sTag2              = models.StringField(blank=True)
-    sTag3              = models.StringField(blank=True)
+    iFeedLikes              = models.IntegerField(blank=True)
+    iFeedDislikes           = models.IntegerField(blank=True)
+    iPost                   = models.IntegerField(blank=True)       # the meme they choose during posting
+    iEmotionalStatus        = models.IntegerField()                 # this is required
+    sTag1                   = models.StringField(blank=True)
+    sTag2                   = models.StringField(blank=True)
+    sTag3                   = models.StringField(blank=True)
     ## Meme information Variables
-    iLikes             = models.IntegerField(blank=True)
-    iDislikes          = models.IntegerField(blank=True)
-    iImgPost1          = models.IntegerField(blank=True)
-    iImgPost2          = models.IntegerField(blank=True)
-    iImgPost3          = models.IntegerField(blank=True)
-    iImgPost4          = models.IntegerField(blank=True)
-    iImgPost5          = models.IntegerField(blank=True)
-    iImgPost6          = models.IntegerField(blank=True)
-    ## RT variables
-    dRTDec1            = models.FloatField(blank=True)
-    dRTFeed            = models.FloatField(blank=True) 
-    dRTPost            = models.FloatField(blank=True) #d because the type is double, reaction time
-    dRTTags            = models.FloatField(blank=True)
-    dRTFeedback        = models.FloatField(blank=True)
-    dRTEmotionalStatus = models.FloatField(blank=True) 
+    iLikes                  = models.IntegerField(blank=True)
+    iDislikes               = models.IntegerField(blank=True)
+    iImgPost1               = models.IntegerField(blank=True)
+    iImgPost2               = models.IntegerField(blank=True)
+    iImgPost3               = models.IntegerField(blank=True)
+    iImgPost4               = models.IntegerField(blank=True)
+    iImgPost5               = models.IntegerField(blank=True)
+    iImgPost6               = models.IntegerField(blank=True)
+    ## RT variables     
+    dRTDec1                 = models.FloatField(blank=True)         #d because the type is double
+    dRTFeed                 = models.FloatField(blank=True) 
+    dRTPost                 = models.FloatField(blank=True) 
+    dRTTags                 = models.FloatField(blank=True)
+    dRTFeedback             = models.FloatField(blank=True)
+    dRTEmotionalStatus      = models.FloatField(blank=True) 
 
 ###################################################################################################
 #  FUNCTION ᕕ(ᐛ)ᕗ
@@ -118,7 +118,7 @@ class ready(Page):
 class SplitScreen(Page):
     form_model = 'player' 
     form_fields = [
-        'iFeedLikes','iFeedDislikes', 'sButtonClickScreen', 'sTimeClickScreen', 'sOrderFixations', 'sFixations',
+        'iFeedLikes','iFeedDislikes', 'sScreenFeedback', 'sScreenTimeFeedback', 'sOrderFixations', 'sFixations',
     ] 
 
     @staticmethod
@@ -220,7 +220,6 @@ class Posting(Page):
         time_left = participant.dExpiry - time.time()
         return time_left > 3
 
-
 class addTags(Page):
     form_model = 'player' 
     form_fields = [
@@ -248,7 +247,7 @@ class addTags(Page):
 class Feedback(Page):
     form_model = 'player'
     form_fields = [
-        'iLikes','iDislikes','dRTFeedback', 'sButtonClick', 'sTimeClick',
+        'iLikes','iDislikes','dRTFeedback', 'sFeedback', 'sTimeFeedback',
     ] 
 
     @staticmethod
@@ -305,5 +304,6 @@ class HowDoYaFeel(Page):
 #! THINGS TO THINK
 # change mouseover for mouseenter in VT buttons
 # buttons under last post sometimes are hidden under post in splitscreen
+# Post button div in split screen messes with the hiding function
 
 page_sequence = [ready, SplitScreen, Posting, addTags, Feedback, HowDoYaFeel]

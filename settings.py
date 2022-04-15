@@ -6,13 +6,23 @@ SESSION_CONFIGS = [
         display_name="Beta life",
         num_demo_participants=10, 
         app_sequence=['simple_experiment'],
+        bRequireFS=True,
+        bCheckFocus=True,
     ),
     dict(
         name='Beta_Instructions',
-        display_name="Instructions yo",
+        display_name="Instructions",
         num_demo_participants=10, 
         app_sequence=['instructions'],
+        bRequireFS=True,
+        bCheckFocus=True,
     ),
+    # dict(
+    #     name='Questionnaire',
+    #     display_name="Questionnaire",
+    #     num_demo_participants=10, 
+    #     app_sequence=['Questionnaire'],
+    # ),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
@@ -24,8 +34,27 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
 )
 
-PARTICIPANT_FIELDS = ['dExpiry', 'LRmemematrix', 'HRmemematrix']
+PARTICIPANT_FIELDS = ['dExpiry', 
+    'LRmemematrix', 
+    'HRmemematrix', 
+    'startTime',
+    'ProlificID',
+    'iOutFocus',
+    'iFullscreenChanges',
+    'dTimeOutFocus',
+    'dPixelRatio',
+    ]
+
 SESSION_FIELDS = []
+
+ROOMS = [
+    dict(
+        name='econ101',
+        display_name='Econ 101 class',
+        participant_label_file='_rooms/econ101.txt',
+    ),
+    dict(name='prolific', display_name='Prolific Room (no participant labels)'),
+]
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans

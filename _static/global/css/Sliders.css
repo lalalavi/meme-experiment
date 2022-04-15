@@ -1,0 +1,329 @@
+/* SETUP FONT SIZES */
+
+
+/* CSS STYLESHEET FOR ECOLABELS EXPERIMENT */
+ 
+/* GLOBAL STYLING */
+
+
+:root {
+    --color1: #EDE7DC;
+    --color2: #BDC3CB;
+    --color3: #CCAFA5;
+    --color4: #DCD2CC;
+    --color5: #C0C0C0;
+    --color6:  #6C6A61;
+    --color7:  #2e4db4;
+    --color7b:  #284196;
+    --color8:  #C0C9CC;
+    --color9: #F2F1F0;
+    --color10: #171515;
+    --background-title : var(--color6);
+    --color-title: var(--color9);
+    --background-btn: var(--color7);
+    --background-btn-hover: var(--color7b);
+    --color-btn: var(--color9);
+    --background-input: var(--color9);
+    --background-input-hover: var(--color1);
+    --color-dot: var(--color5);
+    --color-dot-hover: var(--color6);
+    --color-font: var(--color10);
+    --background-body: var(--color1);
+    --background-slide: var(--color9);
+}
+
+body {
+    overflow: hidden;
+    background-color: var(--background-body);
+}
+
+/* oTree divs */ 
+.otree-body {
+    margin: 0;
+    padding: 0;
+}
+
+
+.debug-info {
+    display:none;
+}
+
+/* titles */
+h1 {
+    font-size: 2em;
+    text-align: center;
+    padding: 1em;
+    margin: 0;
+    background-color: var(--background-title);
+    color: var(--color-title);
+    flex-grow: 1;
+}
+
+/* Next & submit button */
+
+
+
+.button:hover {
+    background-color: var(--background-btn);
+    color: var(--color-btn);
+}
+
+/* Input fields */
+input {
+    border: 1px solid transparent;
+    background-color: var(--background-input);
+    padding: 10px;
+    font-size: 2.5vh;
+}
+
+
+
+/* This is for autocomplete dropdown */
+input[type=text] {
+    background-color: var(--background-input);
+    width: 5em;
+    border: solid black 1px;
+    border-radius: 3px;
+}
+
+/* Checkbox styling for ticked/unticked */ 
+
+input[type="checkbox"]:required:valid + label { 
+    color:    var(--background-btn);
+}
+
+.checkBox {
+    display: flex;
+    flex-direction: row;
+}
+
+#TC {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px ;
+}
+
+
+/* INTRODUCTION & INSTRUCTIONS */
+.info-body {
+    transform: translate(-50vw,-50vh);
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    height: 100vh;
+    width: 100vw; 
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+/* Slide container */
+.mySlides {
+    display: flex;
+    flex-flow: row;
+    height: 80vh;
+    width: 70vw;
+    margin: 0 1em;
+    justify-content: center;
+    align-content: center;
+}
+
+/* Slides */
+.slide-item {
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;    
+    height: --var 80vh;
+    width: 80vw;
+    overflow: hidden;
+    background-color: var(--background-slide);
+    color: var(--color-font);
+    font-size: 1.5em;
+    line-height: 1.5;
+    margin-bottom: 2vh;
+    text-align: left;
+}
+
+.page-number {
+    position: absolute;
+    top: 80vh;
+    left: 12vw;
+    transform: translate(-50%,-50%);
+}
+
+
+/* UvA logo */
+.UvA-logo {
+    width: 15vw;
+    margin-left: 2vh;
+}
+
+/* OTP logo */
+.OTP-logo {
+    width: 15vw;
+    margin: 2vh;
+}
+
+/* Product Characteristics slide */
+.symbol {
+    width: 1.5vw;
+    margin: 1px;
+}
+
+/* Slides that have content split in two */
+.ContentContainer {
+    display: flex;
+    padding: 1em;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+/* Next & previous buttons (arrows) */
+.prevDiv, .nextDiv {
+    display: flex;
+    height: 5em;
+    width: 3em;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+}
+
+.prev, .next {
+    color: black;
+    font-size: 3em;
+    cursor: pointer;
+    width: auto;
+    transition: 0.6s ease;
+    transition: visibility 0s;
+    user-select: none;
+    text-decoration: none;
+    text-align: center;
+}
+
+.prev-key,.next-key {
+    font-size: 1em;
+    text-align: center;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,.next:hover {
+    background-color: var(--color-dot);
+    color: var(--color-font);
+}
+
+/* The dots/bullets/indicators */
+.dot_row {
+    align-items: center;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    left: 50vw;
+    top: 95vh
+}
+
+.dot {
+    cursor: pointer;
+    height: 2.5vh;
+    width: 2.5vh;
+    margin: 0 2px;
+    background-color: var(--color-dot);
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.active.dot, .dot:hover {
+    background-color:  var(--color-dot-hover);
+}
+
+/* Info Template */
+
+/* Info Body */
+.info-body {
+    display: flex;
+    align-items: flex-start;
+}
+/* Info Container */
+.IntroContent {
+    display: flex;
+    color: var(--color-font);
+    width: 80vw;
+    height: 80vh;
+    flex-grow: 1;
+    flex-direction: row;
+    font-size: 1.25em;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-50%,-50%);
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+}
+
+/* Buttons */
+.next-btn {
+    background-color: var(--background-btn);
+    color: var(--color-btn);
+    width: 100px;
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+#info-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    transform: translate(-50%,-50%);
+    align-items: center;
+    position: absolute;
+    color: white;    
+    top: 2.5vh;
+    left: 97.5vw;
+    background-color: lightblue;
+    border: 2px solid white;
+    border-radius: 20px;
+    font-weight: bold;
+    padding: 0;
+}
+
+.info-screen {
+    visibility: hidden;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: -47.5vh;
+    left: -47.5vw;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    background-color: rgba(255, 255, 255,0.8);
+    color: black;
+}
+
+.info-btn:hover .info-screen  {
+    visibility: visible;
+}
+
+
+.upper-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.img-info {
+    width: 1em;
+    height: auto;
+}
+

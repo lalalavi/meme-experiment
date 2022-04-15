@@ -3,64 +3,93 @@
 {% block app_styles %}
     <link href="{% static 'global/css/VT_functionality.css' %}" rel="stylesheet">
     <link href="{% static 'global/css/SplitScreen.css' %}" rel="stylesheet">
+    <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
+
+    <style>
+        .vertical_line {
+            border-left: 5px solid black;
+            height: 100vh;
+            position: fixed;
+            left: 50%;
+            z-index: 11;
+        }
+    </style>
+
 {% endblock %}
 
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>    <!-- have to keep the jquery here otherwise countdown stops working -->
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="https://kit.fontawesome.com/f6dcf461c1.js" crossorigin="anonymous"></script>
 
 <div class="cover leftcover" id="leftcover" name="lS" style="position:absolute;">
-    <!-- <div class="try"  style="position:static; background-color: blue;"> -->
-    <br><br><p style="color: black;">Scroll down to see more memes or press button below post. </p>
+    <!-- <br><br><p style="color: black;">Scroll down to see more memes or press button below post. </p> -->
+    <br>
+    <div class="nes-container" style=background-color:white;>
+        <p style=color:black;background-color:white;font-family:courier;font-weight:100;>Scroll down to see more or press button to post.</p>
+    </div>
+    <br><br>
     {% for meme in url_list %}
     <div class="polaroid" id="polaroid-{% forloop.counter0 %}" >
         <img src= "{% static meme %}"/> 
         <br>
         <button type="button" class="btn" onclick="animateButtons(this.id)" id="dislike-{% forloop.counter0 %}"> <i class="fa fa-thumbs-down"></i></button>            
         <button type="button" class="btn" onclick="animateButtons(this.id)" id="like-{% forloop.counter0 %}"><i class="fas fa-heart"></i></button>
-    <!-- </div> -->
     </div> 
     {% endfor %} 
 </div>
 
+<div class="vertical_line" id="line"></div>
+
 <div class="cover rightcover" id="rightcover" name="rS" onmouseenter="mouselog(event)" onmouseleave="mouselog(event)">
+
 {{ if subsession.round_number == 1 }} 
-    <br><br> Your history will be displayed here once you post.
+<br><br>      <div class="nes-container" style=background-color:white;visibility:visible; >
+    <p style=color:black;background-color:white;font-family:courier;font-weight:100;>Your history will be displayed here once you post.</p>
+</div>
 {{ endif }}
+
 {{ if subsession.round_number > 1 }} 
-    <br>  <br> Your last post.    ᕕ(ᐛ)ᕗ    
-    <img style="width: 300px; position: fixed; margin-top: 85px; " src="{{ static image_path }}"/>
+    <br>   <div class="nes-container" style=background-color:white;visibility:visible; >
+        <p style=color:black;background-color:white;font-family:courier;font-weight:100;> Your last post.    ᕕ(ᐛ)ᕗ  </p>
+    </div>
+    <br> <br><br> <br> <img style="width: 300px; position: fixed; margin-top: 150px; " src="{{ static image_path }}"/>
     <br><br><br><br><br> <br><br><br><br> <br><br><br><br> <br> <br> 
    
-    <button type="button" class="game-btn btn-outcome r0 c0" id="btnL"> 
+    <button type="button" class="game-btn btn-outcome r0 c0" id="btnL" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)"> 
         <div class="btn-content"> {{ likes }} <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> <br> people out of 40 <br> liked your post </div>
         <div class="btn-hidden">  </div>
     </button> 
     <div class="break"> </div>
-    <button type="button" class="game-btn btn-outcome r1 c0" id="btnD">
+    <button type="button" class="game-btn btn-outcome r1 c0" id="btnD" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)">
         <div class="btn-content"> {{ dislikes }} <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> <br> people out of 40 <br> <b>did not</b> like <br> your post</div>
         <div class="btn-hidden">  </div>
     </button>      
-
 {{ endif }}
+
 </div>
 
 <div class="post-container active">
-    <button class="button_slide slide_right" id="post" style="align-self: center;">take me to post   ᕕ(ᐛ)ᕗ</button>   
+    <button class="button_slide slide_right" id="post" style="align-self: center;" onclick="endTrial()">take me to post   ᕕ(ᐛ)ᕗ</button>   
 </div>
 
 {% block app_scripts %}
+
 <script src="{% static 'global/js/VT_functionality.js' %}"></script> 
 
 <script>   
-var Lcounter = 0;  //local counter for likes; once we go to posting we write this in db as iFeedLikes
+
+// LOCAL COUNTERS
+var Lcounter = 0;  
 var Dcounter = 0;
 var mouseenterTime = 0;
+var mouseenterTimeFeedback = 0;
 var fixations = [];
+var fixationsFeedback = [];
 var order = [];
+var orderFeedback = [];
 var last = 'x';
 
-// Create hidden input (number of likes in the feed)
+// HIDDEN INPUT
 let iFeedLikes        = document.createElement("input");
 iFeedLikes.type       = 'hidden';
 iFeedLikes.name       = 'iFeedLikes';
@@ -85,20 +114,36 @@ sFixations.name       = 'sFixations';
 sFixations.id         = 'sFixations';
 sFixations.value      = '';
 
-var sButtonClick        = document.createElement("input");
-sButtonClick.type       = 'hidden';
-sButtonClick.name       = 'sButtonClickScreen';
-sButtonClick.id         = 'sButtonClickScreen';
-sButtonClick.value      = '';
+let sScreenFeedback        = document.createElement("input");
+sScreenFeedback.type       = 'hidden';
+sScreenFeedback.name       = 'sScreenFeedback';
+sScreenFeedback.id         = 'sScreenFeedback';
+sScreenFeedback.value      = '';
 
-var sTimeClick   = document.createElement("input");
-sTimeClick.type  = 'hidden';
-sTimeClick.name  = 'sTimeClickScreen';
-sTimeClick.id    = 'sTimeClickScreen';
-sTimeClick.value = '';
+let sScreenTimeFeedback   = document.createElement("input");
+sScreenTimeFeedback.type  = 'hidden';
+sScreenTimeFeedback.name  = 'sScreenTimeFeedback';
+sScreenTimeFeedback.id    = 'sScreenTimeFeedback';
+sScreenTimeFeedback.value = '';
 
+// JS INFO
 treatment = js_vars.treatment;
 round_number = js_vars.round_number;
+
+
+function recordButtons(event,string) {
+  let currentTime = new Date();
+  if (event.type === 'mouseenter') {
+        mouseenterTimeFeedback = currentTime.getTime();
+        console.log('mouseenterTime in '+ string+ ' was:' + mouseenterTimeFeedback);
+    } else if (event.type === 'mouseleave') {
+        var mouseoverTimeFeedback = currentTime.getTime() - mouseenterTimeFeedback;
+        console.log('mouseover time was: ' + mouseoverTimeFeedback);
+        fixationsFeedback = fixationsFeedback + ';' + mouseoverTimeFeedback;
+        orderFeedback = orderFeedback + ';' + string;
+        console.log(fixationsFeedback, orderFeedback);
+    } 
+}
 
 function animateButtons(id) {
     lSplit = id.split("-");
@@ -138,43 +183,54 @@ function animateButtons(id) {
 }
 
 function mouselog(event) {
-let currentTime = new Date();
-let left = document.getElementById('leftcover');
-let right = document.getElementById('rightcover');
-const results = left.getBoundingClientRect();    // returns DOMRect OBJECT with bottom, height, left, right, top, width (!!!!!), x, y of ELEMENT
-let widthLeft = results.width; 
+    let currentTime = new Date();
+    let left = document.getElementById('leftcover');
+    let right = document.getElementById('rightcover');
+    const results = left.getBoundingClientRect();    // returns DOMRect OBJECT with bottom, height, left, right, top, width (!!!!!), x, y of ELEMENT
+    let widthLeft = results.width; 
 
-if (event.type === 'mouseenter' && last === 'x') {     // entering right for the first time
-        mouseenterTime = currentTime.getTime();
-        console.log('FIRST enter time in rS was:' + mouseenterTime);
-        last = 'rS';
-    } else if (event.type === 'mouseenter' && last === 'lS') {     // entering right after being left
-        var mouseoverTime = currentTime.getTime() - mouseenterTime;
-        console.log('mouseover time in left screen time was: ' + mouseoverTime);
-        fixations = fixations + ';' + mouseoverTime;
-        order = order + ';' + last;
-        console.log(fixations, order);
-        mouseenterTime = currentTime.getTime();
-        console.log('mouseenterTime in rS was:' + mouseenterTime);
-        last = 'rS';
-    } else if (event.type === 'mouseleave') { 
-        var mouseoverTime = currentTime.getTime() - mouseenterTime;
-        console.log('mouseover time in right screen was: ' + mouseoverTime);
-        fixations = fixations + ';' + mouseoverTime;
-        last = 'rS'; 
-        order = order + ';' + last;
-        console.log(fixations, order); 
-    } 
-if (last === 'x' && event.clientX < widthLeft) {
-        mouseenterTime = currentTime.getTime();
-        console.log('FIRST enter time in lS was:' + mouseenterTime);   
-        last = 'lS';
-     } else if (last === 'rS' && event.clientX < widthLeft) {
-        mouseenterTime = currentTime.getTime();
-        console.log('mouseenterTime in lS was:' + mouseenterTime);   
-        last = 'lS';
+    if (event.type === 'mouseenter' && last === 'x') {     // entering right for the first time
+            mouseenterTime = currentTime.getTime();
+            console.log('FIRST enter time in rS was:' + mouseenterTime);
+            last = 'rS';
+        } else if (event.type === 'mouseenter' && last === 'lS') {     // entering right after being left
+            var mouseoverTime = currentTime.getTime() - mouseenterTime;
+            console.log('mouseover time in left screen time was: ' + mouseoverTime);
+            fixations = fixations + ';' + mouseoverTime;
+            order = order + ';' + last;
+            console.log(fixations, order);
+            mouseenterTime = currentTime.getTime();
+            console.log('mouseenterTime in rS was:' + mouseenterTime);
+            last = 'rS';
+        } else if (event.type === 'mouseleave') { 
+            var mouseoverTime = currentTime.getTime() - mouseenterTime;
+            console.log('mouseover time in right screen was: ' + mouseoverTime);
+            fixations = fixations + ';' + mouseoverTime;
+            last = 'rS'; 
+            order = order + ';' + last;
+            console.log(fixations, order); 
+        } 
+    if (last === 'x' && event.clientX < widthLeft) {
+            mouseenterTime = currentTime.getTime();
+            console.log('FIRST enter time in lS was:' + mouseenterTime);   
+            last = 'lS';
+        } else if (last === 'rS' && event.clientX < widthLeft) {
+            mouseenterTime = currentTime.getTime();
+            console.log('mouseenterTime in lS was:' + mouseenterTime);   
+            last = 'lS';
      }
 }
+
+ // END FUNCTION: LOCAL COUNTERS WRITTEN IN THE DATABASE
+ function endTrial() {
+    iFeedLikes.value = Lcounter ; 
+    iFeedDislikes.value = Dcounter ;
+    sFixations.value = fixations ;
+    sOrderFixations.value = order ; 
+    sScreenFeedback.value = orderFeedback ; 
+    sScreenTimeFeedback.value = fixationsFeedback ; 
+    console.log('Post button was pressed');
+};
   
 document.addEventListener("DOMContentLoaded", function(debug=false) {
     console.log('Loading info');
@@ -189,8 +245,8 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
     hideEverything();                                                   // Hide Everything at the beginning                     
     ConvertButtons2VT('r0', sActivation = 'mouseover', 'r0');           // Mouseover for Row0
     ConvertButtons2VT('r1', sActivation = 'mouseover', 'r1');           // Mouseover for Row1
-	resizeButtons();                                                     // Resize the text of all overflown buttons
-     										      
+	resizeButtons();                                                    // Resize the text of all overflown buttons
+    
 	function resizeButtons() {
         lButtons = document.getElementsByClassName('game-btn');
     for (let i=0; i<lButtons.length; i++) {
@@ -209,42 +265,34 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
         };                                  
     };
 
-    let post = document.getElementById("post");
-    post.addEventListener("click", function(event) {
-        iFeedLikes.value = Lcounter ; 
-        iFeedDislikes.value = Dcounter ;
-        sFixations.value = fixations ;
-        sOrderFixations.value = order ; 
-        console.log('Post button was pressed');
-    });
-
     if (js_vars.round_number > 1) {
-    let x = document.getElementById('btnD');
-    let c = document.getElementById('btnL');
-	if (js_vars.treatment=='Control') {
-        x.style.visibility = 'hidden';  //for control treatment we don't show amount of dislikes
-	} else if (js_vars.treatment=='Emotional') { 
-        c.style.visibility = 'hidden';  //for emotional treatment we don't show the amount of likes
-	} else {
-		x.style.visibility = 'visible';
-		c.style.visibility = 'visible';
+        let x = document.getElementById('btnD');
+        let c = document.getElementById('btnL');
+        if (js_vars.treatment=='Control') {
+            x.style.visibility = 'hidden';  //for control treatment we don't show amount of dislikes
+        } else if (js_vars.treatment=='Emotional') { 
+            c.style.visibility = 'hidden';  //for emotional treatment we don't show the amount of likes
+        } else {
+            x.style.visibility = 'visible';
+            c.style.visibility = 'visible';
 	}};
 
     function mousePosition(event) {
-    let left = document.getElementById('leftcover');
-    let right = document.getElementById('rightcover');
-    const results = left.getBoundingClientRect();    // returns DOMRect OBJECT with bottom, height, left, right, top, width (!!!!!), x, y of ELEMENT
-    let widthLeft = results.width;                   // we access the with only
-    if (event.clientX > widthLeft) {
-        left.style.zIndex = "1";
-        left.style.visibility = "hidden";
-        right.style.zIndex = "10";
-        right.style.display = "flex";
-    } else {
-        left.style.zIndex = "10";
-        left.style.visibility = "visible";
-        right.style.zIndex = "1";
-        right.style.display = "none";
+        let left = document.getElementById('leftcover');
+        let right = document.getElementById('rightcover');
+        const results = left.getBoundingClientRect();    // returns DOMRect OBJECT with bottom, height, left, right, top, width (!!!!!), x, y of ELEMENT
+        let widthLeft = results.width;                   // we access the with only
+        if (event.clientX > widthLeft) {
+            left.style.zIndex = "1";
+            left.style.visibility = "hidden";
+            right.style.zIndex = "10";
+            right.style.display = "flex";
+
+        } else {
+            left.style.zIndex = "10";
+            left.style.visibility = "visible";
+            right.style.zIndex = "1";
+            right.style.display = "none";
     }}
 
     window.addEventListener('mousemove', mousePosition);
@@ -252,15 +300,14 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
     let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
     OtreeBody.appendChild(iFeedLikes);
     OtreeBody.appendChild(iFeedDislikes);
-    OtreeBody.appendChild(sButtonClick);
-	OtreeBody.appendChild(sTimeClick);
+    OtreeBody.appendChild(sScreenTimeFeedback);
+	OtreeBody.appendChild(sScreenFeedback);
     OtreeBody.appendChild(sFixations);
     OtreeBody.appendChild(sOrderFixations);
 });
 
 </script>
+
 {% endblock %}
-
-
 
 {{ endblock }}
