@@ -1,0 +1,19 @@
+{% block app_styles %}
+<link rel="stylesheet" href="{% static 'global/css/questionnaire.css' %}">
+
+{% endblock %}
+
+{% block app_scripts %}
+<script src="{% static 'global/js/questionnaire.js' %}"></script>
+{% endblock %}
+
+{% load otree static %}
+{% block content %}
+
+<div id="final-answers">  </div>
+ <!-- Slide container -->
+ <div class="element-container">  </div>
+ 
+ <button class="next_button btn btn-primary btn-large" id="final-button" style="visibility: hidden;" > </button>
+{% endblock %}
+

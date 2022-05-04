@@ -17,12 +17,11 @@ SESSION_CONFIGS = [
         bRequireFS=True,
         bCheckFocus=True,
     ),
-    # dict(
-    #     name='Questionnaire',
-    #     display_name="Questionnaire",
-    #     num_demo_participants=10, 
-    #     app_sequence=['Questionnaire'],
-    # ),
+    dict(
+        name='Formatting_the_questionnaire',
+        num_demo_participants= 4,
+        app_sequence=['questionnaire']
+    ),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
@@ -43,6 +42,7 @@ PARTICIPANT_FIELDS = ['dExpiry',
     'iFullscreenChanges',
     'dTimeOutFocus',
     'dPixelRatio',
+    'validQuestionnaire',
     ]
 
 SESSION_FIELDS = []

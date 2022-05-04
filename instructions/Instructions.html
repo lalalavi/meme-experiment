@@ -16,7 +16,7 @@
   const bRequireFS    = js_vars.bRequireFS;
   const bCheckFocus   = js_vars.bCheckFocus;
   const defaultPixel  = js_vars.dPixelRatio;
-  var bClickHere      = false;                // This is a condition for slide 4
+  // var bClickHere      = false;                // This is a condition for slide 4
   var TBlur           = new Date().getTime();
   var TFocus          = new Date().getTime();
 
@@ -31,7 +31,7 @@
   });
   // Check if person did mouseover the button in slide 4. 
   document.getElementById("b3").addEventListener("mouseover", (event) => {
-    bClickHere = true;
+    // bClickHere = true;
     document.getElementById("reveal").style.visibility = "visible";
   });
 
@@ -41,10 +41,10 @@
     // sendSelect();
   }
 
-  function canMove() {
-    let bConditions = !(iSlideIndex===4 && !bClickHere);
-    return bConditions;
-  };
+  // function canMove() {
+  //   let bConditions = !(iSlideIndex===4 && !bClickHere);
+  //   return bConditions;
+  // };
 
   
 </script>

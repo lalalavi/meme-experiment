@@ -1,0 +1,364 @@
+
+/* CSS STYLESHEET FOR ECOLABELS EXPERIMENT */
+ 
+/* GLOBAL STYLING */
+:root {
+    --color1: #EDE7DC;
+    --color2: #BDC3CB;
+    --color3: #CCAFA5;
+    --color4: #DCD2CC;
+    --color5: #C0C0C0;
+    --color6:  #6C6A61;
+    --color7:  #2e4db4;
+    --color7b:  #284196;
+    --color8:  #C0C9CC;
+    --color9: #F2F1F0;
+    --color10: #171515;
+    --background-title : var(--color6);
+    --color-title: var(--color9);
+    --background-btn: var(--color7);
+    --background-btn-hover: var(--color7b);
+    --color-btn: var(--color9);
+    --background-input: var(--color9);
+    --background-input-hover: var(--color1);
+    --color-dot: var(--color5);
+    --color-dot-hover: var(--color6);
+    --color-font: var(--color10);
+    --background-body: var(--color1);
+    --background-slide: var(--color9);
+}
+    /* set oTree default margins & padding off, define viewport */
+    .otree-body {
+       height: 100vh;
+       width: 100vw; 
+       margin: 0;
+       padding: 0;
+       align-items: center;
+    }
+
+    .debug-info {
+        display:none;
+    }
+
+    * {
+        box-sizing: border-box
+    }
+
+    /* Set global styling, same for all pages */
+    body {
+       font-family: Helvetica, sans-serif;
+       color: var(--color-font);
+       background-color: var(--background-body);
+       text-align: center;   
+       align-items: center;
+
+    }
+
+    /* titles */
+    h1 {
+        font-size: 5vh;
+        margin-top: -10vh;
+        text-align: center;
+        padding: 4vh;
+        background-color: var(--background-title);
+        color: var(--color-title);
+        width: 80vw;
+    }
+
+    /* Next & submit button */
+    .button {
+        font-family: 'Work Sans', sans-serif;
+        font-size: 1.5em;
+        width: 8vw;
+        align-items: center;
+        background-color: var(--background-btn);
+        color: var(--color-btn);
+        border: 0;
+        border-radius: 3px;
+        padding: 10px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;   
+    }
+
+
+    .button:hover {
+        background-color: var(--background-btn);
+    }
+
+
+    /* Input fields */
+    input {
+        border: 1px solid;
+        border-radius: 3px;
+        background-color: var(--background-input);
+        padding: 10px;
+        font-size: 1em;
+    }
+
+    /* This is for autocomplete dropdown */
+    input[type=text] {
+        background-color: var(--background-input);
+        width: 100%;
+    }
+
+    /* Checkbox styling for ticked/unticked */ 
+
+    input[type="checkbox"]:required:valid + label { 
+        background-color: var(--background-btn);
+        
+    }
+
+
+/* QUESTIONNAIRE */ 
+
+/* Slide container */
+.element-container {
+    width: 90vw ;
+    left: 10vw;
+    position: relative;
+}
+
+/* Question slide */
+.question-slide {
+    height: 70vh;
+    width: 80vw;
+    background-color: var(--background-slide);
+    transition: 1s;
+}
+
+/* TEXT INPUTS  */ 
+/* Input container */
+.div-input-text {
+    width: 100%;
+    min-height: 20vh;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.div-input-radioFig {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    margin: 2em;
+}
+/* Input container */
+.input-text {
+    width: 40vw;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Message for wrong forms */
+.error-message {
+    color: #842029;
+    background-color: #f8d7da;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    padding: 1em;
+}
+
+/* RADIO INPUTS  */ 
+
+/* Input containers */
+.div-input-radioH {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.div-input-radio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.div-input-scale {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2em;
+    
+}
+
+.limit_left {
+    margin-right: 1em;
+}
+.limit_right {
+    margin-left: 1em;
+}
+
+.QT-radioH {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    line-height: 2em ;
+    width: auto;
+    margin: 10px;
+}
+
+
+/************* BUTTONS *************/
+/* Next Button */
+.QT-Next {
+    margin-left: 10px;
+}
+
+/* Back Button */
+.QT-Back {
+    margin: 20px 0;
+
+}
+/* Scale Button */ 
+.ScaleButton {
+    margin: 0;
+    height: 3em ;
+    width: 3em;
+    font-size: 2em;
+    background-color: var(--background-btn);
+    color: var(--color-btn);
+    border: 0;
+}
+
+.ScaleButton:hover {
+    background-color: var(--background-btn-hover);
+}
+/***********************************/
+
+.mini-graph {
+    width: 20vw;
+    height: auto;
+}
+/* Fading animation */
+.fade {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.5s;
+    animation-name: fade;
+    animation-duration: 1.5s;
+    animation-fill-mode: forwards;
+    }
+@-webkit-keyframes fade {
+from {opacity: .4}
+to {opacity: 1}
+}
+
+@keyframes fade {
+from {opacity: .4}
+to {opacity: 1}
+}
+    /* Question box */
+    .question {
+        font-size: 3vh;
+        /* height: 15vh; */
+        padding: 3vh;
+        margin-top: 5vh;
+        margin-bottom: 3vh;
+    }
+
+    /* Answer box */
+    .answers {
+        font-size: 2.7vh;
+        margin-bottom: 10vh;
+        text-align: left;
+        display: inline-block;
+        height: 20vh;
+    }
+    .question-slide {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    /* Radio button vertical */ 
+    .QT-radio {
+        display: block;
+        margin-bottom: 2vh;
+        width: 30vw;
+        text-align: left;
+        margin-left: 20vw;
+    }
+
+    /* Radio button horizontal */
+    .QT-label {
+        display: inline-block;
+        width: 12vw;
+        text-align: center;
+    }
+
+    /* Instruction styling */
+    .QT-inst {
+        text-align: center;
+        padding-top: 0;
+        padding-left: 12vw;
+        padding-right: 12vw;
+    }
+
+    
+
+    @keyframes glowing {
+        0% {
+            text-shadow: 0 0 10px #000;
+        }
+        50% {
+            text-shadow: 0 0 20px #000;
+        }
+        100% {
+            text-shadow: 0 0 10px #000;
+        }
+}
+
+
+
+    /* Progress bar */
+    .progress-bar {
+        display: inline-block;
+        position: relative;
+        z-index: -1;
+        width: 20vw;
+        opacity: 0.7;
+        text-align: center;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    /* Autocomplete styling for open questions*/
+    .autocomplete-items {
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+
+    .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: var(--background-input);
+        border-bottom: 1px solid #d4d4d4;
+    }
+
+    /*when hovering an item:*/
+    .autocomplete-items div:hover {
+        background-color: var(--background-input-hover);
+    }
+
+    /*when navigating through the items using the arrow keys:*/
+    .autocomplete-active {
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+    }
+
+
+
