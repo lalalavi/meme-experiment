@@ -43,7 +43,7 @@
 <div class="cover rightcover" id="rightcover" name="rS" onmouseenter="mouselog(event)" onmouseleave="mouselog(event)">
 
 {{ if subsession.round_number == 1 }} 
-<br><br>      <div class="nes-container" style=background-color:white;visibility:visible; >
+<br>    <div class="nes-container" style=background-color:white;visibility:visible; >
     <p style=color:black;background-color:white;font-family:courier;font-weight:100;>Your history will be displayed here once you post.</p>
 </div>
 {{ endif }}
@@ -83,11 +83,14 @@ var Lcounter = 0;
 var Dcounter = 0;
 var mouseenterTime = 0;
 var mouseenterTimeFeedback = 0;
+
 var fixations = [];
 var fixationsFeedback = [];
 var order = [];
 var orderFeedback = [];
 var last = 'x';
+var TStart       = new Date().getTime();
+var TEnd         = new Date().getTime();
 
 // HIDDEN INPUT
 let iFeedLikes        = document.createElement("input");
@@ -125,6 +128,14 @@ sScreenTimeFeedback.type  = 'hidden';
 sScreenTimeFeedback.name  = 'sScreenTimeFeedback';
 sScreenTimeFeedback.id    = 'sScreenTimeFeedback';
 sScreenTimeFeedback.value = '';
+
+let dRT          = document.createElement("input");
+dRT.type         = 'hidden';
+dRT.name         = 'dRTLatency';
+dRT.id           = 'dRTLatency';
+dRT.value        = '';
+
+
 
 // JS INFO
 treatment = js_vars.treatment;
@@ -223,6 +234,9 @@ function mouselog(event) {
 
  // END FUNCTION: LOCAL COUNTERS WRITTEN IN THE DATABASE
  function endTrial() {
+    TEnd = new Date().getTime();
+    dRT.value = +TEnd -TStart; 
+    // console.log(dRT.value);
     iFeedLikes.value = Lcounter ; 
     iFeedDislikes.value = Dcounter ;
     sFixations.value = fixations ;
@@ -304,6 +318,7 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
 	OtreeBody.appendChild(sScreenFeedback);
     OtreeBody.appendChild(sFixations);
     OtreeBody.appendChild(sOrderFixations);
+    OtreeBody.appendChild(dRT);
 });
 
 </script>

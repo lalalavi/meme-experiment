@@ -35,14 +35,13 @@ class Player(BasePlayer):
     D6 = models.StringField(blank=True)
     D7 = models.StringField(blank=True)
     D8 = models.StringField()
-
-    # Variables for Demographics
-    QT1 = models.StringField()
-    QT2 = models.StringField()
-    QT3 = models.StringField()
-    QT4 = models.StringField()
-    QT5 = models.StringField()
-    QT6 = models.StringField()
+    D9 = models.StringField()
+    D10 = models.StringField()
+    D11 = models.StringField(blank=True)
+    D12 = models.StringField(blank=True)
+    D13 = models.StringField(blank=True)
+    D14 = models.StringField(blank=True)
+    D15 = models.StringField(blank=True)
 
 
     # Variables for Social Media Disorder scale
@@ -98,13 +97,12 @@ class Player(BasePlayer):
 # PAGES
 class Questionnaire(Page):
     form_model = 'player'
-    form_fields = ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8',
-    'QT1', 'QT2', 'QT3', 'QT4', 'QT5', 'QT6',
+    form_fields = ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13',
     'BIS1', 'BIS2', 'BIS3', 'BIS4', 'BIS5', 'BIS6', 'BIS7', 'BIS8', 'BIS9', 'BIS10', 'BIS11', 'BIS12', 'BIS13', 'BIS14', 'BIS15', 'BIS16', 'BIS17', 'BIS18', 'BIS19', 'BIS20', 'BIS21', 'BIS22', 'BIS23', 'BIS24', 'BIS25', 'BIS26', 'BIS27', 'BIS28', 'BIS29', 'BIS30', 
     'SMD1', 'SMD2', 'SMD3', 'SMD4', 'SMD5', 'SMD6', 'SMD7', 'SMD8', 'SMD9',
+    'V1', 'V2', 'V3',
     ]
 
-    # 'V1', 'V2', 'V3'
 
     # @staticmethod
     # def js_vars(player: Player):
@@ -117,13 +115,13 @@ class Questionnaire(Page):
     #         Scx = Constants.imgFile_Convex,
     #     )
 
-    # @staticmethod
-    # def before_next_page(player, timeout_happened):
-    #     # Validate questionnaire
-    #     valid1 = int(int(player.V1)==2)
-    #     valid2 = int(int(player.V2)==4)
-    #     valid3 = int(int(player.V3)==1)
-    #     player.participant.validQuestionnaire = valid1 + valid2 + valid3
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        # Validate questionnaire
+        valid1 = int(int(player.V1)==2)
+        valid2 = int(int(player.V2)==4)
+        valid3 = int(int(player.V3)==1)
+        player.participant.validQuestionnaire = valid1 + valid2 + valid3
 
 
 page_sequence = [Questionnaire]

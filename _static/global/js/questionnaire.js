@@ -119,51 +119,52 @@ const firstQuestions = [
     },
     {
         question: "How often do you use social media?",
-        name: "QT1",
+        name: "D9",
         type: "radio",
         values: [1,2,3,4,5,6],
         labels: ['Almost Constantly','Several times a day','About once a day','Several times a week', 'Less often', 'Never']
     },
     {
         question: "Please provide an estimate of how much time you normally spend on a day inside all social media platforms (in minutes):",
-        name: "QT2",
+        name: "D10",
         type: "shortOpen",
+        invalidMessage: warningEmpty,
     }, 
     {
         question: "If applicable, how many likes (or similar) do you typically get when you post on social media (for example on Instagram, Twitter, Facebook, Reddit)? If not applicable, please enter an X.",
-        name: "QT3",
+        name: "D11",
         type: "shortOpen",
-        // invalidMessage: warningEmpty,
+        invalidMessage: warningEmpty,
     }, 
     {
         question: "If applicable, how many followers/friends/subscribers (or similar) do you have on Instagram? If not applicable, please enter an X.",
-        name: "QT4",
+        name: "D12",
         type: "shortOpen",
-        // invalidMessage: warningEmpty,
+        invalidMessage: warningEmpty,
     }, 
     {
         question: "If applicable, how many followers/friends/subscribers (or similar) do you have on Twitter? If not applicable, please enter an X.",
-        name: "QT5",
+        name: "D13",
         type: "shortOpen",
-        // invalidMessage: warningEmpty,
+        invalidMessage: warningEmpty,
     }, 
     {
         question: "If applicable, how many followers/friends/subscribers (or similar) do you have on TikTok? If not applicable, please enter an X.",
-        name: "QT6",
+        name: "D14",
         type: "shortOpen",
-        // invalidMessage: warningEmpty,
+        invalidMessage: warningEmpty,
     }, 
     {
         question: "If applicable, how many followers/friends/subscribers (or similar) do you have on Facebook? If not applicable, please enter an X.",
-        name: "QT7",
+        name: "D15",
         type: "shortOpen",
-        // invalidMessage: warningEmpty,
+        invalidMessage: warningEmpty,
     }, 
-    // {
-    //     question: "For the following questions, please answer each of these questions in terms of the way you generally feel. For each question simply state as honestly and candidly as you can what you are presently experiencing. Please Select '2' to show that you read these instructions.",
-    //     name: "V1",
-    //     type: "scale",
-    // },
+    {
+        question: "For the following questions, please answer each of these questions in terms of the way you generally feel. For each question simply state as honestly and candidly as you can what you are presently experiencing. Please Select '2' to show that you read these instructions.",
+        name: "V1",
+        type: "scale",
+    },
 ];
 
 
@@ -391,16 +392,16 @@ const shuffleQuestions = [
         name: "BIS30",
         type: "scale",
     },
-    // {
-    //     question: "To receive payment, Select '4'.",
-    //     name: "V2",
-    //     type: "scale",
-    // },    
-    // {
-    //     question: "To show you are paying attention, please select '1'.",
-    //     name: "V3",
-    //     type: "scale",
-    // },    
+    {
+        question: "To receive payment, Select '4'.",
+        name: "V2",
+        type: "scale",
+    },    
+    {
+        question: "To show you are paying attention, please select '1'.",
+        name: "V3",
+        type: "scale",
+    },    
 ];
   
 
@@ -580,7 +581,7 @@ QuestionSlide.prototype.printSlide = function() {
             errorMessage.style.visibility = 'hidden';
             errorMessage.innerHTML = warningAutocomplete;
             slideQuestion.appendChild(errorMessage);
-        }
+        } 
     } else if (this.Question.type==='final') {
         let ContinueButton = writeTag('button','Continue',FinalButtonProps);
         slideQuestion.innerHTML += ContinueButton;

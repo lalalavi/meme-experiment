@@ -100,6 +100,8 @@ document.addEventListener("DOMContentLoaded", function() {
     post.addEventListener("click", function(event) {
 		sFeedback.value  = orderFeedback;
         sTimeFeedback.value = fixationsFeedback;
+		TEnd      = new Date().getTime();
+    	dRT.value = +TEnd -TStart;
         console.log('End button was pressed');
     });
 
@@ -128,23 +130,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
 {% block content %}
 
-<div class="game-container">
+<div class="centered">
 	<button type="button" class="game-btn btn-outcome r0 c0" id="btnL" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)"> 
 		<div class="btn-content"> <label id="iLikes" value="{{l}}">{{l}}</label>  <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> <br> people out of 40 <br> liked your post  </div>
 		<div class="btn-hidden">  </div>
 	</button> 
+	<br>
 	<div class="break"> </div>
 	<button type="button" class="game-btn btn-outcome r1 c0" id="btnD" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)">
 		<div class="btn-content"> <label id="iDislikes" value="{{d}}">{{d}}</label> <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> <br> people out of 40 <br> <b>did not</b> like <br> your post</div>
 		<div class="btn-hidden">  </div>
-	</button>  
+	</button> 
+	
+	<br><br>
+	
+	<button class="btn btn-primary" id="end">Continue </button> 
 </div>
 
 <br><br>
 
-<div class="centered">
-	<button class="btn btn-primary" id="end">Continue </button> 
-</div>
+
 
 {% endblock %}
 

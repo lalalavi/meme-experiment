@@ -60,8 +60,7 @@ class Player(BasePlayer):
     iImgPost5               = models.IntegerField(blank=True)
     iImgPost6               = models.IntegerField(blank=True)
     ## RT variables     
-    dRTDec1                 = models.FloatField(blank=True)         #d because the type is double
-    dRTFeed                 = models.FloatField(blank=True) 
+    dRTLatency              = models.FloatField(blank=True)         #d because the type is double
     dRTPost                 = models.FloatField(blank=True) 
     dRTTags                 = models.FloatField(blank=True)
     dRTFeedback             = models.FloatField(blank=True)
@@ -118,7 +117,9 @@ class ready(Page):
 class SplitScreen(Page):
     form_model = 'player' 
     form_fields = [
-        'iFeedLikes','iFeedDislikes', 'sScreenFeedback', 'sScreenTimeFeedback', 'sOrderFixations', 'sFixations',
+        'iFeedLikes','iFeedDislikes', 
+        'sScreenFeedback', 'sScreenTimeFeedback', 'sOrderFixations', 'sFixations',
+        'dRTLatency',
     ] 
 
     @staticmethod
@@ -162,7 +163,7 @@ class Posting(Page):
     form_model = 'player' 
     form_fields = [
         'iImgPost1','iImgPost2','iImgPost3','iImgPost4','iImgPost5','iImgPost6',
-        'iPost', 'dRTPost', 'sReward',
+        'iPost', 'sReward', 'dRTPost',
     ] 
     
     @staticmethod

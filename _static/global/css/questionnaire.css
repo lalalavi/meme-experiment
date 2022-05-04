@@ -36,9 +36,9 @@
        align-items: center;
     }
 
-    .debug-info {
+    /* .debug-info {
         display:none;
-    }
+    } */
 
     * {
         box-sizing: border-box
