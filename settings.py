@@ -93,8 +93,7 @@ ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
 
 DEMO_PAGE_INTRO_HTML = """
-ᕕ(ᐛ)ᕗ
-oh boi back to the drawing board 
+ᕕ(ᐛ)ᕗ 
  """
 
 SECRET_KEY = '6932973588929'
