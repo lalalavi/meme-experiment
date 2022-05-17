@@ -23,6 +23,8 @@
 <script src="{% static 'global/js/FriendlyChecks.js' %}"></script> 
 {% endblock %}
 
+{% block content %}
+
 <script>
 
 const bRequireFS    = js_vars.bRequireFS;
@@ -150,8 +152,6 @@ document.addEventListener("DOMContentLoaded", function() {
  });
 
 </script>
-
-{% block content %}
 
 <div class="centered" id="centered">
 	<button type="button" class="game-btn btn-outcome r0 c0" id="btnL" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)"> 
