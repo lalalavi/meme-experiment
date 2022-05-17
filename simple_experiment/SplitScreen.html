@@ -14,6 +14,10 @@
             left: 50%;
             z-index: 11;
         }
+        
+        .debug-info {
+            display:none;
+        }
     </style>
 
 {% endblock %}
@@ -262,9 +266,6 @@ function mouselog(event) {
 document.addEventListener("DOMContentLoaded", function(debug=false) {
     console.log('Loading info');
     console.log(treatment);
-
-    let hidestuff = document.getElementsByClassName("card debug-info")[0];
-    hidestuff.style.visibility = 'hidden';   // this hides the debug information so i do not go crazy 
 
     let body = document.getElementById('rightcover');
     let fullbody = document.getElementById('hello');
