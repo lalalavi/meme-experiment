@@ -42,6 +42,10 @@ class Player(BasePlayer):
     sScreenTimeFeedback     = models.LongStringField(blank=True)    # Time PAST feedback was looked at
     sFixations              = models.LongStringField(blank=True) 
     sOrderFixations         = models.LongStringField(blank=True) 
+    ## Focus Variables
+    iFocusLost          = models.IntegerField(blank=True)
+    dFocusLostT         = models.FloatField(blank=True)
+    iFullscreenChange   = models.IntegerField(blank=True)
     ## Participant input Variables 
     iFeedLikes              = models.IntegerField(blank=True)
     iFeedDislikes           = models.IntegerField(blank=True)
@@ -113,13 +117,24 @@ class ready(Page):
     @staticmethod
     def is_displayed(player):
         return player.round_number == 1
+    
+    @staticmethod
+    def js_vars(player: Player):
+        session = player.session
+        p = player.participant
+        return {
+            'bRequireFS'        : session.config['bRequireFS'],
+            'bCheckFocus'       : session.config['bCheckFocus'],
+            'dPixelRatio'       : p.dPixelRatio,
+        }
 
 class SplitScreen(Page):
     form_model = 'player' 
     form_fields = [
         'iFeedLikes','iFeedDislikes', 
         'sScreenFeedback', 'sScreenTimeFeedback', 'sOrderFixations', 'sFixations',
-        'dRTLatency',
+        'dRTLatency',  
+        'iFocusLost','dFocusLostT', 'iFullscreenChange',
     ] 
 
     @staticmethod
@@ -144,7 +159,7 @@ class SplitScreen(Page):
                     'roundnumber'   :  prev_player.round_number ,
                     'url_list'      :  url_list , 
             }
-        
+
     @staticmethod
     def is_displayed(player):
         participant = player.participant
@@ -153,10 +168,23 @@ class SplitScreen(Page):
 
     @staticmethod
     def js_vars(player: Player):
+        session = player.session
+        p = player.participant
         return {
             'treatment'      :  player.sTreatment ,
             'round_number'   :  player.round_number ,
+            'bRequireFS'        : session.config['bRequireFS'],
+            'bCheckFocus'       : session.config['bCheckFocus'],
+            'dPixelRatio'       : p.dPixelRatio,
         }
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        participant = player.participant
+        participant.iOutFocus = int(participant.iOutFocus) + player.iFocusLost
+        participant.iFullscreenChanges = int(participant.iFullscreenChanges) + player.iFullscreenChange
+        participant.dTimeOutFocus = float(participant.dTimeOutFocus) + player.dFocusLostT
+        
 
 
 class Posting(Page):
@@ -201,6 +229,8 @@ class Posting(Page):
 
     @staticmethod
     def js_vars(player: Player):
+        session = player.session
+        p = player.participant
         return {
             'ImageID'     :  player.iImgPost1 ,
             'Image2ID'    :  player.iImgPost2 ,
@@ -208,7 +238,11 @@ class Posting(Page):
             'Image4ID'    :  player.iImgPost4 ,
             'Image5ID'    :  player.iImgPost5 ,
             'Image6ID'    :  player.iImgPost6 ,
+            'bRequireFS'        : session.config['bRequireFS'],
+            'bCheckFocus'       : session.config['bCheckFocus'],
+            'dPixelRatio'       : p.dPixelRatio,
     }
+
 
     @staticmethod
     def get_timeout_seconds(player):
@@ -220,6 +254,8 @@ class Posting(Page):
         participant = player.participant
         time_left = participant.dExpiry - time.time()
         return time_left > 3
+
+  
 
 class addTags(Page):
     form_model = 'player' 
@@ -243,6 +279,16 @@ class addTags(Page):
         participant = player.participant
         time_left = participant.dExpiry - time.time()
         return time_left > 3
+
+    @staticmethod
+    def js_vars(player: Player):
+        session = player.session
+        p = player.participant
+        return {
+            'bRequireFS'        : session.config['bRequireFS'],
+            'bCheckFocus'       : session.config['bCheckFocus'],
+            'dPixelRatio'       : p.dPixelRatio,
+        }
 
 
 class Feedback(Page):
@@ -268,8 +314,13 @@ class Feedback(Page):
 
     @staticmethod
     def js_vars(player: Player):
+        session = player.session
+        p = player.participant
         return {
             'treatment'   :  player.sTreatment ,
+            'bRequireFS'        : session.config['bRequireFS'],
+            'bCheckFocus'       : session.config['bCheckFocus'],
+            'dPixelRatio'       : p.dPixelRatio,
         }
 
     @staticmethod
@@ -300,6 +351,16 @@ class HowDoYaFeel(Page):
         participant = player.participant
         time_left = participant.dExpiry - time.time()
         return time_left > 3
+
+    @staticmethod
+    def js_vars(player: Player):
+        session = player.session
+        p = player.participant
+        return {
+            'bRequireFS'        : session.config['bRequireFS'],
+            'bCheckFocus'       : session.config['bCheckFocus'],
+            'dPixelRatio'       : p.dPixelRatio,
+        }
 
 
 #! THINGS TO THINK

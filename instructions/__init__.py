@@ -10,7 +10,7 @@ class Constants(BaseConstants):
     name_in_url = 'instructions'
     players_per_group = None
     num_rounds = 1
-    UvA_logo = 'global/figures/UvA_logo.png'
+    UvA_logo = 'global/UvA_logo.png'
     FlatFee = "3 euros"
 
     ## Slides for introduction
@@ -35,17 +35,13 @@ class Constants(BaseConstants):
             path=SlidePath+'1.html'
             ),
         dict(
-            Title = 'The product characteristics',
+            Title = 'Tags',
             path=SlidePath+'2.html'
             ),
         dict(
-            Title = 'Purchasing Platform',
+            Title = 'Your feedback',
             path=SlidePath+'3.html'
             ),
-        # dict(
-        #     Title = 'The product characteristics',
-        #     path=SlidePath+'4.html'
-        #     ),
         dict(
             Title = 'Is it all clear? Please answer these questions correctly to proceed:',
             path=SlidePath+'4.html'
@@ -87,7 +83,7 @@ class Introduction(Page):
         p.iOutFocus          = 0
         p.iFullscreenChanges = 0
         p.dTimeOutFocus      = 0
-        player.sProlific_ID     = p.label
+        player.sProlific_ID  = p.label
 
 
 class Calibration(Page):
@@ -97,8 +93,8 @@ class Calibration(Page):
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        part = player.participant
-        part.dPixelRatio = player.dPixelRatio
+        p = player.participant
+        p.dPixelRatio = player.dPixelRatio
 
 class Instructions(Page):
     form_model = 'player'
@@ -111,7 +107,6 @@ class Instructions(Page):
     def vars_for_template(player):
         return dict(
             Slides = Constants.Slides,
-            # lAttr = player.participant.lAttr,
     )
 
     @staticmethod
@@ -123,26 +118,6 @@ class Instructions(Page):
             'bCheckFocus'       : session.config['bCheckFocus'],
             'dPixelRatio'       : p.dPixelRatio,
         }
-
-class consent(Page):
-    form_model = 'player'
-    form_fields = ['consent']
-
-class instruct_0(Page):
-    pass
-
-class instruct_1(Page):
-    pass
-
-class understanding(Page):
-    pass
-    # form_model = 'player'
-    # form_fields = ['q1', 'q2', 'q3'] 
-    
-    # # guarantee that the people choose the right option 
-    # def error_message(self, values):
-    #     if (values['q1'] != 3) or (values['q2'] != 2) or (values['q3'] != 1): #type the number directly bc we defined them as numbers in the class
-    #         return 'Some of your answers contain an error'
 
 
 page_sequence = [Introduction, Calibration, Instructions]

@@ -2,25 +2,45 @@
     How would you describe your current emotional status?
 {{ endblock }}
 
+{% block app_styles %}
+    <link href="{% static 'global/css/FriendlyChecks.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block app_scripts %}
+<script src="{% static 'global/js/VT_functionality.js' %}"></script> 
+<script src="{% static 'global/js/FriendlyChecks.js' %}"></script> 
+{% endblock %}
+
 {{ block content }}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <br>
 <head><meta name="viewport" content="width=device-width, initial-scale=1"></head>
 <body>
-  <p>1 = Extremely negative / 100 = Extremely positive</p>
-  <div class="slidecontainer">
-  <input type="range" min="1" max="100" class="slider" name="iEmotionalStatus" id="iEmotionalStatus">
-  <p>Rating: <span id="iEmotionalStatus_value"></span></p>
-  </div>
 
-<div class="buttons">
-  <button type="button" id="lockrange">Lock range</button>
-  <button type="button" id="submit" onclick="checkRange()">Submit</button>
+  <div id="fullbody">
+    <p>1 = Extremely negative / 100 = Extremely positive</p>
+    <div class="slidecontainer">
+    <input type="range" min="1" max="100" class="slider" name="iEmotionalStatus" id="iEmotionalStatus">
+    <p>Rating: <span id="iEmotionalStatus_value"></span></p>
+    </div>
+
+  <div class="buttons">
+    <button type="button" id="lockrange">Lock range</button>
+    <button type="button" id="submit" onclick="checkRange()">Submit</button>
+  </div>
 </div>
+
 </body>
 
 <script>
+
+const bRequireFS    = js_vars.bRequireFS;
+const bCheckFocus   = js_vars.bCheckFocus;
+const defaultPixel  = js_vars.dPixelRatio;
+var TBlur           = new Date().getTime();
+var TFocus          = new Date().getTime();
+
 let EndButton               = document.createElement('button');
 EndButton.style.visibility  = 'hidden';
 EndButton.className         = 'next_button btn btn-primary btn-large';
@@ -73,6 +93,9 @@ document.addEventListener("DOMContentLoaded", function(debug=true) {
   OtreeBody.appendChild(dRT);
   OtreeBody.appendChild(EndButton);
   
+  let fullbody = document.getElementById('fullbody');
+  InitializeFriendlyChecks(fullbody, bRequireFS, bCheckFocus);
+
   function addtoev() {
   var bns = document.getElementsByTagName("button");
   for (i = 0; i < bns.length; i++) {
@@ -91,11 +114,20 @@ document.addEventListener("DOMContentLoaded", function(debug=true) {
 {{ endblock }}
 
 
+
 <style>
-  .slidecontainer {
-  width: 70%;
-  
-  }
+
+.otree-timer {
+    display: none;
+}
+
+.debug-info {
+    display:none;
+}
+
+.slidecontainer {
+    width: 70%;  
+}
 
   .fit {
       width: 70%;

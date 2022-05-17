@@ -4,12 +4,33 @@
 
 {% block app_styles %}
     <link href="{% static 'global/css/VT_functionality.css' %}" rel="stylesheet">
+	<link href="{% static 'global/css/FriendlyChecks.css' %}" rel="stylesheet">
+
+<style>
+.debug-info {
+    display:none;
+}
+
+.otree-timer {
+    display: none;
+}
+</style>
+
 {% endblock %}
 
 {% block app_scripts %}
 <script src="{% static 'global/js/VT_functionality.js' %}"></script> 
+<script src="{% static 'global/js/FriendlyChecks.js' %}"></script> 
+{% endblock %}
 
 <script>
+
+const bRequireFS    = js_vars.bRequireFS;
+const bCheckFocus   = js_vars.bCheckFocus;
+const defaultPixel  = js_vars.dPixelRatio;
+var TBlur           = new Date().getTime();
+var TFocus          = new Date().getTime();
+
 let l        	= document.createElement("input");
 	l.type       = 'hidden';
 	l.name       = 'iLikes';
@@ -69,7 +90,10 @@ document.addEventListener("DOMContentLoaded", function() {
 	console.log(treatment);
 
     let body = document.getElementById('game-container');
-    InitializeVT(body);                                                 // Initialize visual tracing
+	let fullbody = document.getElementById('centered');
+    
+	InitializeFriendlyChecks(fullbody, bRequireFS, bCheckFocus);
+    InitializeVT(body);                								// Initialize visual tracing
     hideEverything();                                                   // Hide Everything at the beginning                     
     ConvertButtons2VT('r0', sActivation = 'mouseover', 'r0');           // Mouseover for Row0
     ConvertButtons2VT('r1', sActivation = 'mouseover', 'r1');           // Mouseover for Row1
@@ -126,11 +150,10 @@ document.addEventListener("DOMContentLoaded", function() {
  });
 
 </script>
-{% endblock %}
 
 {% block content %}
 
-<div class="centered">
+<div class="centered" id="centered">
 	<button type="button" class="game-btn btn-outcome r0 c0" id="btnL" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)"> 
 		<div class="btn-content"> <label id="iLikes" value="{{l}}">{{l}}</label>  <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> <br> people out of 40 <br> liked your post  </div>
 		<div class="btn-hidden">  </div>
@@ -148,8 +171,6 @@ document.addEventListener("DOMContentLoaded", function() {
 </div>
 
 <br><br>
-
-
 
 {% endblock %}
 

@@ -7,69 +7,78 @@
 
 {% block content %}
 
-<div class="row">
-    <div class="column">
-      <div class="polaroid">
-        <img id='memeshown1' src= {{ static Image }} value="1" style="width:100%">
-        <div class="container">
-          <p>1</p>
+{{ form.errors }}
+
+<div id="fullbody">
+  <div class="row">
+      <div class="column">
+        <div class="polaroid">
+          <img id='memeshown1' src= {{ static Image }} value="1" style="width:100%">
+          <div class="container">
+            <p>1</p>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="column">
-      <div class="polaroid">
-        <img id='memeshown2' src= {{ static Image2 }} value="2" style="width:100%">
-        <div class="container">
-          <p>2</p>
+      <div class="column">
+        <div class="polaroid">
+          <img id='memeshown2' src= {{ static Image2 }} value="2" style="width:100%">
+          <div class="container">
+            <p>2</p>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="column">
-      <div class="polaroid">
-        <img id='memeshown3' src= {{ static Image3 }} value="3" style="width:100%">
-        <div class="container">
-          <p>3</p>
+      <div class="column">
+        <div class="polaroid">
+          <img id='memeshown3' src= {{ static Image3 }} value="3" style="width:100%">
+          <div class="container">
+            <p>3</p>
+          </div>
         </div>
       </div>
-    </div>
+  </div>
+
+  <div class="row">
+      <div class="column">
+        <div class="polaroid">
+          <img id='memeshown4' src= {{ static Image4 }}  value="4" style="width:100%">
+          <div class="container">
+            <p>4</p>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="polaroid">
+          <img id='memeshown5' src= {{ static Image5 }}  value="5" style="width:100%">
+          <div class="container">
+            <p>5</p>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="polaroid">
+          <img id='memeshown6' src= {{ static Image6 }}  value="6" style="width:100%">
+          <div class="container">
+            <p>6</p>
+          </div>
+        </div>
+      </div>
+  </div>
 </div>
 
-<div class="row">
-    <div class="column">
-      <div class="polaroid">
-        <img id='memeshown4' src= {{ static Image4 }}  value="4" style="width:100%">
-        <div class="container">
-          <p>4</p>
-        </div>
-      </div>
-    </div>
-    <div class="column">
-      <div class="polaroid">
-        <img id='memeshown5' src= {{ static Image5 }}  value="5" style="width:100%">
-        <div class="container">
-          <p>5</p>
-        </div>
-      </div>
-    </div>
-    <div class="column">
-      <div class="polaroid">
-        <img id='memeshown6' src= {{ static Image6 }}  value="6" style="width:100%">
-        <div class="container">
-          <p>6</p>
-        </div>
-      </div>
-    </div>
-</div>
-
-
+{% block app_styles %}
+    <link href="{% static 'global/css/FriendlyChecks.css' %}" rel="stylesheet">
+{% endblock %}
+ 
+ 
  <style>
+
+
 /* Three image containers (use 25% for four, and 50% for two, etc) */
 .column {
     float: left;
     width: 33.33%;
     padding: 5px;
-  }
-  
+  } 
   /* Clear floats after image containers */
   .row::after {
     content: "";
@@ -86,14 +95,6 @@
   padding: 5px;
 }
 
-/* to make the numbers big and aligned in the middle :D */
-/* label {
-  display: block;
-  text-align: center;
-  font-size: 2em;
-} */
-/* did not use the labels in the end */
-
 body {margin:25px;}
 
 div.polaroid {
@@ -107,11 +108,25 @@ div.container {
   text-align: center;
   padding: 10px 20px;
 }
+
+.otree-timer {
+    display: none;
+}
+
+.debug-info {
+    display:none;
+}
 </style>
-<!-- Important note: These keycode values are only valid during in keydown and keyup events. 
-  On Mac, keypress events give you an completely different set of codes, yay-->
+
+<script src="{% static 'global/js/FriendlyChecks.js' %}"></script> 
 
 <script> 
+const bRequireFS    = js_vars.bRequireFS;
+const bCheckFocus   = js_vars.bCheckFocus;
+const defaultPixel  = js_vars.dPixelRatio;
+var TBlur           = new Date().getTime();
+var TFocus          = new Date().getTime();
+
     // Hidden Next Button
     let EndButton               = document.createElement('button');
     EndButton.style.visibility  = 'hidden';
@@ -132,8 +147,11 @@ div.container {
     var TStart       = new Date().getTime();
     var TEnd         = new Date().getTime();
 
-    document.addEventListener("DOMContentLoaded", function(debug=true) {
+    document.addEventListener("DOMContentLoaded", function(debug=false) {
         console.log('Loading info');
+
+        let fullbody = document.getElementById('fullbody');
+        InitializeFriendlyChecks(fullbody, bRequireFS, bCheckFocus);
 
         let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
         OtreeBody.appendChild(iPost);

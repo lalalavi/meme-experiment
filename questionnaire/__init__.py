@@ -11,14 +11,6 @@ class Constants(BaseConstants):
     name_in_url = 'Questionnaire'
     players_per_group = None
     num_rounds = 1
-    ## Path for images
-    # imgFile_Quality     = '/static/global/figures/Infographic_graphs/qual_lin.png'
-    # imgFile_QualityCv   = '/static/global/figures/Infographic_graphs/qual_concave.png'
-    # imgFile_QualityCx   = '/static/global/figures/Infographic_graphs/qual_convex.png'
-    # imgFile_Linear      = '/static/global/figures/Infographic_graphs/sus_linear.png'
-    # imgFile_Concave     = '/static/global/figures/Infographic_graphs/sus_concave.png'
-    # imgFile_Convex      = '/static/global/figures/Infographic_graphs/sus_convex.png' 
-
 class Subsession(BaseSubsession):
     pass
 
@@ -36,7 +28,7 @@ class Player(BasePlayer):
     D7 = models.StringField(blank=True)
     D8 = models.StringField()
     D9 = models.StringField()
-    D10 = models.StringField()
+    D10 = models.StringField(blank=True)  #like this right now because I do not know how to do shortOpen questions properly
     D11 = models.StringField(blank=True)
     D12 = models.StringField(blank=True)
     D13 = models.StringField(blank=True)
@@ -103,17 +95,6 @@ class Questionnaire(Page):
     'V1', 'V2', 'V3',
     ]
 
-
-    # @staticmethod
-    # def js_vars(player: Player):
-    #     return dict(
-    #         Ql = Constants.imgFile_Quality,
-    #         Qcv = Constants.imgFile_QualityCv,
-    #         Qcx = Constants.imgFile_QualityCx,
-    #         Sl = Constants.imgFile_Linear, 
-    #         Scv = Constants.imgFile_Concave,
-    #         Scx = Constants.imgFile_Convex,
-    #     )
 
     @staticmethod
     def before_next_page(player, timeout_happened):

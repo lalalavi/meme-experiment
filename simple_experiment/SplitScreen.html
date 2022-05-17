@@ -3,6 +3,7 @@
 {% block app_styles %}
     <link href="{% static 'global/css/VT_functionality.css' %}" rel="stylesheet">
     <link href="{% static 'global/css/SplitScreen.css' %}" rel="stylesheet">
+    <link href="{% static 'global/css/FriendlyChecks.css' %}" rel="stylesheet">
     <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
 
     <style>
@@ -21,62 +22,74 @@
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="https://kit.fontawesome.com/f6dcf461c1.js" crossorigin="anonymous"></script>
 
-<div class="cover leftcover" id="leftcover" name="lS" style="position:absolute;">
-    <!-- <br><br><p style="color: black;">Scroll down to see more memes or press button below post. </p> -->
-    <br>
-    <div class="nes-container" style=background-color:white;>
-        <p style=color:black;background-color:white;font-family:courier;font-weight:100;>Scroll down to see more or press button to post.</p>
-    </div>
-    <br><br>
-    {% for meme in url_list %}
-    <div class="polaroid" id="polaroid-{% forloop.counter0 %}" >
-        <img src= "{% static meme %}"/> 
+<div id="hello">
+
+    <div class="cover leftcover" id="leftcover" name="lS" style="position:absolute;">
+        <!-- <br><br><p style="color: black;">Scroll down to see more memes or press button below post. </p> -->
         <br>
-        <button type="button" class="btn" onclick="animateButtons(this.id)" id="dislike-{% forloop.counter0 %}"> <i class="fa fa-thumbs-down"></i></button>            
-        <button type="button" class="btn" onclick="animateButtons(this.id)" id="like-{% forloop.counter0 %}"><i class="fas fa-heart"></i></button>
-    </div> 
-    {% endfor %} 
-</div>
-
-<div class="vertical_line" id="line"></div>
-
-<div class="cover rightcover" id="rightcover" name="rS" onmouseenter="mouselog(event)" onmouseleave="mouselog(event)">
-
-{{ if subsession.round_number == 1 }} 
-<br>    <div class="nes-container" style=background-color:white;visibility:visible; >
-    <p style=color:black;background-color:white;font-family:courier;font-weight:100;>Your history will be displayed here once you post.</p>
-</div>
-{{ endif }}
-
-{{ if subsession.round_number > 1 }} 
-    <br>   <div class="nes-container" style=background-color:white;visibility:visible; >
-        <p style=color:black;background-color:white;font-family:courier;font-weight:100;> Your last post.    ᕕ(ᐛ)ᕗ  </p>
+        <div class="nes-container" style=background-color:white;>
+            <p style=color:black;background-color:white;font-family:courier;font-weight:100;>Scroll down to see more or press button to post.</p>
+        </div>
+        <br><br>
+        {% for meme in url_list %}
+        <div class="polaroid" id="polaroid-{% forloop.counter0 %}" >
+            <img src= "{% static meme %}"/> 
+            <br>
+            <button type="button" class="btn" onclick="animateButtons(this.id)" id="dislike-{% forloop.counter0 %}"> <i class="fa fa-thumbs-down"></i></button>            
+            <button type="button" class="btn" onclick="animateButtons(this.id)" id="like-{% forloop.counter0 %}"><i class="fas fa-heart"></i></button>
+        </div> 
+        {% endfor %} 
     </div>
-    <br> <br><br> <br> <img style="width: 300px; position: fixed; margin-top: 150px; " src="{{ static image_path }}"/>
-    <br><br><br><br><br> <br><br><br><br> <br><br><br><br> <br> <br> 
-   
-    <button type="button" class="game-btn btn-outcome r0 c0" id="btnL" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)"> 
-        <div class="btn-content"> {{ likes }} <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> <br> people out of 40 <br> liked your post </div>
-        <div class="btn-hidden">  </div>
-    </button> 
-    <div class="break"> </div>
-    <button type="button" class="game-btn btn-outcome r1 c0" id="btnD" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)">
-        <div class="btn-content"> {{ dislikes }} <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> <br> people out of 40 <br> <b>did not</b> like <br> your post</div>
-        <div class="btn-hidden">  </div>
-    </button>      
-{{ endif }}
 
-</div>
+    <div class="vertical_line" id="line"></div>
 
-<div class="post-container active">
-    <button class="button_slide slide_right" id="post" style="align-self: center;" onclick="endTrial()">take me to post   ᕕ(ᐛ)ᕗ</button>   
+    <div class="cover rightcover" id="rightcover" name="rS" onmouseenter="mouselog(event)" onmouseleave="mouselog(event)">
+
+    {{ if subsession.round_number == 1 }} 
+    <br>    <div class="nes-container" style=background-color:white;visibility:visible; >
+        <p style=color:black;background-color:white;font-family:courier;font-weight:100;>Your history will be displayed here once you post.</p>
+    </div>
+    {{ endif }}
+
+    {{ if subsession.round_number > 1 }} 
+        <br>   <div class="nes-container" style=background-color:white;visibility:visible; >
+            <p style=color:black;background-color:white;font-family:courier;font-weight:100;> Your last post.    ᕕ(ᐛ)ᕗ  </p>
+        </div>
+        <br> <br><br> <br> <img style="width: 250px; position: fixed; margin-top: 125px; " src="{{ static image_path }}"/>
+        <br><br><br><br><br> <br><br><br><br> <br>
+        <!-- <br> <br> <br><br><br>  -->
+    
+        <button type="button" class="game-btn btn-outcome r0 c0" id="btnL" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)"> 
+            <div class="btn-content"> {{ likes }} <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> <br> people out of 40 <br> liked your post </div>
+            <div class="btn-hidden">  </div>
+        </button> 
+        <div class="break"> </div>
+        <button type="button" class="game-btn btn-outcome r1 c0" id="btnD" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)">
+            <div class="btn-content"> {{ dislikes }} <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> <br> people out of 40 <br> <b>did not</b> like <br> your post</div>
+            <div class="btn-hidden">  </div>
+        </button>      
+    {{ endif }}
+
+    </div>
+
+    <div class="post-container active">
+        <button class="button_slide slide_right" id="post" style="align-self: center;" onclick="endTrial()">take me to post   ᕕ(ᐛ)ᕗ</button>   
+    </div>
+
 </div>
 
 {% block app_scripts %}
 
 <script src="{% static 'global/js/VT_functionality.js' %}"></script> 
+<script src="{% static 'global/js/FriendlyChecks.js' %}"></script> 
+
 
 <script>   
+const bRequireFS    = js_vars.bRequireFS;
+const bCheckFocus   = js_vars.bCheckFocus;
+const defaultPixel  = js_vars.dPixelRatio;
+var TBlur           = new Date().getTime();
+var TFocus          = new Date().getTime();
 
 // LOCAL COUNTERS
 var Lcounter = 0;  
@@ -254,6 +267,9 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
     hidestuff.style.visibility = 'hidden';   // this hides the debug information so i do not go crazy 
 
     let body = document.getElementById('rightcover');
+    let fullbody = document.getElementById('hello');
+
+    InitializeFriendlyChecks(fullbody, bRequireFS, bCheckFocus);
     InitializeVT(body);                                                 // Initialize visual tracing
     // InitializeVT(body,sNameButtonClicks='sButtonClickScreen', sNameTimeClicks='sTimeClickScreen');                                                 // Initialize visual tracing
     hideEverything();                                                   // Hide Everything at the beginning                     

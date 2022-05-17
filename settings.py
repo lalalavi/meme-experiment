@@ -2,8 +2,20 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
+        name='Full_Experiment',
+        display_name="The full thing! :D",
+        num_demo_participants=10, 
+        app_sequence=['instructions', 'simple_experiment', 'questionnaire', 'end'],
+        bRequireFS=True,
+        bCheckFocus=True,
+        doc="""
+        bRequireFS: bool, require fullscreen.
+        bCheckFocus: bool, require checking if page is active.
+        """
+        ),
+    dict(
         name='Beta_Experiment',
-        display_name="Beta life",
+        display_name="Only the experiment",
         num_demo_participants=10, 
         app_sequence=['simple_experiment'],
         bRequireFS=True,
@@ -11,7 +23,7 @@ SESSION_CONFIGS = [
     ),
     dict(
         name='Beta_Instructions',
-        display_name="Instructions",
+        display_name="Only the instructions",
         num_demo_participants=10, 
         app_sequence=['instructions'],
         bRequireFS=True,
@@ -19,8 +31,19 @@ SESSION_CONFIGS = [
     ),
     dict(
         name='Formatting_the_questionnaire',
+        display_name="Only the questionnaire",
         num_demo_participants= 4,
-        app_sequence=['questionnaire']
+        app_sequence=['questionnaire'],
+        bRequireFS=True,
+        bCheckFocus=True,
+    ),
+       dict(
+        name='End',
+        display_name="End",
+        num_demo_participants= 4,
+        app_sequence=['end'],
+        bRequireFS=True,
+        bCheckFocus=True,
     ),
 ]
 
@@ -37,6 +60,7 @@ PARTICIPANT_FIELDS = ['dExpiry',
     'LRmemematrix', 
     'HRmemematrix', 
     'startTime',
+    'TotalTime',
     'ProlificID',
     'iOutFocus',
     'iFullscreenChanges',
