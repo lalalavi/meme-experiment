@@ -43,9 +43,9 @@ class Player(BasePlayer):
     sFixations              = models.LongStringField(blank=True) 
     sOrderFixations         = models.LongStringField(blank=True) 
     ## Focus Variables
-    iFocusLost          = models.IntegerField(blank=True)
-    dFocusLostT         = models.FloatField(blank=True)
-    iFullscreenChange   = models.IntegerField(blank=True)
+    iFocusLost               = models.IntegerField(blank=True)
+    dFocusLostT              = models.FloatField(blank=True)
+    iFullscreenChange        = models.IntegerField(blank=True)
     ## Participant input Variables 
     iFeedLikes              = models.IntegerField(blank=True)
     iFeedDislikes           = models.IntegerField(blank=True)

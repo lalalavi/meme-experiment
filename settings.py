@@ -13,38 +13,38 @@ SESSION_CONFIGS = [
         bCheckFocus: bool, require checking if page is active.
         """
         ),
-    dict(
-        name='Beta_Experiment',
-        display_name="Only the experiment",
-        num_demo_participants=10, 
-        app_sequence=['simple_experiment'],
-        bRequireFS=True,
-        bCheckFocus=True,
-    ),
-    dict(
-        name='Beta_Instructions',
-        display_name="Only the instructions",
-        num_demo_participants=10, 
-        app_sequence=['instructions'],
-        bRequireFS=True,
-        bCheckFocus=True,
-    ),
-    dict(
-        name='Formatting_the_questionnaire',
-        display_name="Only the questionnaire",
-        num_demo_participants= 4,
-        app_sequence=['questionnaire'],
-        bRequireFS=True,
-        bCheckFocus=True,
-    ),
-       dict(
-        name='End',
-        display_name="End",
-        num_demo_participants= 4,
-        app_sequence=['end'],
-        bRequireFS=True,
-        bCheckFocus=True,
-    ),
+    # dict(
+    #     name='Beta_Experiment',
+    #     display_name="Only the experiment",
+    #     num_demo_participants=10, 
+    #     app_sequence=['simple_experiment'],
+    #     bRequireFS=True,
+    #     bCheckFocus=True,
+    # ),
+    # dict(
+    #     name='Beta_Instructions',
+    #     display_name="Only the instructions",
+    #     num_demo_participants=10, 
+    #     app_sequence=['instructions'],
+    #     bRequireFS=True,
+    #     bCheckFocus=True,
+    # ),
+    # dict(
+    #     name='Formatting_the_questionnaire',
+    #     display_name="Only the questionnaire",
+    #     num_demo_participants= 4,
+    #     app_sequence=['questionnaire'],
+    #     bRequireFS=True,
+    #     bCheckFocus=True,
+    # ),
+    #    dict(
+    #     name='End',
+    #     display_name="End",
+    #     num_demo_participants= 4,
+    #     app_sequence=['end'],
+    #     bRequireFS=True,
+    #     bCheckFocus=True,
+    # ),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
