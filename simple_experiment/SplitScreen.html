@@ -225,32 +225,32 @@ function mouselog(event) {
 
     if (event.type === 'mouseenter' && last === 'x') {     // entering right for the first time
             mouseenterTime = currentTime.getTime();
-            console.log('FIRST enter time in rS was:' + mouseenterTime);
+            // console.log('FIRST enter time in rS was:' + mouseenterTime);
             last = 'rS';
         } else if (event.type === 'mouseenter' && last === 'lS') {     // entering right after being left
             var mouseoverTime = currentTime.getTime() - mouseenterTime;
-            console.log('mouseover time in left screen time was: ' + mouseoverTime);
+            // console.log('mouseover time in left screen time was: ' + mouseoverTime);
             fixations = fixations + ';' + mouseoverTime;
             order = order + ';' + last;
-            console.log(fixations, order);
+            // console.log(fixations, order);
             mouseenterTime = currentTime.getTime();
-            console.log('mouseenterTime in rS was:' + mouseenterTime);
+            // console.log('mouseenterTime in rS was:' + mouseenterTime);
             last = 'rS';
         } else if (event.type === 'mouseleave') { 
             var mouseoverTime = currentTime.getTime() - mouseenterTime;
-            console.log('mouseover time in right screen was: ' + mouseoverTime);
+            // console.log('mouseover time in right screen was: ' + mouseoverTime);
             fixations = fixations + ';' + mouseoverTime;
             last = 'rS'; 
             order = order + ';' + last;
-            console.log(fixations, order); 
+            // console.log(fixations, order); 
         } 
     if (last === 'x' && event.clientX < widthLeft) {
             mouseenterTime = currentTime.getTime();
-            console.log('FIRST enter time in lS was:' + mouseenterTime);   
+            // console.log('FIRST enter time in lS was:' + mouseenterTime);   
             last = 'lS';
         } else if (last === 'rS' && event.clientX < widthLeft) {
             mouseenterTime = currentTime.getTime();
-            console.log('mouseenterTime in lS was:' + mouseenterTime);   
+            // console.log('mouseenterTime in lS was:' + mouseenterTime);   
             last = 'lS';
      }
 }

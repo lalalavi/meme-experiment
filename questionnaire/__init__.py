@@ -28,12 +28,12 @@ class Player(BasePlayer):
     D7 = models.StringField(blank=True)
     D8 = models.StringField()
     D9 = models.StringField()
-    D10 = models.StringField(blank=True)  #like this right now because I do not know how to do shortOpen questions properly
-    D11 = models.StringField(blank=True)
-    D12 = models.StringField(blank=True)
-    D13 = models.StringField(blank=True)
-    D14 = models.StringField(blank=True)
-    D15 = models.StringField(blank=True)
+    D10 = models.StringField()          #like this right now because I do not know how to do shortOpen questions properly
+    D11 = models.StringField()
+    D12 = models.StringField()
+    D13 = models.StringField()
+    D14 = models.StringField()
+    D15 = models.StringField()
 
 
     # Variables for Social Media Disorder scale
