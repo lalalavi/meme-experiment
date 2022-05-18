@@ -29,14 +29,14 @@ SESSION_CONFIGS = [
     #     bRequireFS=True,
     #     bCheckFocus=True,
     # ),
-    # dict(
-    #     name='Formatting_the_questionnaire',
-    #     display_name="Only the questionnaire",
-    #     num_demo_participants= 4,
-    #     app_sequence=['questionnaire'],
-    #     bRequireFS=True,
-    #     bCheckFocus=True,
-    # ),
+    dict(
+        name='Formatting_the_questionnaire',
+        display_name="Only the questionnaire",
+        num_demo_participants= 4,
+        app_sequence=['questionnaire'],
+        bRequireFS=True,
+        bCheckFocus=True,
+    ),
     #    dict(
     #     name='End',
     #     display_name="End",

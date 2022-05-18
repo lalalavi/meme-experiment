@@ -17,7 +17,7 @@ class Constants(BaseConstants):
     ProlificLink = "https://app.prolific.co/submissions/complete?cc=3E849E72"
     Slides = [
         dict(
-            Title = 'Results',
+            Title = 'This is the end',
             path='EndPage/slide1.html',
             ),        
     ]

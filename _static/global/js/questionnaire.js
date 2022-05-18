@@ -31,10 +31,22 @@
 // Add here any validation function
 // *********************************************************************
 function validInt(str) {return (!isNaN(parseInt(str)))};
+
 function validAge(str) {
     num = parseInt(str);
     return (num>=18 && num<= 122);
 }
+
+function validNum(str) {
+    num = parseInt(str);
+    return (num>=0 && num<= 1200);
+}
+
+function validFollowers(str) {
+    num = parseInt(str);
+    return ((num>=0 && num<= 1000000000000) || (str=='x' || str=='X'));
+}
+
 const countries = ["My country is not listed", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua & Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia & Herzegovina", "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central Arfrican Republic", "Chad", "Chile", "China", "Colombia", "Congo", "Cook Islands", "Costa Rica", "Cote D Ivoire", "Croatia", "Cuba", "Curacao", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji", "Finland", "France", "French Polynesia", "French West Indies", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauro", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russia", "Rwanda", "Saint Pierre & Miquelon", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "St Kitts & Nevis", "St Lucia", "St Vincent", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor L'Este", "Togo", "Tonga", "Trinidad & Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks & Caicos", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Virgin Islands (US)", "Yemen", "Zambia", "Zimbabwe"];
 const likertScale = [ 'Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'];
 const likertValues = [1,2,3,4,5];
@@ -43,6 +55,10 @@ const bisValues = [1,2,3,4];
 const warningAutocomplete = 'Please select one item from the list';
 const warningEmpty = 'Please do not leave this question unanswered';
 const warningAge = 'Please provide a valid answer (number from 18 to 122)';
+const warningNum = 'Please provide a valid answer (number from 0 to 1200)';
+const warningFollowers = 'Please provide a valid answer (number or x)';
+
+
 const likertLimits = ['Strongly Disagree','Strongly Agree'];
 const bisLimits = [ 'Rarely/Never', 'Almost Always/Always'];
 // const figValues = [1,2,3];
@@ -106,7 +122,7 @@ const firstQuestions = [
         type: "longOpen",
     },
     {
-        question: "During the experiment, did you use any specific strategy or rule of thumb when deciding which of the two products to purchase? If so, describe it shortly.",
+        question: "During the experiment, did you feel any particular emotion?",
         name: "D7",
         type: "longOpen",
     },
@@ -128,7 +144,8 @@ const firstQuestions = [
         question: "Please provide an estimate of how much time you normally spend on a day inside all social media platforms (in minutes):",
         name: "D10",
         type: "shortOpen",
-        invalidMessage: warningEmpty,
+        validate: validNum ,
+        invalidMessage: warningNum,
     }, 
     {
         question: "If applicable, how many likes (or similar) do you typically get when you post on social media (for example on Instagram, Twitter, Facebook, Reddit)? If not applicable, please enter an X.",
@@ -140,6 +157,7 @@ const firstQuestions = [
         question: "If applicable, how many followers/friends/subscribers (or similar) do you have on Instagram? If not applicable, please enter an X.",
         name: "D12",
         type: "shortOpen",
+        validate: validFollowers ,
         invalidMessage: warningEmpty,
     }, 
     {
@@ -207,7 +225,7 @@ const SMD = [
     labels: ['Yes', 'No']
     },
     {
-    question: "During the past year, have you regularly felt dissatisfied because you wanted to spend more time on social media?",
+    question: "During the past year, regularly lied to your parents or friends about the amount of time you spend on social media?",
     name: "SMD6",
     type: "radio",
     values: [1,2],
@@ -221,7 +239,7 @@ const SMD = [
     labels: ['Yes', 'No']
     },
     {
-    question: "During the past year, have you often used social media to escape from negative feelings??",
+    question: "During the past year, have you often used social media to escape from negative feelings?",
     name: "SMD8",
     type: "radio",
     values: [1,2],
