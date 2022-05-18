@@ -16,7 +16,7 @@ doc = """
 class Constants(BaseConstants):
     name_in_url = 'simple_experiment'
     players_per_group = None
-    num_rounds = 20
+    num_rounds = 30
     df = pd.read_excel("_static/global/HR.xlsx",index_col="Numbers")
     df2 = pd.read_excel("_static/global/LR.xlsx",index_col="Numbers")
     total_time = 300 #5 minutes
