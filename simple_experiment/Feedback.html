@@ -154,14 +154,14 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 <div class="centered" id="centered">
-	<button type="button" class="game-btn btn-outcome r0 c0" id="btnL" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)"> 
-		<div class="btn-content"> <label id="iLikes" value="{{l}}">{{l}}</label>  <span style="font-size:120%; font-family:Garamond; color:red;">&hearts;</span> <br> people out of 40 <br> liked your post  </div>
+	<button type="button" style="width: 215px;" class="game-btn btn-outcome r0 c0" id="btnL" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)"> 
+		<div class="btn-content"> <label id="iLikes" value="{{l}}" style="font-size:175%;">{{l}}</label>  <span style="font-size:175%;"> &#10084; people <br>out of 40 <br> liked your post </span> </div>
 		<div class="btn-hidden">  </div>
 	</button> 
 	<br>
 	<div class="break"> </div>
-	<button type="button" class="game-btn btn-outcome r1 c0" id="btnD" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)">
-		<div class="btn-content"> <label id="iDislikes" value="{{d}}">{{d}}</label> <span style="font-size:100%; color:rgb(128, 18, 18);">&#128148;</span> <br> people out of 40 <br> <b>did not</b> like <br> your post</div>
+	<button type="button" style="width: 215px;" class="game-btn btn-outcome r1 c0" id="btnD" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)">
+		<div class="btn-content"> <label id="iDislikes" value="{{d}}" style="font-size:175%;">{{d}}</label> <span style="font-size:175%;">&#128148;  people <br> out of 40 <br> <b>did not</b> like your post </span></div>
 		<div class="btn-hidden">  </div>
 	</button> 
 	

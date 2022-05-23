@@ -34,7 +34,7 @@ function validInt(str) {return (!isNaN(parseInt(str)))};
 
 function validAge(str) {
     num = parseInt(str);
-    return (num>=18 && num<= 122);
+    return (num>=18 && num<= 105);
 }
 
 function validNum(str) {
@@ -54,7 +54,7 @@ const bisScale = [ 'Rarely/Never', 'Occasionally', 'Often', 'Almost Always/Alway
 const bisValues = [1,2,3,4]; 
 const warningAutocomplete = 'Please select one item from the list';
 const warningEmpty = 'Please do not leave this question unanswered';
-const warningAge = 'Please provide a valid answer (number from 18 to 122)';
+const warningAge = 'Please provide a valid answer (number from 18 to 105)';
 const warningNum = 'Please provide a valid answer (number from 0 to 1200)';
 const warningFollowers = 'Please provide a valid answer (number or x)';
 
@@ -149,39 +149,40 @@ const firstQuestions = [
         invalidMessage: warningNum,
     }, 
     {
-        question: "If applicable, how many likes (or similar) do you typically get when you post on social media (for example on Instagram, Twitter, Facebook, Reddit)? If not applicable, please enter an X.",
+        question: "If applicable, how many likes (or similar) do you typically get when you post on social media (e.g. Instagram, Twitter, Facebook, Reddit)?",
         name: "D11",
-        type: "shortOpen",
-        validate: validFollowers ,
-        invalidMessage: warningFollowers,
+        type: "radio",
+        values: [1,2,3,4,5,6,7],
+        labels: ['I do not have any social media','1-10','11-100','101-500', '501-1000', '1001-5000', '5000+']
+        
     }, 
     {
-        question: "If applicable, how many followers/friends/subscribers (or similar) do you have on Instagram? If not applicable, please enter an X.",
+        question: "How many followers/friends/subscribers (or similar) do you have on Instagram?",
         name: "D12",
-        type: "shortOpen",
-        validate: validFollowers ,
-        invalidMessage: warningFollowers,
+        type: "radio",
+        values: [1,2,3,4,5,6,7],
+        labels: ['I do not have this platform','1-10','11-100','101-500', '501-1000', '1001-5000', '5000+']
     }, 
     {
-        question: "If applicable, how many followers/friends/subscribers (or similar) do you have on Twitter? If not applicable, please enter an X.",
+        question: "How many followers/friends/subscribers (or similar) do you have on Twitter?",
         name: "D13",
-        type: "shortOpen",
-        validate: validFollowers ,
-        invalidMessage: warningFollowers,
+        type: "radio",
+        values: [1,2,3,4,5,6,7],
+        labels: ['I do not have this platform','1-10','11-100','101-500', '501-1000', '1001-5000', '5000+']
     }, 
     {
-        question: "If applicable, how many followers/friends/subscribers (or similar) do you have on TikTok? If not applicable, please enter an X.",
+        question: "How many followers/friends/subscribers (or similar) do you have on TikTok?",
         name: "D14",
-        type: "shortOpen",
-        validate: validFollowers ,
-        invalidMessage: warningFollowers,
+        type: "radio",
+        values: [1,2,3,4,5,6,7],
+        labels: ['I do not have this platform','1-10','11-100','101-500', '501-1000', '1001-5000', '5000+']
     }, 
     {
-        question: "If applicable, how many followers/friends/subscribers (or similar) do you have on Facebook? If not applicable, please enter an X.",
+        question: "How many followers/friends/subscribers (or similar) do you have on Facebook?",
         name: "D15",
-        type: "shortOpen",
-        validate: validFollowers ,
-        invalidMessage: warningFollowers,
+        type: "radio",
+        values: [1,2,3,4,5,6,7],
+        labels: ['I do not have this platform','1-10','11-100','101-500', '501-1000', '1001-5000', '5000+']
     }, 
     {
         question: "For the following questions, please answer each of these questions in terms of the way you generally feel. For each question simply state as honestly and candidly as you can what you are presently experiencing. Please Select '2' to show that you read these instructions.",
@@ -189,8 +190,6 @@ const firstQuestions = [
         type: "scale",
     },
 ];
-
-
 
 
 // Add questionnaire questions in different orders
