@@ -19,7 +19,7 @@ class Constants(BaseConstants):
     num_rounds = 30
     df = pd.read_excel("_static/global/HR.xlsx",index_col="Numbers")
     df2 = pd.read_excel("_static/global/LR.xlsx",index_col="Numbers")
-    total_time = 300 #5 minutes
+    total_time = 600 #10 minutes
     IMG_ON_PAGE = 6
 
 class Subsession(BaseSubsession):
@@ -86,13 +86,15 @@ def creating_session(subsession):
             while p.sRandom == p.sRandom2: #repeat randomization until it is different for each half
                 p.sRandom2 = random.choice(['LR', 'HR'])
             #IMAGES 
+            pattern = r"meme(?P<number>\d{3})\.jpeg"
             LRmemelist = os.listdir('_static/LR')[1:-1] 
-            pattern = r"meme(?P<number>\d{3})\.jpg"
             LRnumbers = [int(re.match(pattern, x).group("number")) for x in LRmemelist]  # take all of the numbers from the image files and put them on a list
             LRnumbers = random.sample(LRnumbers, len(LRnumbers))        #shuffle so order is not the same across participants
             LRnumbers = [LRnumbers[n-Constants.IMG_ON_PAGE:n] for n in range(Constants.IMG_ON_PAGE,len(LRnumbers), Constants.IMG_ON_PAGE)]
             p.LRmemematrix = LRnumbers
-            HRnumbers = range(1,len(os.listdir('_static/HR')))
+            HRmemelist = os.listdir('_static/HR')[1:-1] 
+            HRnumbers = [int(re.match(pattern, x).group("number")) for x in HRmemelist]  # take all of the numbers from the image files and put them on a list
+            HRnumbers = random.sample(HRnumbers, len(HRnumbers))
             HRnumbers = [HRnumbers[n-Constants.IMG_ON_PAGE:n] for n in range(Constants.IMG_ON_PAGE,len(HRnumbers), Constants.IMG_ON_PAGE)]                
             p.HRmemematrix = HRnumbers
         player.sTreatment = p.sTreatment
@@ -143,17 +145,31 @@ class SplitScreen(Page):
         return participant.dExpiry - time.time()
 
     @staticmethod
-    def vars_for_template(player): 
+    def vars_for_template(player):    
+
+        participant = player.participant   
+        time_left = round(participant.dExpiry - time.time()) 
+        if time_left > Constants.total_time/2:  
+            player.sReward = player.sRandom
+        else:
+            player.sReward = player.sRandom2
+
         url_list=[]
-        for meme in [x for x in range(1,70)]: #excludes the 1
-            url_list.append(f'memes/feed{meme}.jpg') 
+        if player.sReward == 'HR':
+            for meme in range(1,205): #excludes the 1
+                url_list.append(f'memes/feed{meme}.jpeg') 
+        else:
+            url_list = [f'memes/feed{meme}.jpeg' for meme in range(205,410)] #how to do the two lines above more concisely
+        
+        random.shuffle(url_list) #so feed changes everytime
+
         if player.round_number == 1:
             return dict(url_list=url_list)
         else: 
             prev_player = player.in_round(player.round_number - 1)
             return {
                     'prev_player'   :  player.in_round(player.round_number - 1), #define the last round
-                    'image_path'    :  "".join([prev_player.sReward,'/meme', str(prev_player.iPost) , '.jpg']) ,
+                    'image_path'    :  "".join([prev_player.sReward,'/meme', str(prev_player.iPost) , '.jpeg']) ,
                     'dislikes'      :  prev_player.iDislikes ,
                     'likes'         :  prev_player.iLikes ,
                     'roundnumber'   :  prev_player.round_number ,
@@ -193,17 +209,10 @@ class Posting(Page):
         'iImgPost1','iImgPost2','iImgPost3','iImgPost4','iImgPost5','iImgPost6',
         'iPost', 'sReward', 'dRTPost',
     ] 
-    
+ 
     @staticmethod
     def vars_for_template(player):
         participant = player.participant
-        # time_elapsed = round(get_timeout_seconds(player)) #round(get_timeout_seconds)
-        time_left = round(participant.dExpiry - time.time()) 
-
-        if time_left > Constants.total_time/2:  
-            player.sReward = player.sRandom
-        else:
-            player.sReward = player.sRandom2
         
         if player.sReward == 'LR':
             vImages = participant.LRmemematrix 
@@ -218,12 +227,12 @@ class Posting(Page):
         player.iImgPost6        = vImages[player.round_number - 1][5]
         
         return {
-            'Image'     :  "".join([player.sReward,'/meme', str(player.iImgPost1), '.jpg']) ,
-            'Image2'    :  "".join([player.sReward,'/meme', str(player.iImgPost2), '.jpg']) ,
-            'Image3'    :  "".join([player.sReward,'/meme', str(player.iImgPost3), '.jpg']) ,
-            'Image4'    :  "".join([player.sReward,'/meme', str(player.iImgPost4), '.jpg']) ,
-            'Image5'    :  "".join([player.sReward,'/meme', str(player.iImgPost5), '.jpg']) ,
-            'Image6'    :  "".join([player.sReward,'/meme', str(player.iImgPost6), '.jpg']) ,   
+            'Image'     :  "".join([player.sReward,'/meme', str(player.iImgPost1), '.jpeg']) ,
+            'Image2'    :  "".join([player.sReward,'/meme', str(player.iImgPost2), '.jpeg']) ,
+            'Image3'    :  "".join([player.sReward,'/meme', str(player.iImgPost3), '.jpeg']) ,
+            'Image4'    :  "".join([player.sReward,'/meme', str(player.iImgPost4), '.jpeg']) ,
+            'Image5'    :  "".join([player.sReward,'/meme', str(player.iImgPost5), '.jpeg']) ,
+            'Image6'    :  "".join([player.sReward,'/meme', str(player.iImgPost6), '.jpeg']) ,   
         }
     
 
@@ -266,7 +275,7 @@ class addTags(Page):
     @staticmethod
     def vars_for_template(player): 
         return {
-            'Image'    :  "".join([player.sReward,'/meme', str(player.iPost) , '.jpg']) , 
+            'Image'    :  "".join([player.sReward,'/meme', str(player.iPost) , '.jpeg']) , 
         }
 
     @staticmethod
@@ -364,8 +373,7 @@ class HowDoYaFeel(Page):
 
 
 #! THINGS TO THINK
-# change mouseover for mouseenter in VT buttons
-# buttons under last post sometimes are hidden under post in splitscreen
-# Post button div in split screen messes with the hiding function
+# prolific !!!!! 
+
 
 page_sequence = [ready, SplitScreen, Posting, addTags, Feedback, HowDoYaFeel]
