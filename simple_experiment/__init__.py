@@ -374,6 +374,8 @@ class HowDoYaFeel(Page):
 
 #! THINGS TO THINK
 # prolific !!!!! 
+# check out why mouselog function does not work
+# change the way the ifeedlikes ifeeddislikes final output are written into database
 
 
 page_sequence = [ready, SplitScreen, Posting, addTags, Feedback, HowDoYaFeel]

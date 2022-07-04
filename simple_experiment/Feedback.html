@@ -21,6 +21,8 @@
 {% block app_scripts %}
 <script src="{% static 'global/js/VT_functionality.js' %}"></script> 
 <script src="{% static 'global/js/FriendlyChecks.js' %}"></script> 
+<script src="https://kit.fontawesome.com/f6dcf461c1.js" crossorigin="anonymous"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -161,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	<br>
 	<div class="break"> </div>
 	<button type="button" style="width: 215px;" class="game-btn btn-outcome r1 c0" id="btnD" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)">
-		<div class="btn-content"> <label id="iDislikes" value="{{d}}" style="font-size:300%;">{{d}}</label> <span style="font-size:175%;">&#128148; <br>people out of 40 <br> <b>did not</b> like your post </span></div>
+		<div class="btn-content"> <label id="iDislikes" value="{{d}}" style="font-size:300%;">{{d}}</label> &nbsp; <i class="fa fa-thumbs-down" style="font-size:300%"></i>  <span style="font-size:175%;"></span> <br>people out of 40 <br> <b>did not</b> like your post </span></div>
 		<div class="btn-hidden">  </div>
 	</button> 
 	
