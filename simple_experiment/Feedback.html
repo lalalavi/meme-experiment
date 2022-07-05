@@ -5,6 +5,7 @@
 {% block app_styles %}
     <link href="{% static 'global/css/VT_functionality.css' %}" rel="stylesheet">
 	<link href="{% static 'global/css/FriendlyChecks.css' %}" rel="stylesheet">
+	<link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
 
 <style>
 .debug-info {
@@ -27,8 +28,30 @@
 
 {% block content %}
 
-<script>
+<div class="centered" id="centered">
+	<section class="message-list" id="bsl">
+		<section class="message -left">
+			<div class="nes-balloon from-left">
+				<label id="iLikes" value="{{l}}" style="font-size:165%;">{{l}}</label>  <b style="color:red; font-size:160%;"> &#10084;</b> <br><span style="font-size:135%;"> people out of 40 <br> liked your post </span>
+			</div>
+		</section>
+	</section>
+	<div class="break"> </div>
+	<section class="message-list" id="emtl">
+		<section class="message -right">
+			<div class="nes-balloon from-right">
+				<label id="iDislikes" value="{{d}}" style="font-size:165%;">{{d}}</label> &nbsp; <i class="fa fa-thumbs-down" style="font-size:135%"></i>  <span style="font-size:135%;"> <br>people out of 40 <br> <b>did not</b> like your post </span>
+			</div>
+		</section>
+	</section>
+<br><br><br>
+</div>
 
+<div class="centered">
+<button class="btn btn-primary" id="end">Continue </button> 
+</div>
+
+<script>
 const bRequireFS    = js_vars.bRequireFS;
 const bCheckFocus   = js_vars.bCheckFocus;
 const defaultPixel  = js_vars.dPixelRatio;
@@ -53,126 +76,47 @@ let dRT          = document.createElement("input");
 	dRT.id           = 'dRTFeedback';
 	dRT.value        = '';
 
-let sFeedback        	 = document.createElement("input");
-	sFeedback.type       = 'hidden';
-	sFeedback.name       = 'sFeedback';
-	sFeedback.id         = 'sFeedback';
-	sFeedback.value      = '';
-
-let sTimeFeedback   	  = document.createElement("input");
-	sTimeFeedback.type    = 'hidden';
-	sTimeFeedback.name    = 'sTimeFeedback';
-	sTimeFeedback.id      = 'sTimeFeedback';
-	sTimeFeedback.value   = '';
-
-var mouseenterTimeFeedback = 0;
-var fixationsFeedback = [];
-var orderFeedback = [];
 var TStart       = new Date().getTime();
 var TEnd         = new Date().getTime();
 
 treatment = js_vars.treatment // Load Treatment
 
-function recordButtons(event,string) {
-  let currentTime = new Date();
-  if (event.type === 'mouseenter') {
-        mouseenterTimeFeedback = currentTime.getTime();
-        console.log('mouseenterTime in '+ string+ ' was:' + mouseenterTimeFeedback);
-    } else if (event.type === 'mouseleave') {
-        var mouseoverTimeFeedback = currentTime.getTime() - mouseenterTimeFeedback;
-        console.log('mouseover time was: ' + mouseoverTimeFeedback);
-        fixationsFeedback = fixationsFeedback + ';' + mouseoverTimeFeedback;
-        orderFeedback = orderFeedback + ';' + string;
-        console.log(fixationsFeedback, orderFeedback);
-    } 
-}
-
-
-  // When page is loaded
+// When page is loaded
 document.addEventListener("DOMContentLoaded", function() {
 	console.log('Loading info');
 	console.log(treatment);
 
     let body = document.getElementById('game-container');
 	let fullbody = document.getElementById('centered');
-    
 	InitializeFriendlyChecks(fullbody, bRequireFS, bCheckFocus);
-    InitializeVT(body);                								// Initialize visual tracing
-    hideEverything();                                                   // Hide Everything at the beginning                     
-    ConvertButtons2VT('r0', sActivation = 'mouseover', 'r0');           // Mouseover for Row0
-    ConvertButtons2VT('r1', sActivation = 'mouseover', 'r1');           // Mouseover for Row1
-    // ConvertButtons2VT('r2', sActivation = 'mouseover', 'r2');           // Mouseover for Row2
-	resizeButtons(); 
-	showFeedback();      										        // Resize the text of all overflown buttons
-
-	function resizeButtons() {
-		lButtons = document.getElementsByClassName('game-btn');
-		for (let i=0; i<lButtons.length; i++) {
-			adjustText(lButtons[i]);
-			};
-    };
-
-	function adjustText(elem) {
-		let ratioWidth = elem.clientWidth/elem.scrollWidth;
-		let ratioHeight = elem.clientHeight/elem.scrollHeight;
-		// Set initial scale as 100%
-		if (ratioWidth<1 || ratioHeight<1) {
-			let ratio = Math.floor(100*Math.min(ratioWidth,ratioHeight))-1
-			elem.style.fontSize = `${ratio}%`;
-			console.log(`Resized ${elem.id} to ${ratio}%`);
-			};                                  
-    };
 
 	// END FUNCTION: LOCAL COUNTERS WRITTEN IN THE DATABASE
     let post = document.getElementById("end");
     post.addEventListener("click", function(event) {
-		sFeedback.value  = orderFeedback;
-        sTimeFeedback.value = fixationsFeedback;
 		TEnd      = new Date().getTime();
     	dRT.value = +TEnd -TStart;
         console.log('End button was pressed');
     });
 
-	function showFeedback() {
-		let x = document.getElementById('btnD');
-		let c = document.getElementById('btnL');
-		if (js_vars.treatment=='Control') {
-			x.style.visibility = 'hidden';  //for control treatment we don't show amount of dislikes
-		} else if (js_vars.treatment=='Emotional') { 
-			c.style.visibility = 'hidden';  //for emotional treatment we don't show the amount of likes
-		} else {
-			x.style.visibility = 'visible';
-			c.style.visibility = 'visible';
-	}};   	
+	let x = document.getElementById('emtl');
+	let c = document.getElementById('bsl');
+	if (js_vars.treatment=='Control') {
+		x.style.visibility = 'hidden';  //for control treatment we don't show amount of dislikes
+	} else if (js_vars.treatment=='Emotional') { 
+		c.style.visibility = 'hidden';  //for emotional treatment we don't show the amount of likes
+	} else {
+		x.style.visibility = 'visible';
+		c.style.visibility = 'visible';
+	};   	
 
     let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
     OtreeBody.appendChild(dRT);
 	OtreeBody.appendChild(l); 				// append likes
 	OtreeBody.appendChild(d); 				// apend dislikes
-	OtreeBody.appendChild(sFeedback);
-	OtreeBody.appendChild(sTimeFeedback);
- });
 
+ });
 </script>
 
-<div class="centered" id="centered">
-	<button type="button" style="width: 215px;" class="game-btn btn-outcome r0 c0" id="btnL" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)"> 
-		<div class="btn-content"> <label id="iLikes" value="{{l}}" style="font-size:300%;">{{l}}</label>  <span style="font-size:175%;"> &#10084; <br> people out of 40 <br> liked your post </span> </div>
-		<div class="btn-hidden">  </div>
-	</button> 
-	<br>
-	<div class="break"> </div>
-	<button type="button" style="width: 215px;" class="game-btn btn-outcome r1 c0" id="btnD" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)">
-		<div class="btn-content"> <label id="iDislikes" value="{{d}}" style="font-size:300%;">{{d}}</label> &nbsp; <i class="fa fa-thumbs-down" style="font-size:300%"></i>  <span style="font-size:175%;"></span> <br>people out of 40 <br> <b>did not</b> like your post </span></div>
-		<div class="btn-hidden">  </div>
-	</button> 
-	
-	<br><br>
-	
-	<button class="btn btn-primary" id="end">Continue </button> 
-</div>
-
-<br><br>
 
 {% endblock %}
 

@@ -47,7 +47,9 @@
 
     <div class="vertical_line" id="line"></div>
 
-    <div class="cover rightcover" id="rightcover" name="rS" onmouseenter="mouselog(event)" onmouseleave="mouselog(event)">
+    <!-- right side of the split -->
+
+    <div class="cover rightcover" id="rightcover" name="rS">
 
     {{ if subsession.round_number == 1 }} 
     <br>    <div class="nes-container" style=background-color:white;visibility:visible; >
@@ -62,24 +64,26 @@
         </div>
         <br> <br><br> <br> 
 
-        <!-- <div class="polaroid" > -->
-            <img style="width: 250px; position: fixed; margin-top: 15vh;" src="{{ static image_path }}"/>
-        <!-- </div> -->
+        <img style="width: 250px; position: fixed; margin-top: 15vh;" src="{{ static image_path }}"/>
 
-        <br><br><br><br><br> <br><br><br><br> <br> <br> <br>
-        <!-- <br> <br> <br><br><br>  -->
-    
-        <button type="button" class="game-btn btn-outcome r0 c0" style="width: 215px;" id="btnL" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)"> 
-            <div class="btn-content"> <span style="font-size:300%; color:black;"> {{ likes }} <b style="color:red">&nbsp; &#10084;</b></span><br> <span style="font-size:175%; color:black;"> people  out of 40 <br> liked your post </div>
-            <div class="btn-hidden">  </div>
-        </button> 
-        <div class="break"> </div>
-        <button type="button" class="game-btn btn-outcome r1 c0" style="width: 215px;" id="btnD" onmouseenter="recordButtons(event,this.id)" onmouseleave="recordButtons(event,this.id)">
-            <div class="btn-content"> <span style="font-size:300%; color:black"> {{ dislikes }} <b style="font-family:Garamond;"> &nbsp; <i class="fa fa-thumbs-down"></i> </b></span><br> <span style="font-size:175%; color:black;"> people  out of 40 <br> <b>did not</b> like your post </span>
-            <div class="btn-hidden">  </div>
-        </button>      
+        <br><br><br><br><br> <br><br><br><br> <br> 
+
+        <section class="message-list" id="baselinetext">
+            <section class="message -left">
+                <div class="nes-balloon from-left">
+                    <span style="font-size:160%; color:black;"> {{ likes }} <b style="color:red"> &#10084;</b></span><br> <span style="font-size:125%; color:black;"> people  out of 40 <br> liked your post 
+                </div>
+            </section>
+        </section>
+        <section class="message-list" id="emotionaltext">
+            <section class="message -right" >
+                <div class="nes-balloon from-right">
+                  <p><span style="font-size:160%; color:black"> {{ dislikes }} <b style="font-family:Garamond;"> <i class="fa fa-thumbs-down"></i> </b></span><br> <span style="font-size:125%; color:black;"> people  out of 40 <br> <b>did not</b> like your post </span>    </p>
+            </section>
+        </section>
+
+
     {{ endif }}
-
     </div>
 
     <div class="post-container active">
@@ -90,7 +94,6 @@
 
 {% block app_scripts %}
 
-<script src="{% static 'global/js/VT_functionality.js' %}"></script> 
 <script src="{% static 'global/js/FriendlyChecks.js' %}"></script> 
 
 
@@ -104,16 +107,9 @@ var TFocus          = new Date().getTime();
 // LOCAL COUNTERS
 var Lcounter = 0;  
 var Dcounter = 0;
-var mouseenterTime = 0;
-var mouseenterTimeFeedback = 0;
-
-var fixations = [];
-var fixationsFeedback = [];
-var order = [];
-var orderFeedback = [];
-var last = 'x';
 var TStart       = new Date().getTime();
 var TEnd         = new Date().getTime();
+var TEndEnd          = new Date().getTime();
 
 // HIDDEN INPUT
 let iFeedLikes        = document.createElement("input");
@@ -128,56 +124,17 @@ iFeedDislikes.name       = 'iFeedDislikes';
 iFeedDislikes.id         = 'iFeedDislikes';
 iFeedDislikes.value      = '';
 
-let sOrderFixations        = document.createElement("input");
-sOrderFixations.type       = 'hidden';
-sOrderFixations.name       = 'sOrderFixations';
-sOrderFixations.id         = 'sOrderFixations';
-sOrderFixations.value      = '';
-
-let sFixations        = document.createElement("input");
-sFixations.type       = 'hidden';
-sFixations.name       = 'sFixations';
-sFixations.id         = 'sFixations';
-sFixations.value      = '';
-
-let sScreenFeedback        = document.createElement("input");
-sScreenFeedback.type       = 'hidden';
-sScreenFeedback.name       = 'sScreenFeedback';
-sScreenFeedback.id         = 'sScreenFeedback';
-sScreenFeedback.value      = '';
-
-let sScreenTimeFeedback   = document.createElement("input");
-sScreenTimeFeedback.type  = 'hidden';
-sScreenTimeFeedback.name  = 'sScreenTimeFeedback';
-sScreenTimeFeedback.id    = 'sScreenTimeFeedback';
-sScreenTimeFeedback.value = '';
-
 let dRT          = document.createElement("input");
 dRT.type         = 'hidden';
 dRT.name         = 'dRTLatency';
 dRT.id           = 'dRTLatency';
 dRT.value        = '';
 
-
-
 // JS INFO
 treatment = js_vars.treatment;
 round_number = js_vars.round_number;
+time_left = js_vars.time_left;
 
-
-function recordButtons(event,string) {
-  let currentTime = new Date();
-  if (event.type === 'mouseenter') {
-        mouseenterTimeFeedback = currentTime.getTime();
-        console.log('mouseenterTime in '+ string+ ' was:' + mouseenterTimeFeedback);
-    } else if (event.type === 'mouseleave') {
-        var mouseoverTimeFeedback = currentTime.getTime() - mouseenterTimeFeedback;
-        console.log('mouseover time was: ' + mouseoverTimeFeedback);
-        fixationsFeedback = fixationsFeedback + ';' + mouseoverTimeFeedback;
-        orderFeedback = orderFeedback + ';' + string;
-        console.log(fixationsFeedback, orderFeedback);
-    } 
-}
 
 function animateButtons(id) {
     lSplit = id.split("-");
@@ -214,97 +171,42 @@ function animateButtons(id) {
         } 
     }
     console.log(Lcounter, Dcounter);
-}
 
-function mouselog(event) {
-    let currentTime = new Date();
-    let left = document.getElementById('leftcover');
-    let right = document.getElementById('rightcover');
-    const results = left.getBoundingClientRect();    // returns DOMRect OBJECT with bottom, height, left, right, top, width (!!!!!), x, y of ELEMENT
-    let widthLeft = results.width; 
+    // this part is to avoid that the last trial info is not submitted if a timeout happens
 
-    if (event.type === 'mouseenter' && last === 'x') {     // entering right for the first time
-            mouseenterTime = currentTime.getTime();
-            // console.log('FIRST enter time in rS was:' + mouseenterTime);
-            last = 'rS';
-        } else if (event.type === 'mouseenter' && last === 'lS') {     // entering right after being left
-            var mouseoverTime = currentTime.getTime() - mouseenterTime;
-            // console.log('mouseover time in left screen time was: ' + mouseoverTime);
-            fixations = fixations + ';' + mouseoverTime;
-            order = order + ';' + last;
-            // console.log(fixations, order);
-            mouseenterTime = currentTime.getTime();
-            // console.log('mouseenterTime in rS was:' + mouseenterTime);
-            last = 'rS';
-        } else if (event.type === 'mouseleave') { 
-            var mouseoverTime = currentTime.getTime() - mouseenterTime;
-            // console.log('mouseover time in right screen was: ' + mouseoverTime);
-            fixations = fixations + ';' + mouseoverTime;
-            last = 'rS'; 
-            order = order + ';' + last;
-            // console.log(fixations, order); 
-        } 
-    if (last === 'x' && event.clientX < widthLeft) {
-            mouseenterTime = currentTime.getTime();
-            // console.log('FIRST enter time in lS was:' + mouseenterTime);   
-            last = 'lS';
-        } else if (last === 'rS' && event.clientX < widthLeft) {
-            mouseenterTime = currentTime.getTime();
-            // console.log('mouseenterTime in lS was:' + mouseenterTime);   
-            last = 'lS';
-     }
+    TEnd = new Date().getTime();
+    time_page = (+TEnd -TStart)/1000
+
+    if (time_left - time_page < 90)  {
+        iFeedLikes.value = Lcounter ; 
+        iFeedDislikes.value = Dcounter ;
+        dRT.value = +TEnd -TStart; 
+    };
+
+    // console.log(time_left, time_page);
 }
 
  // END FUNCTION: LOCAL COUNTERS WRITTEN IN THE DATABASE
  function endTrial() {
-    TEnd = new Date().getTime();
-    dRT.value = +TEnd -TStart; 
-    // console.log(dRT.value);
+    TEndEnd = new Date().getTime();
+    dRT.value = +TEndEnd -TStart; 
     iFeedLikes.value = Lcounter ; 
     iFeedDislikes.value = Dcounter ;
-    sFixations.value = fixations ;
-    sOrderFixations.value = order ; 
-    sScreenFeedback.value = orderFeedback ; 
-    sScreenTimeFeedback.value = fixationsFeedback ; 
     console.log('Post button was pressed');
 };
+
   
 document.addEventListener("DOMContentLoaded", function(debug=false) {
     console.log('Loading info');
     console.log(treatment);
+    console.log(time_left);
 
-    let body = document.getElementById('rightcover');
     let fullbody = document.getElementById('hello');
-
     InitializeFriendlyChecks(fullbody, bRequireFS, bCheckFocus);
-    InitializeVT(body);                                                 // Initialize visual tracing
-    // InitializeVT(body,sNameButtonClicks='sButtonClickScreen', sNameTimeClicks='sTimeClickScreen');                                                 // Initialize visual tracing
-    hideEverything();                                                   // Hide Everything at the beginning                     
-    ConvertButtons2VT('r0', sActivation = 'mouseover', 'r0');           // Mouseover for Row0
-    ConvertButtons2VT('r1', sActivation = 'mouseover', 'r1');           // Mouseover for Row1
-	resizeButtons();                                                    // Resize the text of all overflown buttons
-    
-	function resizeButtons() {
-        lButtons = document.getElementsByClassName('game-btn');
-    for (let i=0; i<lButtons.length; i++) {
-        adjustText(lButtons[i]);
-        };
-    };
-
-	function adjustText(elem) {
-    let ratioWidth = elem.clientWidth/elem.scrollWidth;
-    let ratioHeight = elem.clientHeight/elem.scrollHeight;
-    // Set initial scale as 100%
-    if (ratioWidth<1 || ratioHeight<1) {
-        let ratio = Math.floor(100*Math.min(ratioWidth,ratioHeight))-1
-        elem.style.fontSize = `${ratio}%`;
-        console.log(`Resized ${elem.id} to ${ratio}%`);
-        };                                  
-    };
-
+  
     if (js_vars.round_number > 1) {
-        let x = document.getElementById('btnD');
-        let c = document.getElementById('btnL');
+        let x = document.getElementById('emotionaltext');
+        let c = document.getElementById('baselinetext');
         if (js_vars.treatment=='Control') {
             x.style.visibility = 'hidden';  //for control treatment we don't show amount of dislikes
         } else if (js_vars.treatment=='Emotional') { 
@@ -314,33 +216,12 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
             c.style.visibility = 'visible';
 	}};
 
-    function mousePosition(event) {
-        let left = document.getElementById('leftcover');
-        let right = document.getElementById('rightcover');
-        const results = left.getBoundingClientRect();    // returns DOMRect OBJECT with bottom, height, left, right, top, width (!!!!!), x, y of ELEMENT
-        let widthLeft = results.width;                   // we access the with only
-        if (event.clientX > widthLeft) {
-            left.style.zIndex = "1";
-            left.style.visibility = "hidden";
-            right.style.zIndex = "10";
-            right.style.display = "flex";
+    // if time left  <<9i029i3 ???
 
-        } else {
-            left.style.zIndex = "10";
-            left.style.visibility = "visible";
-            right.style.zIndex = "1";
-            right.style.display = "none";
-    }}
-
-    window.addEventListener('mousemove', mousePosition);
 
     let OtreeBody     = document.getElementsByClassName("_otree-content")[0];
     OtreeBody.appendChild(iFeedLikes);
     OtreeBody.appendChild(iFeedDislikes);
-    OtreeBody.appendChild(sScreenTimeFeedback);
-	OtreeBody.appendChild(sScreenFeedback);
-    OtreeBody.appendChild(sFixations);
-    OtreeBody.appendChild(sOrderFixations);
     OtreeBody.appendChild(dRT);
     OtreeBody.appendChild(iFocusLost);
     OtreeBody.appendChild(dFocusLostT);

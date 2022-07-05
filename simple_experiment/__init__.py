@@ -19,12 +19,11 @@ class Constants(BaseConstants):
     num_rounds = 30
     df = pd.read_excel("_static/global/HR.xlsx",index_col="Numbers")
     df2 = pd.read_excel("_static/global/LR.xlsx",index_col="Numbers")
-    total_time = 600 #10 minutes
+    total_time = 1200  #(20 min) # 600 (10 minutes)
     IMG_ON_PAGE = 6
 
 class Subsession(BaseSubsession):
     pass
-
 
 class Group(BaseGroup):
     pass
@@ -35,13 +34,6 @@ class Player(BasePlayer):
     sReward                 = models.StringField(blank=True)
     sRandom                 = models.StringField(blank=True)
     sRandom2                = models.StringField(blank=True)
-    ## Attention Variables 
-    sFeedback               = models.LongStringField(blank=True)    # Order of feedback seen
-    sTimeFeedback           = models.LongStringField(blank=True)    # Time each of them was looked at
-    sScreenFeedback         = models.LongStringField(blank=True)    # Order of feedback seen PAST post
-    sScreenTimeFeedback     = models.LongStringField(blank=True)    # Time PAST feedback was looked at
-    sFixations              = models.LongStringField(blank=True) 
-    sOrderFixations         = models.LongStringField(blank=True) 
     ## Focus Variables
     iFocusLost               = models.IntegerField(blank=True)
     dFocusLostT              = models.FloatField(blank=True)
@@ -134,7 +126,6 @@ class SplitScreen(Page):
     form_model = 'player' 
     form_fields = [
         'iFeedLikes','iFeedDislikes', 
-        'sScreenFeedback', 'sScreenTimeFeedback', 'sOrderFixations', 'sFixations',
         'dRTLatency',  
         'iFocusLost','dFocusLostT', 'iFullscreenChange',
     ] 
@@ -164,7 +155,7 @@ class SplitScreen(Page):
         random.shuffle(url_list) #so feed changes everytime
 
         if player.round_number == 1:
-            return dict(url_list=url_list)
+           return dict(url_list=url_list)
         else: 
             prev_player = player.in_round(player.round_number - 1)
             return {
@@ -178,17 +169,19 @@ class SplitScreen(Page):
 
     @staticmethod
     def is_displayed(player):
-        participant = player.participant
-        time_left = participant.dExpiry - time.time()
+        p = player.participant
+        time_left = p.dExpiry - time.time()
         return time_left > 3
 
     @staticmethod
     def js_vars(player: Player):
         session = player.session
         p = player.participant
+        time_left = round(p.dExpiry - time.time()) 
         return {
             'treatment'      :  player.sTreatment ,
             'round_number'   :  player.round_number ,
+            'time_left'      :  time_left ,
             'bRequireFS'        : session.config['bRequireFS'],
             'bCheckFocus'       : session.config['bCheckFocus'],
             'dPixelRatio'       : p.dPixelRatio,
@@ -201,7 +194,13 @@ class SplitScreen(Page):
         participant.iFullscreenChanges = int(participant.iFullscreenChanges) + player.iFullscreenChange
         participant.dTimeOutFocus = float(participant.dTimeOutFocus) + player.dFocusLostT
         
+        # player.iFeedLikes = Lcounter
+        # player.dRTLatency = 
 
+    @staticmethod
+    def live_method(player, data):
+        player.iFeedLikes = data
+        #also need to write out how much time the spent in the page and the likes/disliket 
 
 class Posting(Page):
     form_model = 'player' 
@@ -264,7 +263,6 @@ class Posting(Page):
         time_left = participant.dExpiry - time.time()
         return time_left > 3
 
-  
 
 class addTags(Page):
     form_model = 'player' 
@@ -303,7 +301,7 @@ class addTags(Page):
 class Feedback(Page):
     form_model = 'player'
     form_fields = [
-        'iLikes','iDislikes','dRTFeedback', 'sFeedback', 'sTimeFeedback',
+        'iLikes','iDislikes','dRTFeedback', 
     ] 
 
     @staticmethod
@@ -374,8 +372,8 @@ class HowDoYaFeel(Page):
 
 #! THINGS TO THINK
 # prolific !!!!! 
+# connection in last slide to real prolific link 
 # check out why mouselog function does not work
-# change the way the ifeedlikes ifeeddislikes final output are written into database
-
+# future fade in jquery for likes and dislikes appearing (the talking cloud thingie)
 
 page_sequence = [ready, SplitScreen, Posting, addTags, Feedback, HowDoYaFeel]

@@ -35,16 +35,12 @@ class Constants(BaseConstants):
             path=SlidePath+'1.html'
             ),
         dict(
-            Title = 'Tags',
+            Title = 'After posting',
             path=SlidePath+'2.html'
             ),
         dict(
-            Title = 'Your feedback',
-            path=SlidePath+'3.html'
-            ),
-        dict(
             Title = 'Is it all clear? Please answer these questions correctly to proceed:',
-            path=SlidePath+'4.html'
+            path=SlidePath+'3.html'
             ),
     ]
 
