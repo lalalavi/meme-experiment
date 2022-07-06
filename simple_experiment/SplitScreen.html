@@ -52,7 +52,8 @@
     <div class="cover rightcover" id="rightcover" name="rS">
 
     {{ if subsession.round_number == 1 }} 
-    <br>    <div class="nes-container" style=background-color:white;visibility:visible; >
+    <br>
+    <div class="nes-container" style=background-color:white;visibility:visible; >
         <p style=color:black;background-color:white;font-family:courier;font-weight:100;>Your history will be displayed here once you post.</p>
     </div>
     {{ endif }}
@@ -60,34 +61,37 @@
     {{ if subsession.round_number > 1 }} 
         <br>  
         <div class="nes-container" style=background-color:white;visibility:visible; >
-            <p style=color:black;background-color:white;font-family:courier;font-weight:100;> Your last post.    ᕕ(ᐛ)ᕗ  </p>
+            <p style=color:black;background-color:white;font-family:courier;font-weight:100;> Your last post.  ᕕ(ᐛ)ᕗ  </p>
         </div>
         <br> <br><br> <br> 
 
         <img style="width: 250px; position: fixed; margin-top: 15vh;" src="{{ static image_path }}"/>
 
-        <br><br><br><br><br> <br><br><br><br> <br> 
+        <br><br><br><br><br> <br><br><br><br> <br> <br><br> <br>  <br><br> <br> 
 
-        <section class="message-list" id="baselinetext">
-            <section class="message -left">
-                <div class="nes-balloon from-left">
-                    <span style="font-size:160%; color:black;"> {{ likes }} <b style="color:red"> &#10084;</b></span><br> <span style="font-size:125%; color:black;"> people  out of 40 <br> liked your post 
-                </div>
+        <div id="wrapper">
+            <section class="message-list" id="baselinetext" style="float:left">
+                <section class="message -left" >
+                    <div class="nes-balloon from-left">
+                        <span style="font-size:300%; color:black;"> {{ likes }} <b style="color:red"> &#10084;</b></span>
+                    </div>
+                </section>
             </section>
-        </section>
-        <section class="message-list" id="emotionaltext">
-            <section class="message -right" >
-                <div class="nes-balloon from-right">
-                  <p><span style="font-size:160%; color:black"> {{ dislikes }} <b style="font-family:Garamond;"> <i class="fa fa-thumbs-down"></i> </b></span><br> <span style="font-size:125%; color:black;"> people  out of 40 <br> <b>did not</b> like your post </span>    </p>
+            <section class="message-list" id="emotionaltext" style="float:right">
+                <section class="message -right"  >
+                    <div class="nes-balloon from-right">
+                    <p><span style="font-size:300%; color:black"> {{ dislikes }} <b style="font-family:Garamond;"> <i class="fa fa-thumbs-down"></i> </b></span></p>
+                    </div>
+                </section>
             </section>
-        </section>
+        </div>
 
 
     {{ endif }}
     </div>
 
     <div class="post-container active">
-        <button class="button_slide slide_right" id="post" style="align-self: center;" onclick="endTrial()">take me to post   ᕕ(ᐛ)ᕗ</button>   
+        <button class="button_slide slide_right" id="post" style="align-self: center;" onclick="endTrial()"> POST &nbsp; <i class="fas fa-camera"></i> </button>   
     </div>
 
 </div>
