@@ -2,15 +2,15 @@
 {% load otree static %} 
 
 {% block title %}
-    Select a meme pressing a button
+    Select a meme by pressing a button
 {% endblock %}
 
 {% block content %}
-
-<div id="fullbody">
+<br>
+<div class="fullbody" id="fullbody">
   <div class="row">
       <div class="column">
-        <div class="polaroid">
+        <div class="polaroid" >
           <img id='memeshown1' src= {{ static Image }} value="1" style="width:100%">
           <div class="container">
             <p style=font-size:30pt;> <button type="button" class='video-game-button' onclick="animateButtons(this.id)" id="post-1">1</button> </p>
@@ -71,6 +71,18 @@
  
 <style>
 
+.fullbody {
+    /* position: absolute; */
+    /* transform: translate(-50%, -50%); */
+    width: 67vw;
+    height: 100vh;
+    /* bottom:100%; */
+    /* top: 50vh; */
+    background-color: white;
+    /* z-index: -1; */
+}
+/* style="width:120%; float: center;" */
+
 .video-game-button {
     text-shadow: 1px 1px pink, -1px -1px maroon;
   
@@ -128,7 +140,7 @@
 /* Three image containers (use 25% for four, and 50% for two, etc) */
 .column {
     float: left;
-    width: 33.33%;
+    width: 31.33%;
     padding: 5px;
   } 
   /* Clear floats after image containers */
@@ -143,17 +155,18 @@
 }
 
 .column {
-  flex: 33.33%;
-  padding: 5px;
+  flex: 31.33%;
+  padding: 3px;
 }
 
-body {margin:25px;}
+body {margin-left:0px;margin-right:5px}
 
 div.polaroid {
-  width: 80%;
+  width: 100%;
   background-color: white;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin-bottom: 25px;
+  padding: 2px;
 }
 
 div.container {

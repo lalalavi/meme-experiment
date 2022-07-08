@@ -38,9 +38,13 @@ class Constants(BaseConstants):
             Title = 'After posting',
             path=SlidePath+'2.html'
             ),
+            dict(
+            Title = 'Emotional status',
+            path=SlidePath+'3.html'
+            ),
         dict(
             Title = 'Is it all clear? Please answer these questions correctly to proceed:',
-            path=SlidePath+'3.html'
+            path=SlidePath+'4.html'
             ),
     ]
 
