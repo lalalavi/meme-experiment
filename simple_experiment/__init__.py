@@ -16,7 +16,7 @@ doc = """
 class Constants(BaseConstants):
     name_in_url = 'simple_experiment'
     players_per_group = None
-    num_rounds = 30
+    num_rounds = 35
     df = pd.read_excel("_static/global/HR.xlsx",index_col="Numbers")
     df2 = pd.read_excel("_static/global/LR.xlsx",index_col="Numbers")
     total_time = 1200  #(20 min) # 600 (10 minutes)
@@ -71,7 +71,8 @@ def creating_session(subsession):
         p = player.participant
         if player.round_number == 1:
             #between randomization
-            p.sTreatment = random.choice(['Control', 'Emotional', 'Fullinfo'])
+            p.sTreatment = 'Control'
+            # p.sTreatment = random.choice(['Emotional', 'Fullinfo'])
             #within randomization 
             p.sRandom = random.choice(['LR', 'HR']) 
             p.sRandom2 = random.choice(['LR', 'HR'])
