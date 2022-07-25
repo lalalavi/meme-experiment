@@ -89,7 +89,7 @@ class Player(BasePlayer):
 # PAGES
 class Questionnaire(Page):
     form_model = 'player'
-    form_fields = ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13',
+    form_fields = ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D13', 'D14', 'D15',
     'BIS1', 'BIS2', 'BIS3', 'BIS4', 'BIS5', 'BIS6', 'BIS7', 'BIS8', 'BIS9', 'BIS10', 'BIS11', 'BIS12', 'BIS13', 'BIS14', 'BIS15', 'BIS16', 'BIS17', 'BIS18', 'BIS19', 'BIS20', 'BIS21', 'BIS22', 'BIS23', 'BIS24', 'BIS25', 'BIS26', 'BIS27', 'BIS28', 'BIS29', 'BIS30', 
     'SMD1', 'SMD2', 'SMD3', 'SMD4', 'SMD5', 'SMD6', 'SMD7', 'SMD8', 'SMD9',
     'V1', 'V2', 'V3',
