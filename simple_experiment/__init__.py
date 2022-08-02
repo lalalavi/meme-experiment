@@ -60,7 +60,8 @@ class Player(BasePlayer):
     dRTPost                 = models.FloatField(blank=True) 
     dRTTags                 = models.FloatField(blank=True)
     dRTFeedback             = models.FloatField(blank=True)
-    dRTEmotionalStatus      = models.FloatField(blank=True) 
+    dRTEmotionalStatus      = models.FloatField(blank=True)
+    dRTLast                 = models.FloatField(blank=True)
 
 ###################################################################################################
 #  FUNCTION ᕕ(ᐛ)ᕗ
@@ -71,8 +72,8 @@ def creating_session(subsession):
         p = player.participant
         if player.round_number == 1:
             #between randomization
-            p.sTreatment = 'Control'
-            # p.sTreatment = random.choice(['Emotional', 'Fullinfo'])
+            # p.sTreatment = 'Control'
+            p.sTreatment = random.choice(['Emotional', 'Fullinfo'])
             #within randomization 
             p.sRandom = random.choice(['LR', 'HR']) 
             p.sRandom2 = random.choice(['LR', 'HR'])
@@ -127,7 +128,7 @@ class SplitScreen(Page):
     form_model = 'player' 
     form_fields = [
         'iFeedLikes','iFeedDislikes', 
-        'dRTLatency',  
+        'dRTLatency', 'dRTLast',
         'iFocusLost','dFocusLostT', 'iFullscreenChange',
     ] 
 

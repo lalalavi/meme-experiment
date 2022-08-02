@@ -134,6 +134,12 @@ dRT.name         = 'dRTLatency';
 dRT.id           = 'dRTLatency';
 dRT.value        = '';
 
+let dRTLast          = document.createElement("input");
+dRTLast.type         = 'hidden';
+dRTLast.name         = 'dRTLast';
+dRTLast.id           = 'dRTLast';
+dRTLast.value        = '';
+
 // JS INFO
 treatment = js_vars.treatment;
 round_number = js_vars.round_number;
@@ -181,10 +187,10 @@ function animateButtons(id) {
     TEnd = new Date().getTime();
     time_page = (+TEnd -TStart)/1000
 
-    if (time_left - time_page < 90)  {
+    if (time_left - time_page < 120)  {
         iFeedLikes.value = Lcounter ; 
         iFeedDislikes.value = Dcounter ;
-        dRT.value = +TEnd -TStart; 
+        dRTLast.value = +TEnd -TStart; 
     };
 
     // console.log(time_left, time_page);
@@ -227,6 +233,7 @@ document.addEventListener("DOMContentLoaded", function(debug=false) {
     OtreeBody.appendChild(iFeedLikes);
     OtreeBody.appendChild(iFeedDislikes);
     OtreeBody.appendChild(dRT);
+    OtreeBody.appendChild(dRTLast);
     OtreeBody.appendChild(iFocusLost);
     OtreeBody.appendChild(dFocusLostT);
     OtreeBody.appendChild(iFullscreenChange);
