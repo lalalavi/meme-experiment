@@ -220,12 +220,21 @@ class Posting(Page):
         else:
             vImages = participant.HRmemematrix 
 
-        player.iImgPost1        = vImages[player.round_number - 1][0]
-        player.iImgPost2        = vImages[player.round_number - 1][1]
-        player.iImgPost3        = vImages[player.round_number - 1][2]
-        player.iImgPost4        = vImages[player.round_number - 1][3]
-        player.iImgPost5        = vImages[player.round_number - 1][4]
-        player.iImgPost6        = vImages[player.round_number - 1][5]
+        # choose a random number between 1 and 20, and not the same one
+        if player.round_number < 20: 
+            player.iImgPost1        = vImages[player.round_number - 1][0]
+            player.iImgPost2        = vImages[player.round_number - 1][1]
+            player.iImgPost3        = vImages[player.round_number - 1][2]
+            player.iImgPost4        = vImages[player.round_number - 1][3]
+            player.iImgPost5        = vImages[player.round_number - 1][4]
+            player.iImgPost6        = vImages[player.round_number - 1][5]
+        else: 
+            player.iImgPost1        = vImages[player.round_number - 20][0]
+            player.iImgPost2        = vImages[player.round_number - 20][1]
+            player.iImgPost3        = vImages[player.round_number - 20][2]
+            player.iImgPost4        = vImages[player.round_number - 20][3]
+            player.iImgPost5        = vImages[player.round_number - 20][4]
+            player.iImgPost6        = vImages[player.round_number - 20][5]
         
         return {
             'Image'     :  "".join([player.sReward,'/meme', str(player.iImgPost1), '.jpeg']) ,
